@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<link href="../css/mui.picker.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			.mui-content{
+				background: #fff;
+				padding:0!important;
+				position: absolute;
+				top: 44px;
+				bottom: 0;
+				width: 100%;
+			}
+			.personal-img img{
+				width: 40px;
+				height: 40px;
+				margin-right: 10px;
+			}
+			.info{
+				position: relative;
+				border-bottom: 1px solid #E4E4E4;
+				padding: 10px 0;
+			}
+			.info h4{
+				font-size: 14px;
+				font-weight: normal;
+			}
+			.info p{
+				font-size: 14px;
+				color: #999;
+			}
+			.info .state{
+				position: absolute;
+				right: 0;
+				top: 15px;
+				background: #FE5850;
+				border-radius: 10px;
+				padding: 0 6px;
+				color: #fff;
+			}
+			.info .isRead{
+				background: #ccc;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">私信</h1>
+			</header>
+			<div class="mui-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll" style="padding: 0 15px;">
+						<div class="uni-flex" style="align-items: center;" v-for="(item, index) in 10" :key="index">
+							<div class="personal-img">
+								<img src="../images/business-img.png" >
+							</div>
+							<div class="uni-flex-item">
+								<div class="info">
+									<h4>老玩家</h4>
+									<p>什么时候能到账？</p>
+									<span :class="['state', index>3?'isRead':'']">{{index>3?'已读':'未读'}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data: {
+				},
+				created() {
+				},
+				methods: {
+				}
+			});
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				bounce: true,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>

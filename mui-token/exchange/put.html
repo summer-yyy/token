@@ -1,0 +1,245 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			.mui-content{
+				background: #fff;
+				padding:0!important;
+				position: absolute;
+				top: 44px;
+				bottom: 0;
+				width: 100%;
+			}
+			.main-t{
+				padding: 30px 15px;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.main-t .uni-flex{
+				position: relative;
+			}
+			.main-t .uni-flex .img-jt{
+				position: absolute;
+				margin-left: -25px;
+				top: 10px;
+				left: 50%;
+				width: 50px;
+			}
+			.main-t .uni-flex .img-jt img{
+				width: 100%;
+			}
+			.main-t .img-box img{
+				width: 40px;
+				height: 40px;
+			}
+			.main-t .img-box h4{
+				font-size: 18px;
+				font-weight: bold;
+			}
+			.main-b-con .uni-flex{
+				border-bottom: 1px solid #E4E4E4;
+				align-items: center;
+				padding: 20px 0;
+			}
+			.main-b-con .uni-flex h4{
+				font-size: 14px;
+				font-weight: normal;
+			}
+			.main-b-con .uni-flex p{
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.input-group .input-item{
+				border-bottom: 1px solid #E4E4E4;
+				padding: 10px 0;
+			}
+			.input-group .input-item h3{
+				font-size: 14px;
+				font-weight: normal;
+				margin-bottom: 10px;
+				border-left: 2px solid #12CEB3;
+				padding-left: 10px;
+			}
+			.tips{
+				margin: 20px 0 0;
+			}
+			.tips p{
+				font-size: 12px;
+				color: #999;
+				line-height: 18px;
+			}
+			
+			.paybtn{
+				padding: 15px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">兑换确认</h1>
+			</header>
+			<div class="mui-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll" style="padding: 0 15px;">
+						<div class="main-t">
+							<div class="uni-flex" style="align-items: center; text-align: center;">
+								<div class="uni-flex-item">
+									<div class="img-box">
+										<img :src=`../images/${typeName1}.png` >
+									</div>
+									<h4>{{typeName1}}</h4>
+								</div>
+								<div class="uni-flex-item">
+									<div class="img-box">
+										<img :src=`../images/${typeName}.png` >
+									</div>
+									<h4>{{typeName}}</h4>
+								</div>
+								<div class="img-jt">
+									<img src="../images/icon-jt.png" >
+								</div>
+							</div>
+						</div>
+						<div class="main-b">
+							<div class="main-b-con">
+								<div class="uni-flex">
+									<div class="uni-flex-item">
+										<h4>发送</h4>
+									</div>
+									<p>100.123684798 {{typeName1}}</p>
+								</div>
+								<div class="uni-flex">
+									<div class="uni-flex-item">
+										<h4>得到</h4>
+									</div>
+									<p>0.123684798 {{typeName}}</p>
+								</div>
+								<div class="uni-flex">
+									<div class="uni-flex-item">
+										<h4>当前汇率</h4>
+									</div>
+									<p>1 {{typeName1}}≈0.0056854 {{typeName}}</p>
+								</div>
+								<div class="uni-flex">
+									<div class="uni-flex-item">
+										<h4>手续费：{{typeName1}}</h4>
+									</div>
+									<p>24.00</p>
+								</div>
+								<div class="uni-flex" style="border: none;">
+									<div class="uni-flex-item">
+										<h4 style="font-weight: bold;">跨链兑换</h4>
+									</div>
+									<div class="mui-switch mui-switch-mini mui-switch-blue" id="changeSwitch" @tap="changeSwitch">
+									  <div class="mui-switch-handle" @tap="changeSwitch"></div>
+									</div>
+								</div>
+								<div class="input-group" v-if="isActive">
+									<div class="input-item">
+										<h3>收币地址</h3>
+										<input type="text" placeholder="请输入BTC收货地址"/>
+									</div>
+									<div class="input-item">
+										<h3>退币地址</h3>
+										<input type="text" placeholder="请输入BTC收货地址"/>
+									</div>
+								</div>
+							</div>
+							<div class="tips" v-if="isActive">
+								<p>说明：若兑换失败，不扣矿工费。</p>
+							</div>
+							<div class="tips" v-else>
+								<p>说明：</p>
+								<p>1.因交易所币价波动，兑换结果可能与显示稍有不一致。如寻求更精确的兑换，欢迎使用TokenPanda限价兑换！</p>
+								<p>2.若兑换失败，则原路退回代币。</p>
+							</div>
+							<div class="paybtn">
+								<button type="button" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button> 
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 弹窗 -->
+			<div id="popover" class="mui-popover mui-popover-success">
+				<div class="mui-popover-main">
+					<div class="popover-header">
+						<img src="../images/success-img.png" >
+					</div>
+					<div class="popover-content">
+						<p>兑换成功</p>
+						<p>您可在“我的账单”中查看兑换记录</p>
+					</div>
+					<div class="popover-footer">
+						<button type="button" class="mui-btn mui-btn-buy" @click="onClose">知道了</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data: {
+					isActive: false,
+					typeName1: 'ETH',
+					typeName: 'BTC'
+				},
+				created() {
+					this.typeName1 = getUrlParam('typeName1');
+					this.typeName = getUrlParam('typeName');
+				},
+				methods: {
+					// 选择兑换方式
+					changeBuy() {
+						mui('.mui-popover').popover('show');
+					},
+					onChoice(type) {
+						console.log(type);
+						mui('.mui-popover').popover('hide');
+					},
+					// 跨连兑换开关
+					changeSwitch(e) {
+						this.isActive = document.getElementById("changeSwitch").classList.contains("mui-active");
+						console.log(this.isActive)
+					},
+					onSubmit() {
+						mui('.mui-popover').popover('show');
+					},
+					// 关闭模态框
+					onClose() {
+						mui('.mui-popover').popover('hide');
+					}
+				}
+			})
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				bounce: true,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>

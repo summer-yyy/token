@@ -1,0 +1,309 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+				box-shadow: none;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			.mui-content{
+				background: #fff;
+				padding:0!important;
+				border-top: 1px solid #F2F2F2;
+				position: absolute;
+				top: 44px;
+				bottom: 0;
+				width: 100%;
+			}
+			.mui-content-h{
+				padding: 15px 15px 5px;
+			}
+			.mui-content-h .uni-title span{
+				font-size: 14px;
+				color: #32303D;
+				padding-left: 7.5px;
+				border-left: 2px solid #12CEB3;
+			}
+			.mui-content-m{
+				background: #F5F5F5;
+				padding: 10px 0 0;
+			}
+			.content-item{
+				background: #fff;
+				padding: 0 15px;
+				margin-bottom: 10px;
+			}
+			.content-item .uni-title{
+				padding: 15px 0;
+			}
+			.content-item .uni-title span{
+				font-size: 14px;
+			}
+			.content-item .uni-title .blue{
+				color: #12CEB3;
+			}
+			.content-item .uni-form-item{
+				padding: 15px 0;
+				border: 1px solid #E4E4E4;
+				border-width: 1px 0;
+				position: relative;
+			}
+			.content-item .uni-form-item .uni-input{
+				padding: 0 15px;
+				display: inline-block;
+			}
+			.content-item .uni-form-item:before{
+				position: absolute;
+				left: 0;
+				top: 16px;
+				display: block;
+				width: 2px;
+				height: 17px;
+				content: '';
+				background: #12CEB3;
+			}
+			.content-item .uni-tips{
+				font-size: 12px;
+				color: #999;
+				padding: 15px 0;
+			}
+			.content-item .uni-info .uni-text span{
+				font-size: 12px;
+				color: #999;
+			}
+			
+			.mui-content-b{
+				padding: 15px;
+			}
+			.mui-content-b .icon{
+				border: 1px solid #ccc;
+				width: 13px;
+				height: 13px;
+				margin-right: 8px;
+				border-radius: 4px;
+				text-align: center;
+			}
+			.mui-content-b .icon .mui-icon{
+				font-size: 20px;
+				color: #fff;
+				position: relative;
+				top: -4px;
+				left: -4px;
+			}
+			.mui-content-b .icon.isCheck{
+				background: #12CEB3;
+				border-color: #12CEB3;
+			}
+			.mui-content-b .uni-text{
+				font-size: 11px;
+			}
+			.payBtn{
+				padding: 20px 15px 30px;
+				background: #fff;
+				width: 100%;
+				box-sizing: border-box;
+			}
+			.payBtn .tips{
+				text-align: center;
+				margin-top: 10px;
+			}
+			.payBtn .tips .uni-text{
+				font-size: 12px;
+				color: #BFC2C7;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">购买基金</h1>
+			</header>
+			<div class="mui-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="uni-flex" style="flex-direction:column">
+							<div class="mui-content-h">
+								<div class="uni-title">
+									<span>诺安优化收益债券</span>
+								</div>
+							</div>
+							<div class="mui-content-m">
+								<div class="content-item">
+									<div class="uni-title">
+										<div class="uni-flex">
+											<div class="uni-flex-item">
+												<span>输入买入金额</span>
+											</div>
+											<span class="blue">交易规则</span>
+										</div>
+									</div>
+									<div class="uni-form-item">
+										<input class="uni-input" v-model="amount" type="number" @input="changeBuyNum" :placeholder="placeholder" />
+									</div>
+									<div class="uni-tips">买入0费率，预计02月01日(星期一)确认份额，开始计算收益</div>
+								</div>
+								<div class="content-item">
+									<div class="uni-title">
+										<div class="uni-flex" style="align-items: center;">
+											<div class="uni-flex-item">
+												<span>付款方式</span>
+											</div>
+											<div class="uni-info">
+												<div class="uni-text">
+													<span>TokenPanda钱包支付</span>
+												</div>
+												<div class="uni-text">
+													<span>每天限额10000.00</span>
+												</div>
+											</div>
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="uni-flex-item">
+								<div class="mui-content-b">
+									<div class="uni-flex" style="align-items: center;">
+										<div :class="['icon', isCheck?'isCheck':'']" @tap="isCheck=!isCheck">
+											<span class="mui-icon mui-icon-checkmarkempty" v-if="isCheck"></span>
+										</div>
+										<div class="uni-flex-item">
+											<div class="uni-text">
+												同意相关协议及风险提示
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="payBtn">
+								<button type="button" class="mui-btn mui-btn-buy" @click="onSubmit">确定</button>
+								<div class="tips">
+									<div class="uni-text">永续基金所属公司提供</div>
+									<div class="uni-text">基金销售资格：证监许可【2016】001号</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 弹窗 -->
+			<div id="popover" class="mui-popover mui-popover-success">
+				<div class="mui-popover-main">
+					<div class="popover-header">
+						<img src="../images/success-img.png" >
+					</div>
+					<div class="popover-content">
+						<p>基金购买成功，现在已开始获得收益了，可在“我的理财”查看详情</p>
+					</div>
+					<div class="popover-footer">
+						<button type="button" class="mui-btn mui-btn-buy" @click="onClose">确定</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/fetch.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data: {
+					amount: '',
+					isCheck: true,
+					placeholder: ''
+				},
+				created() {
+					// 获取id
+					this.fundId = getUrlParam('fundId');
+					this.type = getUrlParam('type');
+					switch (this.type){
+						case 'ETH':
+							this.placeholder = '最低买入1.00 ETH'
+							break;
+						case 'BTC':
+							this.placeholder = '最低买入0.01 BTC'
+							break;
+						case 'EOS':
+							this.placeholder = '最低买入10.00 EOS'
+							break;
+						case 'USDT':
+							this.placeholder = '最低买入100.00 USDT'
+							break;
+						default:
+							break;
+					}
+				},
+				methods: {
+					changeBuyNum() {
+						console.log(111)
+					},
+					onSubmit() {
+						if(!this.isValidate()) return
+						if(this.isCheck) {
+							fetch('/fund/buyFund', {
+								amount: 10.5,
+								fundId: this.fundId,
+								userId: 0
+							}, 'POST').then(res => {
+								console.log(res);
+								if(res.code==1) {
+									mui('.mui-popover').popover('show');
+									this.dataInfo = res.obj
+								} else {
+									mui.toast('操作失败！')
+								}
+							})
+						} else {
+							mui.toast('请先同意相关协议及风险提示！')
+						}
+					},
+					// 验证
+					isValidate() {
+						if(this.type == 'ETH' && this.amount<1) {
+							mui.toast('最低买入1.00 ETH')
+							return false
+						} else if(this.type == 'BTC' && this.amount<0.01) {
+							mui.toast('最低买入0.01 BTC')
+							return false
+						} else if(this.type == 'EOS' && this.amount<10) {
+							mui.toast('最低买入10.00 EOS')
+							return false
+						} else if(this.type == 'USDT' && this.amount<100) {
+							mui.toast('最低买入100.00 USDT')
+							return false
+						}
+						return true
+					},
+					
+					// 关闭模态框
+					onClose() {
+						mui('.mui-popover').popover('hide');
+					}
+				}
+			});
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				bounce: true,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>

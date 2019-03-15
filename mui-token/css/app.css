@@ -1,0 +1,231 @@
+*,html,body, p{
+	font-size: 12px;
+	color: #32303D;
+	font-family: PingFangSC-Medium,'Helvetica Neue',Helvetica,sans-serif;
+	margin: 0;
+}
+body{
+	background-color: #FAFAFA;
+}
+h1,h2,h3,h4,h5{
+	margin: 0;
+}
+
+.uni-flex {
+	display: flex;
+	flex-direction: row;
+}
+.uni-flex-item {
+	flex: 1;
+}
+
+.mui-btn-buy{
+	background:rgba(18,206,179,1);
+	box-shadow:0px 5px 6px 0px rgba(18,206,179,0.2);
+	border-radius:20px;
+	width: 100%;
+	border: none;
+	color: #fff;
+	font-size: 15px;
+	height: 40px;
+}
+.mui-btn-buy:enabled:active{
+	background:rgba(18,206,179,0.8);
+}
+/* 模态框 */
+#popover.mui-popover{
+	width: 250px;
+	left: 50%;
+	margin-left: -125px;
+	top: 20%;
+	position: fixed;
+}
+.mui-popover .mui-table-view{
+	background-color: #fff;
+}
+/* 提交成功模态框 */
+#popover.mui-popover-success {
+	top: 40%;
+	width: 280px;
+	margin-left: -140px;
+}
+#popover.mui-popover-success .mui-popover-main{
+	position: relative;
+	padding: 20px 15px;
+}
+#popover.mui-popover-success .popover-header{
+	position: absolute;
+	left: 25px;
+	top: -150px;
+}
+#popover.mui-popover-success .popover-header img{
+	width: 235px;
+	display: block;
+}
+#popover.mui-popover-success .popover-content{
+	padding: 20px 0 0;
+}
+#popover.mui-popover-success .popover-content p{
+	text-align: center;
+	font-size: 15px;
+	line-height: 25px;
+}
+#popover.mui-popover-success .popover-footer{
+	margin-top: 20px;
+	padding: 0 50px;
+} 
+
+/* switch开关 */
+.mui-switch{
+	height: 20px;
+	width: 32px;
+	background-color: #999;
+	border-color: #999;
+	background-clip:inherit;
+}
+.mui-switch .mui-switch-handle{
+	width: 17px;
+	height: 17px;
+}
+.mui-switch.mui-active.mui-dragging .mui-switch-handle{
+	width: 17px;
+	left: 0;
+}
+.mui-switch-mini.mui-active .mui-switch-handle{
+	-webkit-transform: translate(12px,0);
+	transform: translate(12px,0);
+}
+.mui-switch-blue.mui-active{
+	background-color: #32303D;
+	border-color: #32303D;
+}
+
+/* input样式 */
+input[type=color], 
+input[type=date], 
+input[type=datetime-local], 
+input[type=datetime], 
+input[type=email], 
+input[type=month], 
+input[type=number], 
+input[type=password], 
+input[type=search],
+input[type=tel], 
+input[type=text], 
+input[type=time], 
+input[type=url], 
+input[type=week], 
+select, textarea{
+	border: none;
+	font-size: 14px;
+	padding: 0;
+	height: 20px;
+	margin: 0;
+}
+input::-webkit-input-placeholder{
+	color: #ccc;
+}
+input::-moz-placeholder{  
+	color: #ccc;
+}
+input:-ms-input-placeholder{
+	color: #ccc;        
+}
+.uni-form-item{
+	display: flex;
+	display: -webkit-flex;
+}
+.uni-form-item input{
+	flex: 1;
+}
+
+/* pick样式 */
+.mui-poppicker{
+	border: none;
+}
+.mui-poppicker-header{
+	background: #F8F8F8;
+}
+.mui-poppicker-body .mui-picker{
+	border-top: 1px solid #eee!important;
+	background: #fff;
+}
+.mui-poppicker-header .mui-btn.mui-btn-blue{
+	background: #12CEB3;
+	border-color: #12CEB3;
+}
+/* 日期pick样式 */
+/* pick样式 */
+.mui-dtpicker{
+	border: none;
+}
+.mui-dtpicker-header{
+	background: #F8F8F8;
+}
+.mui-dtpicker-title h5{
+	border-bottom: none;
+}
+.mui-dtpicker-body .mui-picker{
+	border-top: 1px solid #eee!important;
+	background: #fff;
+}
+.mui-dtpicker-header .mui-btn.mui-btn-blue{
+	background: #12CEB3;
+	border-color: #12CEB3;
+}
+
+
+/* 头部切换 */
+.mui-bar .mui-title.uni-flex{
+	display: flex;
+	padding: 6px 40px;
+	box-sizing: border-box;
+	line-height: 30px;
+	width: 230px;
+	left: 50%;
+	margin-left: -115px;
+}
+.mui-bar .mui-title span{
+	background: #fff;
+	border-radius: 5px 0 0 5px;
+	border: 1px solid #12CEB3;
+	font-size: 14px;
+	color: #12CEB3;
+}
+.mui-bar .mui-title span.active{
+	background: #12CEB3;
+	color: #fff;
+}
+.mui-bar .mui-title span.border-r{
+	border-radius: 0 5px 5px 0;
+}
+.mui-bar .header-r{
+	position: absolute;
+	right: 15px;
+	top:12px;
+	font-size: 14px;
+	color: #12CEB3;
+}
+.mui-iframe-wrapper iframe{
+	display: block;
+}
+
+/* 上拉加载下拉刷新 */
+.mui-pull-top-pocket{
+	top:10px!important;
+	height: 60px;
+	background: url(../images/loading.gif) no-repeat center;
+	background-size: 100px;
+}
+.mui-pull-top-pocket .mui-pull{
+	display: none;
+}
+.mui-pull .mui-pull-loading{
+	color: #999;
+	font-size: 16px;
+}
+.mui-pull-caption{
+	font-size: 12px;
+	color: #999;
+	font-weight: normal;
+}

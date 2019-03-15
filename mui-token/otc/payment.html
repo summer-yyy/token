@@ -1,0 +1,428 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			.mui-content{
+				background: #fff;
+				padding:0!important;
+				position: absolute;
+				top: 50px;
+				bottom: 0;
+				width: 100%;
+			}
+			.content-con{
+				padding: 15px 15px 30px;
+				height: 100%;
+			}
+			.deal h4{
+				font-size: 15px;
+				font-weight: bold;
+				margin-bottom: 5px;
+			}
+			.deal h5 span{
+				font-size: 20px;
+				font-weight: normal;
+			}
+			.deal h5 .unit{
+				font-size: 14px;
+				margin-left: 5px;
+			}
+			
+			.main-con{
+				background:#FCFCFC;
+				border-radius:11px;
+				border:1px solid #eee;
+				margin: 20px 0 20px;
+			}
+			.main-con-top{
+				padding:10px 10px 0;
+			}
+			.main-con-top .uni-flex{
+				border-bottom: 1px solid #E4E4E4;
+				padding-bottom: 10px;
+			}
+			.main-con-top .business-img img{
+				width: 72px;
+				height: 45px;
+			}
+			.main-con-top .icon-contact span{
+				color: #12CEB3;
+			}
+			.main-con-top .icon-contact img{
+				padding: 0 5px;
+				width: 24px;
+				position: relative;
+				top: 2px;
+			}
+			.main-con-mid{
+				padding: 10px;
+				border-bottom: 1px solid #E4E4E4;
+				color: #999999;
+				font-size: 14px;
+			}
+			.main-con-bot{
+				padding: 10px;
+			}
+			.main-con-bot .pay-img img{
+				width: 25px;
+				height: 25px;
+			}
+			.main-con-bot .ewm-img{
+				margin-right: 18px;
+			}
+			.main-con-bot .ewm-img img{
+				width: 130px;
+				height: 130px;
+			}
+			.main-con-bot h4{
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 22px;
+			}
+			.main-con-bot h4:nth-child(3) {
+				margin: 15px 0 5px;
+			}
+			.main-con-bot .uni-tips{
+				line-height: 18px;
+				font-size: 12px;
+				color: #999;
+			}
+			
+			.payBtn button[disabled]{
+				background: #BFC2C7;
+				box-shadow: 0px 5px 6px 0px rgba(191,194,199,0.2)
+			}
+			.payBtn .uni-tips{
+				margin-top: 10px;
+				color: #999999;
+			}
+			.countDown .time{
+				font-size: 20px;
+				color: #12CEB3;
+				font-weight: bold;
+				display: inline-block;
+				width:30px;
+				text-align: center;
+				height:30px;
+				line-height: 30px;
+				background:rgba(244,244,244,1);
+				border-radius:5px;
+				margin-right: 15px;
+			}
+			.countDown .time:first-child{
+				position: relative;
+			}
+			.countDown .time:first-child:before{
+				position: absolute;
+				right: -10px;
+				top: -3px;
+				content: ':';
+				display: block;
+				font-size: 20px;
+			}
+			.countDown .tips{
+				font-size: 14px;
+				margin-right: 10px;
+			}
+			.countDown .gray{
+				font-size: 12px;
+				color: #999;
+			}
+			.countDown .notReceived span{
+				font-size: 14px;
+			}
+			.countDown .notReceived .remind{
+				color: #12CEB3;
+				text-decoration: underline;
+			}
+			.cancelBtn{
+				margin-top: 17px;
+			}
+			.cancelBtn button[type="cancel"]{
+				background: #fff;
+				border: 1px solid #979797;
+				border-radius:15px;
+				height: 30px;
+				line-height: 18px;
+				font-size: 15px;
+				color: #32303D;
+				margin: 0;
+				display: inline-block;
+			}
+			.cancelTxt{
+				margin-top: 17px;
+			}
+			.cancelTxt .uni-text{
+				font-size: 14px;
+			}
+			.cancelTxt .uni-text span{
+				font-size: 14px;
+				color: #12CEB3;
+				text-decoration: underline;
+			}
+			/* 弹窗 */
+			.mui-popover{
+				padding: 20px 15px;
+			}
+			.popover-header h4{
+				font-size: 17px;
+				font-weight: bold;
+				text-align: center;
+				margin-bottom: 10px;
+			}
+			.popover-content p{
+				font-size: 13px;
+			}
+			.popover-footer{
+				margin-top: 25px;
+			}
+			.popover-footer .uni-flex{
+				margin: 0 -10px;
+			}
+			.popover-footer .uni-flex .uni-flex-item{
+				padding: 0 10px;
+			}
+			.popover-footer button{
+				height: 35px;
+				line-height: 24px;
+				border-radius:22px;
+				font-size: 15px;
+				color: #fff;
+				width: 100%;
+				border: none;
+			}
+			.popover-footer .cancel-btn{
+				background:rgba(191,194,199,1);
+				box-shadow:0px 5px 6px 0px rgba(0,0,0,0.11);
+			}
+			.popover-footer .confirm-btn{
+				background:rgba(18,206,179,1);
+				box-shadow:0px 5px 6px 0px rgba(18,206,179,0.2);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title uni-flex">
+					<span class="active uni-flex-item">一键买币</span>
+					<span class="uni-flex-item border-r" @click="changeRoute('sellCoin')">一键卖币</span>
+				</h1>
+				<span @click="changeRoute('order')" class="header-r">我的订单</span>
+			</header>
+			<div class="mui-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="content-con">
+							<div class="deal">
+								<div class="uni-flex">
+									<div class="uni-flex-item">
+										<h4>交易金额</h4>
+										<h5>
+											<span>100</span>
+											<span class="unit">CNY</span>
+										</h5>
+									</div>
+									<div class="uni-info">
+										<div class="uni-text">数量: 14.577259 USDT</div>
+										<div class="uni-text">单价: 6.86 CNY/USDT</div>
+									</div>
+								</div>
+							</div>
+							<div class="main-con">
+								<div class="main-con-top">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<div class="business-img">
+												<img src="../images/shop-img.png" >
+											</div>
+										</div>
+										<div class="icon-contact" @click="changeRoute('imChat')">
+											<img src="../images/icon-contact.png" >
+											<span>联系卖家</span>
+										</div>
+									</div>
+								</div>
+								<div class="main-con-mid">本平台暂不支持自动扣款，请使用本人(实名认证)的支付宝账号向一下账号自行转账。</div>
+								<div class="main-con-bot">
+									<div class="pay-img">
+										<img src="../images/icon-zfb.png" >
+									</div>
+									<div class="uni-flex" style="align-items: center;">
+										<div class="ewm-img">
+											<img src="../images/ewm-img.png" >
+										</div>
+										<div class="uni-flex-item">
+											<h4>姓名: 收款方姓名</h4>
+											<h4>账号: 支付宝扫码</h4>
+											<h4>打开支付宝扫一扫</h4>
+											<div class="uni-tips">您需保存左侧二维码，使用支付宝完成支付</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="payBtn" v-if="!isSuccess || isCancel">
+								<button type="button" :disabled="isCancel" class="mui-btn mui-btn-buy" @click="onSuccess">{{isCancel? '交易已取消':'我已付款成功 ' + timeStr}}</button>
+								<div class="uni-tips">说明：请确认您已向商家付款。重复点击可能会被视为恶意点击，将冻结账户。</div>
+							</div>
+							<div class="countDown" v-else>
+								<div v-if="isReceived">
+									<span class="time" v-for="(item , index) in timeStr.slice(3).split(':')" :key="index">{{item}}</span>
+									<span class="tips">货币即将到账</span>
+									<span class="gray">(98.6%会在5分钟内到账)</span>
+								</div>
+								<!-- 未收到币 -->
+								<div class="notReceived" v-else>
+									<span>未收到币？</span>
+									<span class="remind" @click="changeRoute('imChat')">提醒商家</span>
+									<span>发币</span>
+								</div>
+							</div>
+							<div class="cancelBtn" v-if="!isCancel">
+								<button type="cancel" @click="onCancel">取消订单</button>
+							</div>
+							<div class="cancelTxt" v-else>
+								<div class="uni-text">订单已取消，您可以 <span @click="changeRoute('home')">重新下单</span></div>
+							</div>				
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="popover" class="mui-popover">
+				<div class="popover-header">
+					<h4>{{popoverOption.title}}</h4>
+				</div>
+				<div class="popover-content">
+					<p>{{popoverOption.content}}</p>
+					<div class="popup-cancel" v-if="popoverOption.type==2">
+						<p class="uni-text" style="color: #FE5850;">取消订单后不会退款，如您已付款，请勿取消订单。</p>
+						<p class="uni-text" style="color: #32303D;">取消规则：买方单日累计3笔取消，将会限制当天的购买功能。</p>
+					</div>
+				</div>
+				<div class="popover-footer">
+					<div class="uni-flex">
+						<div class="uni-flex-item">
+							<button type="button" class="mui-btn cancel-btn" @click="hidePopover">{{popoverOption.cancelText}}</button>
+						</div>
+						<div class="uni-flex-item">
+							<button type="button" class="mui-btn confirm-btn" @click="onConfirm">{{popoverOption.confirmText}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data: {
+					timeStr: '00:30:00',
+					isSuccess: false,  // 是否交易成功
+					isCancel: false, // 是否已取消
+					isReceived: true, // 是否已收到币
+					popoverOption: {
+						title: '确认支付',
+						content: '请确认您已向商家付款，恶意点击将被冻结账号。',
+						cancelText: '取消',
+						confirmText: '确认',
+						type: 1
+					}
+				},
+				created() {
+					this.getData();
+				},
+				methods: {
+					// 获取数据
+					getData() {
+						var timeNum = 60*30
+						this.timer = setInterval(() => {
+							if (timeNum > 0) {
+								timeNum = timeNum -1
+								this.timeStr = formatTime(timeNum);
+							} else {
+								if(!this.isSuccess) {
+									this.isCancel = true
+								} else {
+									this.isReceived = false
+								}
+								clearInterval(this.timer)
+							}
+						}, 1000)
+					},
+					// 付款成功
+					onSuccess() {
+						if(this.isCancel) return;
+						mui('.mui-popover').popover('show');
+						this.popoverOption = {
+							title: '确认支付',
+							content: '请确认您已向商家付款，恶意点击将被冻结账号。', 
+							cancelText: '取消',
+							confirmText: '确认',
+							type: 1
+						}
+					},
+					// 取消订单
+					onCancel() {
+						mui('.mui-popover').popover('show');
+						this.popoverOption = {
+							title: '取消订单',
+							content: '',
+							cancelText: '我再想想',
+							confirmText: '确认取消',
+							type: 2
+						}
+					},
+					// 确定
+					onConfirm() {
+						mui('.mui-popover').popover('hide');
+						switch (this.popoverOption.type){
+							case 1: // 操作成功按钮
+								this.isSuccess = true
+								break;
+							case 2: // 操作取消按钮
+								this.isCancel = true
+								break;
+							default:
+								break;
+						}
+					},
+					// 关闭模态框
+					hidePopover() {
+						mui('.mui-popover').popover('hide');
+					},
+					// 路由跳转
+					changeRoute(name) {
+						window.location.href= name + ".html"
+					}
+				}
+			});
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				bounce: true,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>

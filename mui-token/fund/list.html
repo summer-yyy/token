@@ -1,0 +1,286 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			.main-header{
+				position: fixed;
+				top: 44px;
+				width: 100%;
+				z-index: 100;
+				background: #F5F5F5;
+			}
+			.main-header-h{
+				background: #12CEB3;
+				padding: 10px 25px 10px 15px;
+				margin-bottom: 10px;
+			}
+			.main-header-h .funtImg{
+				margin-right: 15px;
+			}
+			.main-header-h .funtImg img{
+				width: 45px;
+				height: 47px;
+			}
+			.main-header-h .moreImg img{
+				width: 12px;
+				height: 12px;
+			}
+			.main-header-h h4{
+				font-size: 15px;
+				color: #fff;
+				line-height: 30px;
+			}
+			.main-header-h p{
+				font-size: 12px;
+				color: #fff;
+			}
+			.main-header .uni-title{
+				padding: 10px 15px;
+				border-bottom: 1px solid #E4E4E4;
+				background: #fff;
+			}
+			.main-header .uni-title .uni-h2{
+				font-size: 18px;
+				font-weight: bold;
+				margin-right: 10px;
+				color: #333;
+			}
+			.main-header .uni-title span{
+				font-size: 12px;
+				color: #999;
+			}
+			.main-header .uni-title .tab.active{
+				color: #12CEB3;
+			}
+			.main-header .uni-title .tab.tab-line{
+				margin-right: 15px;
+				position: relative;
+			}
+			.main-header .uni-title .tab.tab-line:before{
+				display: block;
+				content: '';
+				position: absolute;
+				width: 1px;
+				height: 12px;
+				background: #12CEB3;
+				right: -9px;
+				top: 4px;
+			}
+			.mui-content{
+				background: #fff;
+				padding:0!important;
+				position: absolute;
+				top: 170px;
+				bottom: 0;
+				width: 100%;
+			}
+			.uni-con{
+				position: relative;
+				padding: 0 15px;
+				background: #fff;
+			}
+			.uni-con>.uni-flex{
+				padding: 15px 0;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.uni-con .conImg{
+				margin-right: 15px;
+			}
+			.uni-con .conImg img{
+				width: 80px;
+				height: 80px;
+			}
+			.uni-con h4{
+				font-size: 14px;
+				color: #333;
+				margin-bottom: 5px;
+			}
+			.uni-con .uni-info h5{
+				font-size: 14px;
+				color: #333;
+				font-weight: bold;
+				line-height: 28px;
+			}
+			.uni-con .uni-info span{
+				font-size: 12px;
+				color: #999;
+			}
+			.uni-con .uni-tags span{
+				background: #FFEECC;
+				color: #D3B376;
+				font-size: 12px;
+				margin-right: 5px;
+				border-radius: 2px;
+				padding: 2px 5px;
+			}
+			.uni-con .uni-tit{
+				font-size: 12px;
+				color: #999;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">永续基金</h1>
+			</header>
+			<div class="main-header">
+				<div class="main-header-h">
+					<div class="uni-flex" style="align-items: center;">
+						<div class="funtImg">
+							<img src="../images/funt-img.png" >
+						</div>
+						<div class="uni-flex-item">
+							<h4>永续基金理财秘籍</h4>
+							<p>掌握新手理财的正确姿势</p>
+						</div>
+						<div class="moreImg">
+							<img src="../images/funt-more.png" >
+						</div>
+					</div>
+				</div>
+				<div class="uni-title">
+					<div class="uni-flex" style="align-items: center;">
+						<div class="uni-flex-item">
+							<span class="uni-h2">基金爆款</span>
+							<span>带你用数字货币玩转基金</span>
+						</div>
+						<span v-for="(tab, index) in tabs" :key="index" :class="['tab', tabIndex==index?'active': '', index==0?'tab-line': '']" @tap="changeTab(index)">{{tab}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="mui-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div class="uni-con" >
+							<div class="uni-flex" style="align-items: center;" v-for="(item, index) in dataList" :key="index" @tap="changeRoute('details', item)">
+								<div class="conImg">
+									<img src="../images/fund-img.png" >
+								</div>
+								<div class="uni-flex-item">
+									<h4>{{item.fundName}}</h4>
+									<div class="uni-info">
+										<div class="uni-flex">
+											<div class="uni-flex-item">
+												<h5 style="color: #12CEB3;">{{item.sevenDays}}%</h5>
+												<span>近7天</span>
+											</div>
+											<div class="uni-flex-item">
+												<h5>{{item.thirtyDays}}%</h5>
+												<span>近30天</span>
+											</div>
+											<div class="uni-flex-item">
+												<h5>{{item.totalProfit}}%</h5>
+												<span>成立来</span>
+											</div>
+										</div>
+									</div>
+									<div class="uni-tags">
+										<span>{{item.enName}}</span>
+										<span>基金标签</span>
+									</div>
+									<!-- <p class="uni-tit">诺安优化收益债券</p> -->
+								</div>
+							</div>								
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/fetch.js"></script>
+		<script type="text/javascript">
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					tabIndex: 0,
+					tabs: ['按人气', '按收益率'],
+					dataList: []
+				},
+				mounted() {
+					
+				},
+				created() {
+					// this.initData();
+				},
+				methods: {
+					// 初始化数据
+					initData() {
+						this.pageNum = 1
+						this.pageSize = 10
+						this.dataList = []
+						this.getData();
+					},
+					// 获取数据
+					getData() {
+						fetch('/fund/fundIndex', {
+							orderId: 1,
+							pageNum: this.pageNum,
+							pageSize: this.pageNum
+						}, 'POST').then(res => {
+							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+							this.dataList = res.obj.list
+						})
+					},
+					// 切换类别
+					changeTab(index) {
+						this.tabIndex = index
+					},
+					// 页面跳转
+					changeRoute(name, item) {
+						console.log(111)
+						window.location.href= name + ".html?fundId=" + item.fundId
+					}
+				}
+			});
+			mui.init({
+				pullRefresh: {
+					container: '.mui-scroll-wrapper',
+					down: {
+						auto: true,//可选,默认false.首次加载自动上拉刷新一次
+						contentrefresh: '正在加载中...',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			// 上拉加载
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh();
+				}, 2000);
+			}
+			// 下拉刷新
+			function pulldownRefresh() {
+				vue.initData();
+			}
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				bounce: true,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>

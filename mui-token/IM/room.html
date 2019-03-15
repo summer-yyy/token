@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<link href="../css/mui.picker.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			.mui-content{
+				background: none;
+				padding:0!important;
+				position: absolute;
+				top: 44px;
+				bottom: 55px;
+				width: 100%;
+			}
+			
+			.time{
+				color: #999;
+				font-size: 12px;
+				text-align: center;
+			}
+			.tips{
+				padding: 20px 0;
+				border-bottom: 1px dashed #ccc;
+			}
+			.tips p{
+				font-size: 12px;
+				color: #999;
+				text-align: center;
+			}
+			.message-info{
+				overflow: hidden;
+				margin: 20px 0;
+			}
+			.message-info .personal-img img{
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+			}
+			.empty{
+				width:  50px;
+				height: 40px;
+			}
+			.message-text{
+				background: #E8E8E8;
+				border-radius: 15px;
+				padding: 4px 10px;
+				margin-top: 10px;
+				display: inline-block;
+				text-align: left;
+			}
+			.info-r .uni-flex-item{
+				text-align: right;
+			}
+			.info-r .message-text{
+				background: #12CEB3;
+				color: #fff;
+			}
+			.im-footer{
+				padding: 17px 15px;
+				background: #fff;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				z-index: 1000;
+				height: 56px;
+				overflow: hidden;
+			}
+			.im-footer .sendBtn img{
+				width: 18px;
+				height: 18px;
+				display: block;
+			}
+			.im-footer .sendBtn span{
+				font-size: 14px;
+				color: #666;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">TokenPanda 客服</h1>
+			</header>
+			<div class="mui-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll" ref="scrollWrap" style="padding: 0 15px;">
+						<!-- 系统提示 -->
+						<div class="tips">
+							<p class="time">2019-02-01</p>
+							<p>您已成功提交订单，请及时完成支付。</p>
+						</div>
+						<div class="tips">
+							<p class="time">2019-02-01</p>
+							<p>您已成功将订单标记为“已付款状态”， </p>
+							<p>请等待商家确认收款和放行。</p>
+						</div>
+						<div class="message-info" v-for="(item, index) in messageList" :key="index">
+							<p class="time" v-if="item.showTime">{{item.createTime}}</p>
+							<div class="info-l" v-if="index==2">
+								<div class="uni-flex">
+									<div class="personal-img" style="margin-right: 10px;">
+										<img src="../images/business-img.png" >
+									</div>
+									<div class="uni-flex-item">
+										<p class="message-text">
+											您好。我是TokenPanda客服，有什么能帮助您的？
+										</p>
+									</div>
+									<div class="empty"></div>
+								</div>
+							</div>
+							<div class="info-r" v-else>
+								<div class="uni-flex">
+									<div class="empty"></div>
+									<div class="uni-flex-item">
+										<p class="message-text">
+											{{item.data}}
+										</p>
+									</div>
+									<div class="personal-img" style="margin-left: 10px;">
+										<img src="../images/business-img.png" >
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="im-footer">
+				<div class="uni-flex" style="align-items: center;">
+					<div class="uni-flex-item">
+						<input class="uni-input" v-model="inputText" @input="changeInput" type="text" placeholder="输入您想沟通的信息"/>
+					</div>
+					<div class="sendBtn">
+						<span v-if="showSend" @tap="onSendText">发送</span>
+						<img src="../images/send-img.png" v-else>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/moment.min.js"></script>
+		<script type="text/javascript">
+			var ws = new WebSocket("ws://123.207.167.163:9010/ajaxchattest");
+			// 打开Socket
+			ws.onopen = function() {
+				console.info('Web Socket 已连接上，使用 send() 方法发送数据');
+			};
+			// 获取Socket消息
+			ws.onmessage = function(e) {
+				vue.onMessage(JSON.parse(e.data));
+			}
+			ws.onclose = function() { 
+				// 关闭 websocket
+				alert("连接已关闭..."); 
+			};
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					showSend: false,
+					inputText: '',
+					messageList: [{
+						name: '吴振',
+						photo: '/images/business-img.png',
+						data: '这是测试消息',
+						userId: 111,
+						isImg: false
+					}, {
+						name: '吴振',
+						photo: '/images/business-img.png',
+						data: '这是测试消息',
+						userId: 111,
+						isImg: false
+					},{
+						name: '吴振',
+						photo: '/images/business-img.png',
+						data: '这是测试消息',
+						userId: 111,
+						isImg: false
+					},{
+						name: '吴振',
+						photo: '/images/business-img.png',
+						data: '这是测试消息',
+						userId: 111,
+						isImg: false
+					},{
+						name: '吴振',
+						photo: '/images/business-img.png',
+						data: '这是测试消息',
+						userId: 111,
+						isImg: false
+					}],
+					showTime: true
+				},
+				mounted() {
+					this.height = this.$refs.scrollWrap.offsetHeight
+					this.scrollHeight = window.innerHeight - this.height-56-44
+				},
+				created() {
+				},
+				methods: {
+					// 获取聊天信息
+					getData() {
+					},
+					onMessage(data) {
+						this.showTime = false
+						var time = 0
+						var timer = setInterval(() => {
+							time++
+							if(time > 60) {
+								this.showTime = true
+								clearInterval(timer)
+							}
+						}, 1000)
+						this.messageList.push(data);
+						this.$nextTick(() => {
+							this.height = this.$refs.scrollWrap.offsetHeight
+							this.scrollHeight = window.innerHeight - this.height-56-44
+							mui('.mui-scroll-wrapper').scroll().reLayout();
+							mui('.mui-scroll-wrapper').scroll().scrollTo(0,this.scrollHeight,100);
+						})
+					},
+					changeInput() {
+						this.showSend = false
+						if(!this.inputText=='') {
+							this.showSend = true
+						}
+					},
+					// 发送文本消息
+					onSendText() {
+						var obj = {
+							name: '吴振',
+							photo: '/images/business-img.png',
+							data: this.inputText,
+							userId: 111,
+							isImg: false,
+							showTime: this.showTime,
+							createTime: moment(new Date()).format("YYYY-MM-DD HH:MM"),
+						}
+						var sendStr = JSON.stringify(obj)
+						ws.send(sendStr);
+						this.inputText = ''
+						this.showSend = false
+					}
+				}
+			});
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				startY: vue.scrollHeight,
+				bounce: false,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>

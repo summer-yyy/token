@@ -1,0 +1,335 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				box-shadow: none;
+				background: #32303D;
+			}
+			.mui-title{
+				color: #fff;
+			}
+			.mui-bar a{
+				color: #fff;
+			}
+			.mui-content{
+				background: #fff;
+				padding:0!important;
+				position: absolute;
+				top: 44px;
+				bottom: 0;
+				width: 100%;
+				overflow: hidden;
+			}
+			.main-t{
+				padding: 10px 15px 5px;
+				background: #32303D;
+			}
+			.main-t .line{
+				width: 10px;
+				position: relative;
+			}
+			.main-t .line img{
+				position: absolute;
+				left: -14px;
+				top:30px;
+				width: 35px;
+				display: block;
+			}
+			.main-t>.uni-flex>.uni-flex-item{
+				background:rgba(255,255,255,1);
+				box-shadow:0px 0px 10px 0px rgba(0,0,0,0.06);
+				border-radius:11px 0px 0px 11px;
+			}
+			.main-t>.uni-flex>.uni-flex-item:last-child{
+				border-radius:0px 11px 11px 0px;
+			}
+			.main-t .con-t{
+				padding: 20px;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.main-t .con-t .uni-flex-item{
+				position: relative;
+				height: 40px;
+				line-height: 40px;
+			}
+			.main-t .con-t p{
+				font-size: 18px;
+				font-weight: blod;
+			}
+			.main-t .con-t .icon-img{
+				width: 40px;
+				height: 40px;
+				border: 1px solid #E4E4E4;
+				border-radius: 50%;
+				margin-right: 15px;
+				overflow: hidden;
+			}
+			.main-t .con-t span{
+				font-size: 15px;
+				color: #999;
+				position: absolute;
+				left: 10px;
+				bottom: -3px;
+			}
+			.main-t .con-b{
+				padding: 5px 0px 15px;
+				text-align: center;
+			}
+			.main-t .con-b h4{
+				font-size: 12px;
+				color: #12CEB3;
+				font-weight: normal;
+				margin-bottom: 10px;
+			}
+			.main-t .con-b p{
+				color: #999;
+				overflow: hidden;
+				width: 110px;
+				margin: 0 auto;
+			}
+			.main-t .con-b input{
+				width: 110px;
+				font-size: 14px;
+				color: #999;
+				height: 20px;
+				line-height: 20px;
+				border: none;
+				padding: 0;
+				margin: 0;
+				text-align: center;
+			}
+			.main-t .con-b input::-webkit-input-placeholder {
+				color: #999;
+				font-size: 14px;
+			}
+			.main-t .tips {
+				margin-top: 10px;
+			}
+			.main-t .tips p, .main-t .tips p span{
+				font-size: 12px;
+				color: #fff;
+			}
+			.main-t .tips p img{
+				width: 20px;
+				height: 20px;
+				margin: 0 5px;
+				position: relative;
+				top: 5px;
+			}
+			.mui-grid-view.mui-grid-9{
+				background: none;
+				border: none;
+				padding: 20px 25px;
+				position: absolute;
+				width: 100%;
+				bottom: 80px;
+				top: 216px;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell{
+				border-right: none;
+				height: 25%;
+				overflow: hidden;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell img{
+				width: 35px;
+				display: block;
+				margin: 0 auto;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell span{
+				font-size: 30px;
+				font-weight: bold;
+				display: flex;
+				height: 100%;
+				align-items: center;
+				justify-content: center;
+			}
+			.paybtn{
+				padding: 15px;
+				position: absolute;
+				bottom: 20px;
+				left: 0;
+				width: 100%;
+			}
+			#popover .mui-table-view{
+				padding: 0 15px;
+			}
+			#popover .mui-table-view-cell{
+				overflow: hidden;
+				line-height: 40px;
+				padding: 10px 0;
+				font-size: 14px;
+				font-weight: bold;
+			}
+			#popover .mui-table-view-cell img{
+				width: 40px;
+				height: 40px;
+				display: block;
+				float: left;
+				margin-right: 15px;
+			}
+			#popover .mui-table-view-cell:after{
+				left: 0;
+				background-color: #E4E4E4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">一键兑换</h1>
+			</header>
+			<div class="mui-content">
+				<div class="main-t">
+					<div class="uni-flex">
+						<div class="uni-flex-item">
+							<div class="con-t" @tap="changeCoinType">
+								<div class="uni-flex" style="align-items: center;">
+									<div class="icon-img">
+										<img :src=`../images/${typeName1}.png` style="width: 100%;">
+									</div>
+									<div class="uni-flex-item">
+										<p>{{typeName1}}</p>
+										<span class="mui-icon mui-icon-arrowdown"></span>
+									</div>
+								</div>
+							</div>
+							<div class="con-b">
+								<h4>存币</h4>
+								<input type="text" v-model="ethNum" disabled="true">
+								<!-- <p v-html="ethNum"></p> -->
+							</div>
+						</div>
+						<div class="line">
+							<img src="../images/icon-exchange.png" >
+						</div>
+						<div class="uni-flex-item">
+							<div class="uni-flex-item">
+								<div class="con-t" @tap="changeBuy">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="icon-img">
+											<img :src=`../images/${typeName}.png` style="width: 100%;">
+										</div>
+										<div class="uni-flex-item">
+											<p>{{typeName}}</p>
+											<span class="mui-icon mui-icon-arrowdown"></span>
+										</div>
+									</div>
+								</div>
+								<div class="con-b">
+									<h4>折合</h4>
+									<p>-</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tips">
+						<p>可用数量：<span>1.1456874796 ETH</span></p>
+						<p>手续费<img src="../images/icon-eth-s.png" >：<span>手续费</span><span>(1ETH手续费：0.1)</span></p>
+					</div>
+				</div>
+				<div class="main-b">
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" v-for="(item, index) in nums" :key="index" @tap="changeNum(item)">
+							<span v-html="item"></span>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" @tap="onDelete">
+							<span><img src="../images/icon-delete.png" ></span>
+						</li>
+					</ul>
+				</div>
+				<div class="paybtn">
+					<button type="button" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button> 
+				</div>
+			</div>
+			<div id="popover" class="mui-popover">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell" @tap="onChoice('BTC')" v-if="typeName1!='BTC'||isCoinType">
+						<img src="../images/BTC.png" >
+						<span>BTC</span>
+					</li>
+					<li class="mui-table-view-cell" @tap="onChoice('ETH')" v-if="typeName1!='ETH'||isCoinType">
+						<img src="../images/ETH.png" >
+						<span>ETH</span>
+					</li>
+					<li class="mui-table-view-cell" @tap="onChoice('EOS')" v-if="typeName1!='EOS'||isCoinType">
+						<img src="../images/EOS.png" >
+						<span>EOS</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data: {
+					ethNum: '请输入数量',
+					nums: ['1','2','3','4','5','6','7','8','9','.','0'],
+					typeName1: 'ETH',
+					typeName: 'BTC',
+					isCoinType: true
+				},
+				created() {
+				},
+				methods: {
+					// 选择要兑换的币种
+					changeCoinType() {
+						this.isCoinType = true
+						mui('.mui-popover').popover('show');
+					},
+					// 选择兑换币种
+					changeBuy() {
+						this.isCoinType = false
+						mui('.mui-popover').popover('show');
+					},
+					onChoice(type) {
+						this.typeName = type
+						mui('.mui-popover').popover('hide');
+					},
+					onChoice(type) {
+						if(this.isCoinType) {
+							this.typeName1 = type
+						} else {
+							this.typeName = type
+						}
+						mui('.mui-popover').popover('hide');
+					},
+					// 数字输入
+					changeNum(item) {
+						// 判断字符串是否存在点
+						if(item=='.' && this.ethNum.indexOf('.') > -1) return
+						if(this.ethNum == '请输入数量') {
+							this.ethNum = ''
+						}
+						this.ethNum = this.ethNum + item
+					},
+					// 删除数字
+					onDelete() {
+						if(this.ethNum =='请输入数量') return
+						this.ethNum = this.ethNum.slice(0,this.ethNum.length-1)
+						if(this.ethNum == '') {
+							this.ethNum ='请输入数量'
+						}
+					},
+					// 一键兑换
+					onSubmit() {
+						window.location.href=`put.html?typeName1=${this.typeName1}&typeName=${this.typeName}`;
+					}
+				}
+			});
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+		</script>
+	</body>
+</html>

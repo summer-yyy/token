@@ -1,0 +1,725 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<link href="../css/mui.picker.min.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+				box-shadow: none;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			
+			.main-header{
+				position: fixed;
+				top: 44px;
+				width: 100%;
+				z-index: 100;
+				background: #F5F5F5;
+			}
+			.main-header-H{
+				background: #12CEB3;
+				padding: 10px 15px 30px;
+				margin-bottom: 10px;
+			}
+			.main-header .date .date-week span{
+				font-size: 12px;
+				color: rgba(255,255,255,0.8);
+			}
+			.main-header .date .date-week .border{
+				margin: 0 4px;
+				padding: 0 8px 0 6px;
+				position: relative;
+			}
+			.date-week .border:before,.date-week .border:after{
+				position: absolute;
+				display: block;
+				content: '';
+				width: 1px;
+				height: 10px;
+				background: rgba(255,255,255,0.8);
+				top: 2px;
+			}
+			.main-header .date .date-week .border::before{
+				left: 0;
+			}
+			.main-header .date .date-week .border:after{
+				right: 0;
+			}
+			.main-header .date .date-week .active{
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.main-header .date .date-time span{
+				font-size: 12px;
+				color: rgba(255,255,255,0.8);
+			}
+			.main-header .date .date-time .mui-icon{
+				position: relative;
+				top: -2px;
+			}
+			.main-header .dataInfo{
+				text-align: center;
+				margin-top: 35px;
+			}
+			.main-header .dataInfo h5{
+				font-size: 14px;
+				color: rgba(255,255,255,0.8);
+				font-weight: bold;
+			}
+			.main-header .dataInfo span{
+				font-size: 12px;
+				color: rgba(255,255,255,0.8);
+			}
+			
+			.main-header .uni-tab{
+				background: #fff;
+				padding: 0 15px;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.main-header .uni-tab span{
+				display: block;
+				text-align: center;
+				font-size: 14px;
+				color: #666;
+				padding: 15px 0;
+				margin-right: 30px;
+				font-size: 14px;
+			}
+			.main-header .uni-tab span.active{
+				color: #12CEB3;
+				font-weight: bold;
+			}
+			.mui-content{
+				position: fixed;
+				top: 238px;
+				bottom: 0;
+				width: 100%;
+				padding: 0!important;
+			}
+			.content-con{
+				position: relative;
+				height: 100%;
+			}
+			.mui-content .uni-tab{
+				background: #fff;
+				border-bottom: 1px solid #E4E4E4;
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 100%;
+				z-index: 1000;
+			}
+			.mui-content .uni-tab .uni-flex-item{
+				padding: 10px;
+				text-align: center;
+			}
+			.mui-content .uni-tab .active{
+				background: #EEEEEE;
+			}
+			.mui-content .uni-tab .active span{
+				color: #999;
+			}
+			.mui-content .uni-tab span{
+				font-size: 14px;
+				color: #666;
+			}
+			.mui-content .uni-tab .mui-icon{
+				position: absolute;
+				padding: 0;
+				left: 50%;
+				margin-left: 25px;
+				top:13px;
+				color: #BFC2C7;
+			}
+			.mui-content .uni-tab .menu{
+				position: absolute;
+				left: 0;
+				top: 43px;
+				width: 100%;
+				z-index: 1000;
+				list-style: none;
+				background: #fff;
+				box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.1);
+				border-radius: 0 0 4px 4px;
+				padding: 0 15px;
+				text-align: center;
+				overflow: hidden;
+				transition: all 0.3s;
+			}
+			.mui-content .uni-tab .menu li span{
+				display: block;
+				border-bottom: 1px solid #eee;
+				padding: 15px 0;
+				font-size: 14px;
+				color: #666;
+			}
+			.mui-content .uni-tab .menu li:last-child span{
+				border: none;
+			}
+			.uni-tab-con {
+				position: relative;
+				height: 100%;
+			}
+			.uni-tab-con .mui-scroll-wrapper{
+				padding-top: 40px;
+			}
+			.uni-tab-con .order-con{
+				background: #fff;
+				padding: 0 15px 10px;
+				margin-bottom: 10px;
+			}
+			.uni-tab-con .order-con span{
+				font-size: 12px;
+				color: #666;
+			}
+			.uni-tab-con .order-con .num{
+				color: #333;
+				font-size: 14px;
+				font-weight: bold;
+			}
+			.uni-tab-con .order-con .details{
+				padding: 2px 10px;
+				background: #12CEB3;
+				font-size: 12px;
+				color: #fff;
+				border-radius: 15px;
+				margin-top: 25px;
+			}
+			.uni-tab-con .order-con .details-1{
+				background: #eee;
+				color: #999;
+				margin-right: 10px;
+			}
+			.uni-tab-con .order-con-h{
+				padding: 10px 0;
+				border-bottom: 1px solid #eee;
+			}
+			.uni-tab-con .order-con-h .contact img{
+				width: 15px;
+				position: relative;
+				top: 3px;
+			}
+			.uni-tab-con .order-con-h .contact span{
+				color: #12CEB3;
+			}
+			.uni-tab-con .order-con-m{
+				padding: 10px 0;
+			}
+			/* 弹窗 */
+			.mui-popover{
+				padding: 20px 15px;
+			}
+			.popover-header h4{
+				font-size: 17px;
+				font-weight: bold;
+				text-align: center;
+				margin-bottom: 10px;
+			}
+			.popover-content p{
+				font-size: 13px;
+				text-align: center;
+			}
+			.popover-footer{
+				margin-top: 25px;
+			}
+			.popover-footer .uni-flex{
+				margin: 0 -10px;
+			}
+			.popover-footer .uni-flex .uni-flex-item{
+				padding: 0 10px;
+			}
+			.popover-footer button{
+				height: 35px;
+				line-height: 24px;
+				border-radius:22px;
+				font-size: 15px;
+				color: #fff;
+				width: 100%;
+				border: none;
+			}
+			.popover-footer .cancel-btn{
+				background:rgba(191,194,199,1);
+				box-shadow:0px 5px 6px 0px rgba(0,0,0,0.11);
+			}
+			.popover-footer .confirm-btn{
+				background:rgba(18,206,179,1);
+				box-shadow:0px 5px 6px 0px rgba(18,206,179,0.2);
+			}
+			.receive-con .item {
+				background: #fff;
+				padding: 0 15px;
+				margin-bottom: 10px;
+			}
+			.receive-con .item h2{
+				font-size: 14px;
+				padding: 10px 0;
+				border-bottom: 1px solid #E4E4E4;
+				font-weight: bold;
+			}
+			.receive-con .uni-flex{
+				padding: 10px 0;
+				align-items: center;
+			}
+			.receive-con .uni-flex .img-box{
+				width: 130px;
+				height: 130px;
+				background: #EEEEEE;
+				text-align: center;
+				line-height: 130px;
+			}
+			.receive-con .uni-flex .img-box p{
+				color: #CCCCCC;
+			}
+			.receive-con .uni-flex img{
+				width: 130px;
+				height: 130px;
+				display: block;
+			}
+			.receive-con .uni-flex p{
+				font-size: 14px;
+			}
+			.receive-con .uni-flex-item{
+				text-align: right;
+			}
+			.receive-con .uni-flex-item span{
+				background: #12CEB3;
+				color: #fff;
+				padding: 5px 10px;
+				border-radius: 15px;
+				font-size: 12px;
+			}
+			.currency-con{
+				background: #fff;
+				height: 100%;
+				padding: 0 15px;
+			}
+			.currency-con .title{
+				padding: 15px 0;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.currency-con .title h2{
+				font-size: 14px;
+			}
+			.currency-con .title span{
+				font-size: 12px;
+			}
+			.currency-con .uni-form-item{
+				align-items: center;
+				width: 150px;
+				margin: 38px auto 0;
+				border-bottom: 1px solid #E4E4E4;
+				position: relative;
+			}
+			.currency-con .uni-form-item span{
+				font-size: 20px;
+				font-weight: bold;
+			}
+			.currency-con .uni-form-item .uni-input{
+				font-size: 30px;
+				font-weight: bold;
+				height: 50px;
+				text-align: center;
+				background: none;
+				position: relative;
+				z-index: 100;
+			}
+			.currency-con .uni-form-item img{
+				width: 15px;
+				height: 15px;
+				position: absolute;
+				right: 0;
+				top: 18px;
+				z-index: 1;
+			}
+			.mui-pull-top-pocket{
+				top: 60px!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title uni-flex">
+					<span class="active uni-flex-item">用户买入</span>
+					<span class="uni-flex-item border-r">用户卖出</span>
+				</h1>
+				<span class="header-r">信息</span>
+			</header>
+			<div class="main-header">
+				<div class="main-header-H">
+					<div class="date">
+						<div class="uni-flex">
+							<div class="uni-flex-item">
+								<div class="date-week">
+									<span :class="[index==weekIndex?'active':'', index==1?'border':'']" v-for="(item, index) in dateWeeks" :key="index" @tap="weekIndex=index">{{item}}</span>
+								</div>
+							</div>
+							<div class="date-time" @tap="changeDate">
+								<span class="mui-icon mui-icon-arrowup"></span>
+								<span>{{date.year}}年</span>
+								<span class="mui-icon mui-icon-arrowup"></span>
+								<span>{{date.month}}月</span>
+							</div>
+						</div>
+					</div>
+					<div class="dataInfo">
+						<div class="uni-flex">
+							<div class="uni-flex-item">
+								<h5>123</h5>
+								<span>交易笔数</span>
+							</div>
+							<div class="uni-flex-item">
+								<h5>51419.547</h5>
+								<span>交易USDT数</span>
+							</div>
+							<div class="uni-flex-item">
+								<h5>10000.00</h5>
+								<span>交易金额</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="uni-tab uni-flex">
+					<span v-for="(tab,index) in tabBars" :key="index"  :class="[tabIndex==index ? 'active' : '']" @tap="onChangeType(index)">{{tab}}</span>
+				</div>
+			</div>
+			<div class="mui-content">
+				<!-- 订单管理 -->
+				<div class="content-con" v-show="tabIndex==0">
+					<div class="uni-tab uni-flex">
+						<div class="uni-flex-item active">
+							<span>新订单</span>
+						</div>
+						<div class="uni-flex-item" style="position: relative;" @tap="showMenu=!showMenu">
+							<span>{{stateIndex==0?'已处理':stateIndex==1?'已同意':stateIndex==2?'已拒绝':stateIndex==3?'已取消':''}}</span>
+							<span class="mui-icon mui-icon-arrowdown"></span>
+							<ul class="menu" :style="{height:showMenu? '160px' : '0px'}">
+								<li v-for="(item, index) in stateMenu" :key="index" @tap.stop="onChangeState(index)">
+									<span v-if="stateIndex!=index">{{item}}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="uni-tab-con">
+						<div class="mui-scroll-wrapper" id="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="order-con" v-for="(item, index) in 10" :key="index">
+									<div class="order-con-h">
+										<div class="uni-flex" style="align-items: center;">
+											<div class="uni-flex-item">
+												<span>订单号：买币 201902123</span>
+											</div>
+											<div class="contact">
+												<img src="../images/icon-contact.png" >
+												<span>联系买家</span>
+											</div>
+										</div>
+									</div>
+									<div class="order-con-m">
+										<div class="uni-flex">
+											<div class="uni-flex-item">
+												<span>金额：</span>
+												<span class="num">100CNY</span>
+											</div>
+											<div class="uni-flex-item">
+												<span>数量：</span>
+												<span class="num">10USDT</span>
+											</div>
+										</div>
+									</div>
+									<div class="order-con-b">
+										<div class="uni-flex" style="align-items: center;">
+											<div class="uni-flex-item">
+												<div class="uni-text">
+													<span>用户昵称/ID：熊猫用户 10423</span>
+												</div>
+												<div class="uni-text">
+													<span>支付方式：支付宝</span>
+												</div>
+												<div class="uni-text">
+													<span>时间：2019-02-07 10:30:21</span>
+												</div>
+											</div>
+											<span class="details details-1" v-if="type=='0'" @tap="onReject">拒绝</span>
+											<span class="details" v-if="type=='0'" @tap="onAgree">同意</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 收款方式管理 -->
+				<div class="receive-con" v-show="tabIndex==1">
+					<div class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<div class="item">
+								<h2>支付宝收款二维码</h2>
+								<div class="uni-flex">
+									<div class="img-box">
+										<!-- <img src="../images/ewm-img.png" > -->
+										<p>暂无收款二维码</p>
+									</div>
+									<div class="uni-flex-item">
+										<span>上传</span>
+									</div>
+								</div>
+								<div class="uni-flex" style="border-top:1px solid #E4E4E4">
+									<div class="input-group">
+										<div class="uni-form-item">
+											<label>姓名：</label>
+											<input class="uni-input" type="text"/>
+										</div>
+										<div class="uni-form-item">
+											<label>账号：</label>
+											<input class="uni-input" type="text"/>
+										</div>
+									</div>
+									<div class="uni-flex-item">
+										<span>提交</span>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<h2>微信收款二维码</h2>
+								<div class="uni-flex">
+									<div class="img-box">
+										<img src="../images/ewm-img.png" >
+									</div>
+									<div class="uni-flex-item">
+										<span>重新上传</span>
+									</div>
+								</div>
+								<div class="uni-flex" style="border-top:1px solid #E4E4E4">
+									<div class="input-group">
+										<div class="uni-form-item">
+											<label>姓名：</label>
+											<input class="uni-input" type="text"/>
+										</div>
+										<div class="uni-form-item">
+											<label>账号：</label>
+											<input class="uni-input" type="text"/>
+										</div>
+									</div>
+									<div class="uni-flex-item">
+										<span>修改</span>
+									</div>
+								</div>
+							</div>
+							<div class="item">
+								<h2>银行卡</h2>
+								<div class="uni-flex">
+									<div class="info">
+										<p>姓名：张三</p>
+										<p>卡号：45668441648416814688</p>
+									</div>
+									<div class="uni-flex-item">
+										<span @tap="changeBank">修改</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 货币管理 -->
+				<div class="currency-con" v-show="tabIndex==2">
+					<div class="title">
+						<div class="uni-flex" style="align-items: center;">
+							<div class="uni-flex-item">
+								<h2>USDT价格/个</h2>
+							</div>
+							<span>人民币</span>
+						</div>
+					</div>
+					<div class="uni-form-item">
+						<span>¥</span>
+						<input type="number" v-model="moneyNum" class="uni-input"/>
+						<img src="../images/icon-edit.png" >
+					</div>
+				</div>
+			</div>
+			<!-- 同意订单，取消订单 -->
+			<div id="popover" class="mui-popover">
+				<div class="popover-header">
+					<h4>{{popoverOption.title}}</h4>
+				</div>
+				<div class="popover-content">
+					<div class="popup-cancel" v-if="popoverOption.type==1">
+						<p>订单确认后将会从您的TokenPanda钱包扣除相应货币，请您确认是否成功收到汇款，避免损失！ </p>
+						<p>您是否确认这笔订单？</p>
+					</div>
+					<div class="popup-cancel" v-else>
+						<p>恶意拒绝用户订单会严重影响商家信誉，若存在交易问题您可以通过“联系买家”发起对话。 </p>
+						<p>您是否确认拒绝这笔订单？</p>
+					</div>
+				</div>
+				<div class="popover-footer">
+					<div class="uni-flex">
+						<div class="uni-flex-item">
+							<button type="button" class="mui-btn cancel-btn" @tap="hidePopover">{{popoverOption.cancelText}}</button>
+						</div>
+						<div class="uni-flex-item">
+							<button type="button" class="mui-btn confirm-btn" @tap="onConfirm">{{popoverOption.confirmText}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/fetch.js"></script>
+		<script type="text/javascript">
+			var dtPicker = new mui.DtPicker({
+				type: "month"
+			})
+			var year = new Date().getFullYear()
+			var month = new Date().getMonth()
+			if(Number(month) + 1 < 10) {
+				month = '0' + String(Number(month) + 1);
+			}
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					weekIndex: 0,
+					dateWeeks: ['今日', '本周', '本月'],
+					date: {
+						year:  year,
+						month: month,
+					},
+					type: 0, // 用户买入, 1用户卖出
+					tabIndex: 0,
+					tabBars: ['订单管理', '收款方式管理', '货币管理'],
+					showMenu: false,
+					stateIndex: 0,
+					stateMenu: ['已处理', '已同意', '已拒绝', '已取消'],
+					popoverOption: {
+						title: '同意订单',
+						content: '',
+						cancelText: '取消',
+						confirmText: '确认',
+						type: 1
+					},
+					// 货币管理
+					moneyNum: '6.68'
+				},
+				created() {
+					// this.getData()
+				},
+				methods: {
+					// 初始化数据
+					initData() {
+						mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+					},
+					// 获取数据
+					getData() {
+					},
+					// 切换日期
+					changeDate() {
+						dtPicker.show((item) => {
+							this.date = {
+								year: item.y.text,
+								month: item.m.text
+							}
+						});
+					},
+					// 选择列表类型
+					onChangeType(index) {
+						this.tabIndex = index
+					},
+					onChangeState(index) {
+						this.stateIndex = index
+						this.showMenu = false
+					},
+					// 拒绝
+					onReject() {
+						mui('.mui-popover').popover('show');
+						this.popoverOption = {
+							title: '拒绝订单',
+							content: '',
+							cancelText: '我再想想',
+							confirmText: '确认拒绝',
+							type: 2
+						}
+					},
+					// 同意
+					onAgree() {
+						mui('.mui-popover').popover('show');
+						this.popoverOption = {
+							title: '同意订单',
+							content: '',
+							cancelText: '取消',
+							confirmText: '确认',
+							type: 1
+						}
+					},
+					// 确定
+					onConfirm() {
+						mui('.mui-popover').popover('hide');
+						switch (this.popoverOption.type){
+							case 1: // 操作成功按钮
+								this.isSuccess = true
+								break;
+							case 2: // 操作取消按钮
+								this.isCancel = true
+								break;
+							default:
+								break;
+						}
+					},
+					// 关闭模态框
+					hidePopover() {
+						mui('.mui-popover').popover('hide');
+					},
+					// 修改银行卡信息
+					changeBank() {
+						window.location.href = "../otc/addCard.html"
+					}
+				}
+			});
+			mui.init({
+				pullRefresh: {
+					container: '#mui-scroll-wrapper',
+					down: {
+						auto: true,//可选,默认false.首次加载自动上拉刷新一次
+						contentrefresh: '正在加载中...',
+						callback: pulldownRefresh
+					},
+					up: {
+						auto:true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			// 上拉加载
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh();
+				}, 2000);
+			}
+			// 下拉刷新
+			function pulldownRefresh() {
+				vue.initData();
+			}
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				bounce: true,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>

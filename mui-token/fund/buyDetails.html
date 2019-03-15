@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.mui-bar{
+				background-color: #fff;
+			}
+			.mui-title{
+				color: #32303D;
+			}
+			.mui-bar a{
+				color: #32303D;
+			}
+			.mui-content{
+				padding:0!important;
+				position: absolute;
+				top: 44px;
+				bottom: 0;
+				width: 100%;
+			}
+			.content-item{
+				background: #fff;
+				margin-bottom: 10px;
+			}
+			
+			.content-item .uni-title{
+				padding: 10px 15px;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.content-item .uni-title h2{
+				font-size: 14px;
+				font-weight: bold;
+				margin-right: 10px;
+				color: #333;
+			}
+			
+			.content-item .detailInfo{
+				padding: 0 15px;
+			}
+			.content-item .detailInfo .uni-flex{
+				padding: 15px 0;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.content-item .detailInfo .uni-flex:last-child{
+				border:none;
+			}
+			.content-item .detailInfo .uni-flex h4{
+				font-size: 14px;
+				font-weight: normal;
+			}
+			.content-item .detailInfo .uni-flex span{
+				color: #999;
+				font-size: 14px;
+			}
+			
+			.content-item .buyInfo{
+				padding: 0 15px;
+			}
+			.content-item .buyInfo .uni-tit{
+				font-size: 12px;
+				color: #999;
+				text-align: center;
+				padding: 10px 0;
+				border-bottom: 1px solid #E4E4E4;
+			}
+			.content-item .buyInfo>.uni-flex{
+				padding: 10px 0;
+			}
+			.content-item .buyInfo .info{
+				position: relative;
+				overflow: hidden;
+				margin: 0;
+			}
+			.content-item .buyInfo .info:before{
+				content: '';
+				display: block;
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				background: #12CEB3;
+				position: absolute;
+				left: 0;
+				top: 21.5px;
+				z-index: 11;
+			}
+			.content-item .buyInfo .info:after{
+				content: '';
+				display: block;
+				width: 100%;
+				height: 2.5px;
+				background: #9CF0E4;
+				position: absolute;
+				left: 10px;
+				top: 26px;
+				z-index: 10;
+			}
+			.content-item .buyInfo .info.uni-flex-item:before{
+				right: 0;
+				left: inherit;
+			}
+			.content-item .buyInfo .info.uni-flex-item:after{
+				right: 0;
+				left: inherit;
+			}
+			.content-item .buyInfo .info:first-child{
+				padding-right: 20px;
+			}
+			.content-item .buyInfo .info h4{
+				font-size: 14px;
+				color: #32303D;
+				margin-bottom: 23px;
+				font-weight: normal;
+			}
+			.content-item .buyInfo .info span{
+				font-size: 14px;
+				color: #999;
+			}
+			.content-item .buyInfo .text-tips{
+				font-size: 12px;
+				color: #999;
+				padding: 10px 0;
+				border-top: 1px solid #eee;
+			}
+			
+			.payBtn{
+				padding: 20px 15px 30px;
+				background: #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<header id="header" class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">购买详情</h1>
+			</header>
+			<div class="mui-content">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div id="capture">
+							<div class="content-item">
+								<div class="uni-title">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h2>交易状态</h2>
+										</div>
+									</div>
+								</div>
+								<div class="detailInfo">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h4>申购状态</h4>
+										</div>
+										<span>{{dataInfo.buyStatus==1?'开放申购': '关闭申购'}}</span>
+									</div>
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h4>赎回状态</h4>
+										</div>
+										<span>{{dataInfo.saleStatus==1?'开放申赎': '关闭申赎'}}</span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="content-item">
+								<div class="uni-title">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h2>购买金额</h2>
+										</div>
+									</div>
+								</div>
+								<div class="detailInfo">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h4>申购起始额度</h4>
+										</div>
+										<span>{{dataInfo.minBuy}}{{dataInfo.enName}}</span>
+									</div>
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h4>日累计申购限额</h4>
+										</div>
+										<span>{{dataInfo.dailyBuy}}{{dataInfo.enName}}</span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="content-item">
+								<div class="uni-title">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h2>交易日确认</h2>
+										</div>
+									</div>
+								</div>
+								<div class="buyInfo">
+									<div class="uni-tit">申购确认日</div>
+									<div class="uni-flex" style="padding: 20upx 0;border-bottom: 1px solid #E4E4E4;">
+										<div class="info">
+											<h4>申购</h4>
+											<span>T日</span>
+										</div>
+										<div class="info">
+											<h4>确认份额</h4>
+											<span>T+1日</span>
+										</div>
+										<div class="info uni-flex-item" style="text-align: right;">
+											<h4>查看盈亏</h4>
+											<span>T+1日数据更新后</span>
+										</div>
+									</div>
+									<div class="uni-tit">赎回确认日</div>
+									<div class="uni-flex" style="padding: 20upx 0;">
+										<div class="info">
+											<h4>赎回</h4>
+											<span>T日</span>
+										</div>
+										<div class="info">
+											<h4>确认份额</h4>
+											<span>T+1日</span>
+										</div>
+										<div class="info uni-flex-item" style="text-align: right;">
+											<h4>到账钱包</h4>
+											<span>T+3日</span>
+										</div>
+									</div>
+									<div class="text-tips">T日为工作日，当个工作日15:00后的交易将视作下个工作日的交易发起，相应的确认时间顺延。</div>
+								</div>
+							</div>
+							
+							<div class="content-item">
+								<div class="uni-title">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h2>申赎费用</h2>
+										</div>
+									</div>
+								</div>
+								<div class="detailInfo">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h4>申赎费用</h4>
+										</div>
+										<span>限时免费</span>
+										<span style="text-decoration: line-through;">{{dataInfo.dailyBuy}}{{dataInfo.enName}}</span>
+									</div>
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<h4>赎回费用</h4>
+										</div>
+										<span>{{dataInfo.dailyBuy}}{{dataInfo.enName}}/笔</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="payBtn">
+							<button type="button" class="mui-btn mui-btn-buy"  @click="changeRoute('payment')">立即购买</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/fetch.js"></script>
+		<script src="../js/common.js"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data: {
+					dataInfo: {}
+				},
+				created() {
+					// 获取id
+					this.fundId = getUrlParam('fundId');
+					this.getData();
+				},
+				methods: {
+					// 获取信息
+					getData() {
+						fetch('/fund/fundStatus/' + this.fundId, {
+						}, 'POST').then(res => {
+							this.dataInfo = res.obj
+						})
+					},
+					// 页面跳转
+					changeRoute(name) {
+						window.location.href= name + ".html?fundId=" + this.fundId + '&type='+ this.dataInfo.enName
+					}
+				}
+			});
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll({
+				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				bounce: true,
+				indicators: false, //是否显示滚动条
+			});
+		</script>
+	</body>
+</html>
