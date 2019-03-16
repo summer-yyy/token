@@ -1,7 +1,7 @@
 let http  = require('http')
 let fs  = require('fs')
 let path = require('path')
-path = path.resolve(__dirname, '..')
+// path = path.resolve(__dirname, '..')
 
 //哪些url请求需要代理（代理配置）
 let conifg = {
@@ -31,7 +31,8 @@ let app = http.createServer ( function(request,response){
     }
 }
   if(request.url!=='/favicon.ico'){//清除第二次访问//正常的读取文件和其他资源加载
-      fs.readFile( path + ( url==='/' ? '/index.html':url ), function( err, data ){
+    console.log(request.url)
+      fs.readFile(path.resolve(__dirname, '../' + ( url==='/' ? '/index.html':url.split("?")[0] )), function( err, data ){
           if( err ){
               console.log( 'file-err',err )
           }else{

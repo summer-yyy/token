@@ -281,9 +281,9 @@
 										<div class="uni-text">昨日收益</div>
 										<h4>{{dataInfo.yesterday?dataInfo.yesterday:0}}%</h4>
 									</div>
-									<div class="moreImg">
+									<!-- <div class="moreImg">
 										<img src="../images/funt-more.png" >
-									</div>
+									</div> -->
 								</div>
 								<div class="tags">
 									<span>{{dataInfo.enName}}</span>
@@ -599,7 +599,7 @@
 					},
 					// 页面跳转
 					changeRoute(name) {
-						window.location.href= name + ".html?fundId=" + this.fundId + '&type='+ this.dataInfo.enName
+						window.location.href= name + ".html?fundId=" + this.fundId + '&type='+ this.dataInfo.enName+ '&fundName='+ this.dataInfo.fundName
 					}
 				}
 			});

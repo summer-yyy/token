@@ -236,13 +236,13 @@
 									<div class="uni-flex-item">
 										<h4>交易金额</h4>
 										<h5>
-											<span>100</span>
+											<span>{{orderDetails.money}}</span>
 											<span class="unit">CNY</span>
 										</h5>
 									</div>
 									<div class="uni-info">
-										<div class="uni-text">数量: 14.577259 USDT</div>
-										<div class="uni-text">单价: 6.86 CNY/USDT</div>
+										<div class="uni-text">数量: {{orderDetails.amount}} USDT</div>
+										<div class="uni-text">单价: {{orderDetails.unitPrice}} CNY/USDT</div>
 									</div>
 								</div>
 							</div>
@@ -260,18 +260,18 @@
 										</div>
 									</div>
 								</div>
-								<div class="main-con-mid">本平台暂不支持自动扣款，请使用本人(实名认证)的支付宝账号向一下账号自行转账。</div>
+								<div class="main-con-mid">本平台暂不支持自动扣款，请使用本人(实名认证)的支付宝账号向以下账号自行转账。</div>
 								<div class="main-con-bot">
 									<div class="pay-img">
-										<img src="../images/icon-zfb.png" >
+										<img :src="payTypeIcon" >
 									</div>
 									<div class="uni-flex" style="align-items: center;">
 										<div class="ewm-img">
-											<img src="../images/ewm-img.png" >
+											<img :src="orderDetails.qrCode" >
 										</div>
 										<div class="uni-flex-item">
-											<h4>姓名: 收款方姓名</h4>
-											<h4>账号: 支付宝扫码</h4>
+											<h4>姓名: {{orderDetails.userName}}</h4>
+											<h4>账号: {{orderDetails.userNumber}}</h4>
 											<h4>打开支付宝扫一扫</h4>
 											<div class="uni-tips">您需保存左侧二维码，使用支付宝完成支付</div>
 										</div>
@@ -299,7 +299,7 @@
 								<button type="cancel" @click="onCancel">取消订单</button>
 							</div>
 							<div class="cancelTxt" v-else>
-								<div class="uni-text">订单已取消，您可以 <span @click="changeRoute('home')">重新下单</span></div>
+								<div class="uni-text">订单已取消，您可以 <span @click="changeRoute('index')">重新下单</span></div>
 							</div>				
 						</div>
 					</div>
@@ -330,12 +330,14 @@
 		</div>
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
+		<script src="../js/fetch.js"></script>
 		<script src="../js/common.js"></script>
+		<script src="../js/api.js"></script>
 		<script type="text/javascript">
 			new Vue({
 				el: '#app',
 				data: {
-					timeStr: '00:30:00',
+					timeStr: '00:00:00',
 					isSuccess: false,  // 是否交易成功
 					isCancel: false, // 是否已取消
 					isReceived: true, // 是否已收到币
@@ -345,15 +347,44 @@
 						cancelText: '取消',
 						confirmText: '确认',
 						type: 1
+					},
+					orderDetails: {},
+					payTypes: [
+						{
+							icon: '../images/icon-zfb.png',
+							type: 1,
+						},
+						{
+							icon: '../images/icon-yh.png',
+							type: 3,
+						},
+						{
+							icon: '../images/icon-wx.png',
+							type: 2,
+						}
+					],
+				},
+				computed: {
+					payTypeIcon () {
+						let payType = this.payTypes.find(item => {
+							return item.type == this.orderDetails.payWay;
+						});
+						if (payType) {
+							return payType.icon;
+						} else {
+							return this.payTypes[1].icon;
+						}
 					}
 				},
 				created() {
-					this.getData();
+					this.id = getUrlParam("id");
+					console.log(this.id);
+					this.getDetail(this.id);
 				},
 				methods: {
 					// 获取数据
-					getData() {
-						var timeNum = 60*30
+					getData(timeNum) {
+						this.timeStr = formatTime(timeNum);
 						this.timer = setInterval(() => {
 							if (timeNum > 0) {
 								timeNum = timeNum -1
@@ -367,6 +398,15 @@
 								clearInterval(this.timer)
 							}
 						}, 1000)
+					},
+					// 获取详情
+					getDetail(id) {
+						fetch(orderDetails + "/" + id, {
+						}, 'POST').then(res => {
+							this.orderDetails = res.obj;
+							this.getData(this.orderDetails.countDown / 1000);
+						})
+			
 					},
 					// 付款成功
 					onSuccess() {
@@ -396,10 +436,24 @@
 						mui('.mui-popover').popover('hide');
 						switch (this.popoverOption.type){
 							case 1: // 操作成功按钮
-								this.isSuccess = true
+								fetch(confirmPayment + "/" + this.id, {
+								}, 'POST').then(res => {
+									if(res.code==1) {
+										this.isSuccess = true;
+									} else {
+										mui.toast('操作失败！')
+									}		
+								})
 								break;
 							case 2: // 操作取消按钮
-								this.isCancel = true
+								fetch(cancelTrade + "/" + this.id, {
+								}, 'POST').then(res => {
+									if(res.code==1) {
+										this.isCancel = true;
+									} else {
+										mui.toast('操作失败！')
+									}		
+								})
 								break;
 							default:
 								break;
@@ -411,7 +465,7 @@
 					},
 					// 路由跳转
 					changeRoute(name) {
-						window.location.href= name + ".html"
+						window.location.href= "/otc/" + name + ".html"
 					}
 				}
 			});

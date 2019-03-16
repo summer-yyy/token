@@ -402,6 +402,12 @@
 					chocieShop(item, index) {
 						this.shopIndex = index
 						this.businessInfo = item;
+						this.dealInfo={
+							amount: '',
+							money: ''
+						}
+						this.isDisabled = true
+						this.buyNum = ''
 					},
 					// 选择购买方式
 					onChangeBuy(index) {
@@ -451,13 +457,12 @@
 							type: 1, // 1买币,2是卖币
 							userId: this.userId
 						}, 'POST').then(res => {
-// 							var result = Object.assign({},res.obj, {
-// 								amount: this.dealInfo.amount,
-// 								this.dealInfo.money
-// 							})
-// 							localStorage.setItem('otcPayInfo', JSON.stringify(res))
-							// window.location.href="payment.html"
-							console.log(res);
+								if(res.code==1) {
+									const id = res.obj.id;
+									window.location.href="/otc/payment.html?id="+id
+								} else {
+									mui.toast('操作失败！')
+								}							
 						})
 					},
 					// 页面跳转

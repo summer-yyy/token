@@ -138,7 +138,7 @@
 						<div class="uni-flex" style="flex-direction:column">
 							<div class="mui-content-h">
 								<div class="uni-title">
-									<span>诺安优化收益债券</span>
+									<span>{{fundName}}</span>
 								</div>
 							</div>
 							<div class="mui-content-m">
@@ -154,7 +154,7 @@
 									<div class="uni-form-item">
 										<input class="uni-input" v-model="amount" type="number" @input="changeBuyNum" :placeholder="placeholder" />
 									</div>
-									<div class="uni-tips">买入0费率，预计02月01日(星期一)确认份额，开始计算收益</div>
+									<div class="uni-tips">买入0费率，预计{{dateStr}}确认份额，开始计算收益</div>
 								</div>
 								<div class="content-item">
 									<div class="uni-title">
@@ -217,20 +217,29 @@
 		</div>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/vue.min.js"></script>
+		<script src="../js/api.js"></script>
 		<script src="../js/fetch.js"></script>
 		<script src="../js/common.js"></script>
+		<script src="../js/moment.min.js"></script>
 		<script type="text/javascript">
 			new Vue({
 				el: '#app',
 				data: {
 					amount: '',
 					isCheck: true,
-					placeholder: ''
+					fundName: "",
+					placeholder: '',
+					dateStr: '',
+					weekdays: ["星期日","星期一","星期二","星期三","星期四","星期五","星期六",]
 				},
 				created() {
 					// 获取id
 					this.fundId = getUrlParam('fundId');
+					this.userId = getUrlParam('userId');
+					this.fundName = getUrlParam('fundName');
 					this.type = getUrlParam('type');
+					const tomorrow = moment().add(1,'days');
+					this.dateStr = tomorrow.format("MM-DD") + `(${this.weekdays[tomorrow.weekday()]})` ;
 					switch (this.type){
 						case 'ETH':
 							this.placeholder = '最低买入1.00 ETH'
@@ -255,15 +264,14 @@
 					onSubmit() {
 						if(!this.isValidate()) return
 						if(this.isCheck) {
-							fetch('/fund/buyFund', {
-								amount: 10.5,
+							fetch(buyFund, {
+								amount: this.amount,
 								fundId: this.fundId,
-								userId: 0
+								userId: this.userId
 							}, 'POST').then(res => {
 								console.log(res);
 								if(res.code==1) {
 									mui('.mui-popover').popover('show');
-									this.dataInfo = res.obj
 								} else {
 									mui.toast('操作失败！')
 								}
@@ -289,7 +297,6 @@
 						}
 						return true
 					},
-					
 					// 关闭模态框
 					onClose() {
 						mui('.mui-popover').popover('hide');

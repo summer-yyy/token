@@ -1,3 +1,4 @@
+
 /**
  * 数字格式化金钱展示
  * @param {*} num 串数字
@@ -56,6 +57,16 @@ function formatTime(secondNum) {
 
 // 解析url地址参数
 function getUrlParam(name) {
+		if(!name) {
+			var data = decodeURI(window.location.search.substr(1)).split("&");
+			var obj = {};
+			data.forEach(item => {
+				let key = item.split("=")[0];
+				let val = item.split("=")[1];
+				obj[key] = val;
+			});
+			return obj;
+		}
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if (r != null) return decodeURI(r[2]);

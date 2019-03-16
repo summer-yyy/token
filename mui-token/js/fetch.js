@@ -5,7 +5,9 @@
  * @LastEditTime: 2019-02-21 13:50:35
  * @Description: fetch.js网络请求数据
  */
-var baseUrl = 'http://47.244.9.84:8080/api/v1'
+// var baseUrl = 'http://47.244.9.84:8080/api/v1'
+var baseUrl = '/api/v1'
+
 /**
  * @description:
  * @param {String} url - 请求地址

@@ -230,23 +230,28 @@
 						this.getData();
 					},
 					// 获取数据
-					getData() {
-						fetch('/fund/fundIndex', {
-							orderId: 1,
+					getData(data = {
+							orderId: 1, //1是人气，2是收益率，0全部
 							pageNum: this.pageNum,
-							pageSize: this.pageNum
-						}, 'POST').then(res => {
+							pageSize: this.pageSize
+						}) {
+						fetch('/fund/fundIndex', data, 'POST').then(res => {
 							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
 							this.dataList = res.obj.list
 						})
 					},
 					// 切换类别
 					changeTab(index) {
-						this.tabIndex = index
+						this.tabIndex = index;
+						this.getData ({
+							orderId: this.tabIndex + 1, //1是人气，2是收益率，0全部
+							pageNum: 1,
+							pageSize: 10
+						});
 					},
 					// 页面跳转
 					changeRoute(name, item) {
-						console.log(111)
+						console.log("details ",item.fundId)
 						window.location.href= name + ".html?fundId=" + item.fundId
 					}
 				}
