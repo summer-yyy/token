@@ -227,7 +227,7 @@
 					<span class="active uni-flex-item">一键买币</span>
 					<span class="uni-flex-item border-r" @tap="changeRoute('sellCoin')">一键卖币</span>
 				</h1>
-				<span @tap="changeRoute('order')" class="header-r">我的订单</span>
+				<span @tap="changeRoute('order',{type: 1})" class="header-r">我的订单</span>
 			</header>
 			<div class="mui-content">
 				<div class="mui-scroll-wrapper">
@@ -338,6 +338,7 @@
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/common.js"></script>
+		<script src="../js/api.js"></script>
 		<script src="../js/fetch.js"></script>
 		<script type="text/javascript">
 			var elId = `Uni_${Math.ceil(Math.random() * 10e5).toString(36)}`
@@ -389,7 +390,7 @@
 				methods: {
 					// 获取数据
 					getData() {
-						fetch('/otc/buyShop/1/30', {}, 'POST').then(res => {
+						fetch(buyShop + '/1/30', {}, 'POST').then(res => {
 							this.shopList = res.obj.list
 							// 默认商家信息
 							this.businessInfo = this.shopList[0]
@@ -449,7 +450,7 @@
 					// 一键购买
 					goBuy() {
 						if(this.isDisabled) return;
-						fetch('/otc/oneKeyBuy', {
+						fetch(oneKeyBuy, {
 							amount: this.dealInfo.amount,
 							money: this.dealInfo.money,
 							payWay: this.payWay, // 1支付宝,2微信,3银行
@@ -466,8 +467,12 @@
 						})
 					},
 					// 页面跳转
-					changeRoute(name) {
-						window.location.href= name + ".html"
+					changeRoute(name, params) {
+						let arr = [];
+						for(let i in params) {
+							arr.push(`${i}=${params[i]}`)
+						}
+						window.location.href= name + ".html?"+arr.join("&");
 					}
 				}
 			});

@@ -1,4 +1,6 @@
-let apiUrl = '';
+let apiUrl = 'http://47.244.9.84:8080/api/v1';
+// let apiUrl2 = 'https://transfer.swft.pro/api/v1';
+let apiUrl2 = '/swft';
 // 永续基金
 let buyFund = apiUrl + '/fund/buyFund',
 	fundDetail = apiUrl + '/fund/fundDetail/',
@@ -8,7 +10,7 @@ let buyFund = apiUrl + '/fund/buyFund',
 	fundStatus = apiUrl + '/fund/fundStatus/'
 // OTC userId = 10119
 let addBank = apiUrl + '/otc/addBank', // 添加到账银行卡
-	buyShop = apiUrl + '/otc/buyShop/', // 买币商家列表 /{pageNum}/{pageSize}
+	buyShop = apiUrl + '/otc/buyShop', // 买币商家列表 /{pageNum}/{pageSize}
 	buyerBank = apiUrl + '/otc/buyerBank', // 到账银行卡列表
 	cancelTrade = apiUrl + '/otc/cancelTrade/', // 用户取消订单{id}
 	confirmPayment = apiUrl + '/otc/confirmPayment/', // 用户确认付款{id}
@@ -26,3 +28,9 @@ let confirmAgree = apiUrl + '/shop/confirmAgree/', // 店铺确认同意{id}
 	updatePayWay = apiUrl + '/shop/updatePayWay', // 添加修改收款方式
 	updatePrice = apiUrl + '/shop/updatePrice', // 修改货币单价
 	userBuyRecord = apiUrl + '/shop/userBuyRecord/' // 店铺-用户交易记录
+
+// 一键兑换
+let queryCoinList = apiUrl2 + '/queryCoinList', // 查询币种列
+getBaseInfo = apiUrl2 + '/getBaseInfo', // 获取兑换汇率基本信息接口
+accountExchange = apiUrl2 + '/accountExchange', // 创建订单
+queryOrderState = apiUrl2 + '/queryOrderState'; // 查询订单状态

@@ -5,8 +5,14 @@ let path = require('path')
 
 //哪些url请求需要代理（代理配置）
 let conifg = {
-  '/api/v1/':{
-      target: 'http://47.244.9.84:8080',
+//   '/api/v1/':{
+//       target: 'http://47.244.9.84:8080',
+//   }
+  '/swft/':{
+      target: 'http://transfer.swft.pro',
+      rewrite: {
+        '/swft/': "/api/v1/"
+      }
   }
 }
 
@@ -16,7 +22,10 @@ let app = http.createServer ( function(request,response){
   //请求的数据是否存在代理
   for ( var key in conifg){
     if( url.indexOf(key) >-1 ){
-        let info = conifg[key].target.split(':')
+        let info = conifg[key].target.split(':');
+        for(let i in conifg[key].rewrite) {
+            url = url.replace(i, conifg[key].rewrite[i]);
+        }    
         let opt = {
             protocol: info[0]+':',
             host:    info[1].slice(2),
@@ -26,6 +35,7 @@ let app = http.createServer ( function(request,response){
             json: true,
             headers: request.headers
         }
+        console.log(opt)
         proxy( opt, response,request )//代理方法
         return;
     }
@@ -67,6 +77,7 @@ function proxy( opt,res ,req){
       proxyRequest.end();
   }); 
 }
+
 
 app.listen(8000)
 

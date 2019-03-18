@@ -94,8 +94,16 @@
 				font-weight: bold;
 				line-height: 22px;
 			}
+			.main-con-bot .bankCard h4{
+				border-bottom: 1px solid #eee; 
+				line-height: 50px;
+			}
 			.main-con-bot h4:nth-child(3) {
 				margin: 15px 0 5px;
+			}
+			.main-con-bot .bankCard h4:nth-child(3) {
+				margin: 0;
+				border-bottom: 0;
 			}
 			.main-con-bot .uni-tips{
 				line-height: 18px;
@@ -263,17 +271,25 @@
 								<div class="main-con-mid">本平台暂不支持自动扣款，请使用本人(实名认证)的支付宝账号向以下账号自行转账。</div>
 								<div class="main-con-bot">
 									<div class="pay-img">
-										<img :src="payTypeIcon" >
+										<img :src="payType.icon" >
 									</div>
 									<div class="uni-flex" style="align-items: center;">
-										<div class="ewm-img">
-											<img :src="orderDetails.qrCode" >
-										</div>
-										<div class="uni-flex-item">
+										<template v-if="orderDetails.payWay != 3">
+											<div class="ewm-img">
+												<img :src="orderDetails.qrCode" >
+											</div>
+											<div class="uni-flex-item">
+												<h4>姓名: {{orderDetails.userName}}</h4>
+												<h4>账号: {{orderDetails.userNumber}}</h4>
+												<h4>打开{{payType.name}}扫一扫</h4>
+												<div class="uni-tips">您需保存左侧二维码，使用{{payType.name}}完成支付</div>
+											</div>
+										</template>
+
+										<div class="bankCard uni-flex-item" v-else>
 											<h4>姓名: {{orderDetails.userName}}</h4>
 											<h4>账号: {{orderDetails.userNumber}}</h4>
-											<h4>打开支付宝扫一扫</h4>
-											<div class="uni-tips">您需保存左侧二维码，使用支付宝完成支付</div>
+											<h4>所属银行：{{orderDetails.bank}}</h4>
 										</div>
 									</div>
 								</div>
@@ -352,6 +368,7 @@
 					payTypes: [
 						{
 							icon: '../images/icon-zfb.png',
+							name: '支付宝',
 							type: 1,
 						},
 						{
@@ -360,20 +377,17 @@
 						},
 						{
 							icon: '../images/icon-wx.png',
+							name: '微信',
 							type: 2,
 						}
 					],
 				},
 				computed: {
-					payTypeIcon () {
+					payType () {
 						let payType = this.payTypes.find(item => {
 							return item.type == this.orderDetails.payWay;
 						});
-						if (payType) {
-							return payType.icon;
-						} else {
-							return this.payTypes[1].icon;
-						}
+						return payType || this.payTypes[1];
 					}
 				},
 				created() {

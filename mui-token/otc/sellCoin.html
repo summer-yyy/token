@@ -280,7 +280,7 @@
 					<span class="uni-flex-item" @click="changeRoute('index')">一键买币</span>
 					<span class="uni-flex-item active border-r">一键卖币</span>
 				</h1>
-				<span @click="changeRoute('order')" class="header-r">我的订单</span>
+				<span @click="changeRoute('order',{type: 2})" class="header-r">我的订单</span>
 			</header>
 			<div class="mui-content">
 				<div class="mui-scroll-wrapper">
@@ -591,7 +591,7 @@
 					// 一键购买
 					goBuy() {
 						if(this.isDisabled) return;
-						fetch('/otc/oneKeyBuy', {
+						fetch(oneKeyBuy, {
 							amount: this.buyNum,// 数量
 							payWay: this.bankId, // 1支付宝,2微信,3银行
 							shopUserId: this.businessInfo.userId, // 商家id
@@ -610,8 +610,12 @@
 						mui('#popover').popover('hide');
 					},
 					// 跳转页面
-					changeRoute(name) {
-						window.location.href= name + ".html"
+					changeRoute(name, params) {
+						let arr = [];
+						for(let i in params) {
+							arr.push(`${i}=${params[i]}`)
+						}
+						window.location.href= name + ".html?"+arr.join("&");
 					}
 				}
 			});

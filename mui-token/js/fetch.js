@@ -6,7 +6,8 @@
  * @Description: fetch.js网络请求数据
  */
 // var baseUrl = 'http://47.244.9.84:8080/api/v1'
-var baseUrl = '/api/v1'
+// var baseUrl = '/api/v1'
+var baseUrl = ''
 
 /**
  * @description:
@@ -15,10 +16,11 @@ var baseUrl = '/api/v1'
  * @param {String} type - 请求类型 'POST/GET/DELETE'
  * @return:
  */
-function fetch(url, data, type) {
+function fetch(url, data, type, config={}) {
 	var type = type.toUpperCase(),
 		url = baseUrl + url;
 		method = 'fetch'
+		config = Object.assign({"Content-type": "application/json"}, config)
 	if (type == 'GET') {
 		var dataStr = ''; // 数据拼接字符串
 		Object.keys(data).forEach(key => {
@@ -45,7 +47,10 @@ function fetch(url, data, type) {
 				sendData = JSON.stringify(data);
 			}
 			requestObj.open(type, url, true);
-			requestObj.setRequestHeader("Content-type", "application/json"); //application/x-www-form-urlencoded application/json; charset=utf-8
+			for (let i in config) {
+				requestObj.setRequestHeader(i, config[i]);
+			}	
+			// requestObj.setRequestHeader("Content-type", "application/json"); //application/x-www-form-urlencoded application/json; charset=utf-8
 			requestObj.send(sendData);
 			// 连接数据库
 			requestObj.onreadystatechange = () => {
