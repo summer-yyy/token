@@ -5,15 +5,15 @@ let path = require('path')
 
 //哪些url请求需要代理（代理配置）
 let conifg = {
-//   '/api/v1/':{
-//       target: 'http://47.244.9.84:8080',
-//   }
-  '/swft/':{
-      target: 'http://transfer.swft.pro',
-      rewrite: {
-        '/swft/': "/api/v1/"
-      }
+  '/api/v1/':{
+      target: 'http://47.244.9.84:8080',
   }
+//   '/swft/':{
+//       target: 'http://transfer.swft.pro',
+//       rewrite: {
+//         '/swft/': "/api/v1/"
+//       }
+//   }
 }
 
 let app = http.createServer ( function(request,response){

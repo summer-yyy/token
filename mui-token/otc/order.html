@@ -117,7 +117,7 @@
 		<div id="app">
 			<header id="header" class="mui-bar mui-bar-nav">
 				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-				<h1 class="mui-title">一键买币·我的订单</h1>
+				<h1 class="mui-title">一键{{type == 1?`买`:`卖`}}币·我的订单</h1>
 			</header>
 			<div class="main-header">
 				<!-- 搜索 -->
@@ -127,9 +127,9 @@
 							<span class="mui-icon mui-icon-search"></span>
 							<div class="uni-input" style="color: #666;" v-if="showDate">{{date}}</div>
 							<div class="uni-input" v-else>根据日期搜索</div>
-							<span v-if="showDate" class="mui-icon mui-icon-clear" @click="onClear"></span>
+							<span v-if="showDate" class="mui-icon mui-icon-clear" @click.stop="onClear"></span>
 						</div>
-						<span class="text">搜索</span>
+						<span class="text" @click="getList">搜索</span>
 					</div>
 				</div>
 				<!-- 订单列表 -->
@@ -203,6 +203,7 @@
 			new Vue({
 				el: '#app',
 				data: {
+					status: 1,
 					type: 1,
 					date: '',
 					showDate: false,
@@ -214,7 +215,7 @@
 					this.initMui();
 					this.userId = getUrlParam('userId') || '1109';
 					this.type = getUrlParam('type') || 1;
-					this.getList({status: 2});
+					this.getList();
 				},
 				methods: {
 					// 初始化mui
@@ -235,10 +236,11 @@
 						});
 					},
 					// 获取列表
-					getList({status}) {
+					getList({pageNum = 1, pageSize = 10, status = this.status, date = this.date} = {}) {
 						fetch(myRecords, {
-							"pageNum": 1,
-							"pageSize": 10,
+							date,
+							pageNum,
+							pageSize,
 							status,		// 1进行中 3已完成 0已取消 2全部
 							"type": this.type,		// 1买币记录	2卖币记录
 							"userId": this.userId		// 用户id
@@ -262,12 +264,14 @@
 						dtPicker.show((item) => {
 							this.date = item.text
 							this.showDate = true
+							this.getList()
 						});
 					},
 					// 清除搜索框
 					onClear() {
 						this.date = ''
 						this.showDate = false
+						this.getList()
 					},
 					// 选择列表类型
 					onChangeType(index) {
@@ -275,17 +279,21 @@
 						switch (index){
 							case 0: // 进行中
 								console.log('进行中')
+								this.status = 1;
 								this.getList({status: 1});
 								break;
 							case 1: // 已完成
+								this.status = 3;
 								this.getList({status: 3});
 								console.log('已完成')
 								break;
 							case 2: // 已取消
+								this.status = 0;
 								this.getList({status: 0});
 								console.log('已取消')
 								break;
 							case 3: // 全部
+								this.status = 2;
 								this.getList({status: 2});
 								console.log('全部')
 								break;

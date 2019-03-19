@@ -50,44 +50,53 @@
 				transition: all 0.3s;
 			}
 			.business-choice .business-more-con{
-				background: #F4F4F4;
-				border: 1px solid #DDDDDD;
+				/* background: #F4F4F4; */
+				/* border: 1px solid #DDDDDD; */
 				border-radius: 10px;
 				overflow: hidden;
 			}
-			.mui-grid-view.mui-grid-9{
+			.mui-table-view.mui-grid-9{
 				width: 100%;
 				background: none;
 				border: none;
 			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell{
+			.mui-table-view.mui-grid-9 .mui-table-view-cell{
 				padding: 5px;
 				box-sizing: border-box;
 				background: none;
 				border: none;
 			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell .item-con{
+			.mui-table-view.mui-grid-9 .mui-table-view-cell .item-con{
 				border-radius: 10px;
 				width: 100%;
 				text-align: center;
 				display: flex;
 				align-items: center;
-				flex-direction: column;
-				padding: 10px 5px 0;
+				/* flex-direction: column; */
+				background: #F4F4F4;
+				padding: 10px 20px;
 			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell .item-con.active{
+			.mui-table-view.mui-grid-9 .mui-table-view-cell:after {
+				height: 0;
+			}
+			.mui-table-view.mui-grid-9 .mui-table-view-cell .item-con.active{
 				background: #DDDDDD;
 			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell .business-img img{
+			.mui-table-view.mui-grid-9 .mui-table-view-cell .business-img img{
 				width: 30px;
 				height: 30px;
 			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell p{
+			.mui-table-view.mui-grid-9 .business-img h3{
 				font-size: 10px;
-				margin: 5px 0;
-				text-overflow: ellipsis;
-				overflow: hidden;
-				white-space: nowrap;
+			}
+			.mui-table-view.mui-grid-9 h4{
+				font-size: 14px;
+				font-weight: bold;
+				margin-bottom: 5px;
+			}
+			.mui-table-view.mui-grid-9 span{
+				font-size: 12px;
+				color: #666;
 			}
 			.business-choice-con{
 				margin-top: 10px;
@@ -257,19 +266,30 @@
 									</div>
 									<div class="business-more" :style="{height:showMore ? height + 'px' : '0px', marginTop:showMore ?'10px':'0'}" v-if="shopList.length>0">
 										<div :id="elId" class="business-more-con" ref="businessMore">
-											<ul class="mui-table-view mui-grid-view mui-grid-9">
-												<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" v-for="(item, index) in shopList" :key="index" @click="chocieShop(item, index)">
-													<div :class="['item-con', index==shopIndex ?'active':'']">
-														<div class="business-img">
+											<ul class="mui-table-view mui-grid-9">
+												<li class="mui-table-view-cell mui-media" v-for="(item, index) in shopList" :key="index" @click="chocieShop(item, index)">
+													<!-- <div :class="['item-con', index==shopIndex ?'active':'']"> -->
+														<!-- <div class="business-img">
 															<img :src="item.icon" >
 														</div>
-														<p>{{item.nickName}}</p>
-													</div>
+														<p>{{item.nickName}}</p> -->
+														<div style="align-items: center;" :class="['uni-flex', 'item-con', index==shopIndex ?'active':'']">
+															<div class="business-img">
+																<img :src="item.icon" >
+																<h3>{{item.nickName}}</h3>
+															</div>
+															<div class="uni-flex-item" style="text-align: right;">
+																<h4>参考单价: {{item.price || 0}} CNT/USDT</h4>
+																<p style="color: #666;">剩余USDT {{item.amount || 0}}</p>
+																<span>已交易 {{item.count || 0}} 笔</span>
+															</div>
+														</div>
+													<!-- </div> -->
 												</li>
 											</ul>
 										</div>
 									</div>
-									<div class="business-choice-con">
+									<div class="business-choice-con" v-show="!showMore">
 										<div class="uni-flex" style="align-items: center;">
 											<div class="business-img">
 												<img :src="businessInfo.icon" >
@@ -401,6 +421,7 @@
 					},
 					// 选择商家
 					chocieShop(item, index) {
+						this.showMore = false;
 						this.shopIndex = index
 						this.businessInfo = item;
 						this.dealInfo={

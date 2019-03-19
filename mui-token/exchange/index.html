@@ -194,17 +194,17 @@
 							<div class="con-t" @tap="changeCoinType">
 								<div class="uni-flex" style="align-items: center;">
 									<div class="icon-img">
-										<img :src=`../images/${typeName1}.png` style="width: 100%;">
+										<img :src=`${currentCoin.coinImageUrl}` style="width: 100%;">
 									</div>
 									<div class="uni-flex-item">
-										<p>{{typeName1}}</p>
+										<p>{{currentCoin.coinCode}}</p>
 										<span class="mui-icon mui-icon-arrowdown"></span>
 									</div>
 								</div>
 							</div>
 							<div class="con-b">
 								<h4>存币</h4>
-								<input type="text" v-model="ethNum" disabled="true">
+								<input type="number" v-model="ethNum" disabled="true" placeholder="请输入数量">
 								<!-- <p v-html="ethNum"></p> -->
 							</div>
 						</div>
@@ -216,24 +216,24 @@
 								<div class="con-t" @tap="changeBuy">
 									<div class="uni-flex" style="align-items: center;">
 										<div class="icon-img">
-											<img :src=`../images/${typeName}.png` style="width: 100%;">
+											<img :src=`${targetCoin.coinImageUrl}` style="width: 100%;">
 										</div>
 										<div class="uni-flex-item">
-											<p>{{typeName}}</p>
+											<p>{{targetCoin.coinCode}}</p>
 											<span class="mui-icon mui-icon-arrowdown"></span>
 										</div>
 									</div>
 								</div>
 								<div class="con-b">
 									<h4>折合</h4>
-									<p>-</p>
+									<p>{{count}}</p>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="tips">
 						<p>可用数量：<span>1.1456874796 ETH</span></p>
-						<p>手续费<img src="../images/icon-eth-s.png" >：<span>手续费</span><span>(1ETH手续费：0.1)</span></p>
+						<p>手续费<img :src="currentCoin.coinImageUrl" >：<span>手续费</span><span>(1{{targetCoin.coinCode}}手续费：{{minerFee}})</span></p>
 					</div>
 				</div>
 				<div class="main-b">
@@ -250,21 +250,15 @@
 					<button type="button" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button> 
 				</div>
 			</div>
-			<div id="popover" class="mui-popover">
-				<ul class="mui-table-view">
-					<li class="mui-table-view-cell" @tap="onChoice('BTC')" v-if="typeName1!='BTC'||isCoinType">
-						<img src="../images/BTC.png" >
-						<span>BTC</span>
-					</li>
-					<li class="mui-table-view-cell" @tap="onChoice('ETH')" v-if="typeName1!='ETH'||isCoinType">
-						<img src="../images/ETH.png" >
-						<span>ETH</span>
-					</li>
-					<li class="mui-table-view-cell" @tap="onChoice('EOS')" v-if="typeName1!='EOS'||isCoinType">
-						<img src="../images/EOS.png" >
-						<span>EOS</span>
-					</li>
-				</ul>
+			<div id="popover" class="mui-popover" style="height: 500px; ">
+				<div class="mui-scroll-wrapper mui-table-view">
+						<ul class="mui-scroll">
+							<li v-for="coin in coinList" class="mui-table-view-cell" @tap="onChoice(coin.coinCode)" v-if="currentCoin.coinCode!=targetCoin.coinCode||isCoinType">
+								<img :src="coin.coinImageUrl" >
+								<span>{{coin.coinCode}}</span>
+							</li> 
+						</ul>
+				</div>
 			</div>
 		</div>
 		<script src="../js/vue.min.js"></script>
@@ -276,15 +270,22 @@
 			new Vue({
 				el: '#app',
 				data: {
-					ethNum: '请输入数量',
+					ethNum: '',
 					nums: ['1','2','3','4','5','6','7','8','9','.','0'],
-					typeName1: 'ETH',
-					typeName: 'BTC',
-					isCoinType: true
+					currentCoin: {},
+					targetCoin: {},
+					isCoinType: true,
+					receiveCoinFee: 0,
+					minerFee: 0,
+					coinList: [],
 				},
 				created() {
-					// this.queryCoinList();
-					this.getBaseInfo();
+					this.queryCoinList();
+				},
+				computed: {
+					count () {
+						return this.ethNum * this.receiveCoinFee
+					}
 				},
 				methods: {
 					// 选择要兑换的币种
@@ -297,44 +298,51 @@
 						this.isCoinType = false
 						mui('.mui-popover').popover('show');
 					},
-					onChoice(type) {
+					onChoice(coin) {
 						if(this.isCoinType) {
-							this.typeName1 = type
+							this.currentCoin.coinCode = type
 						} else {
-							this.typeName = type
+							this.targetCoin.coinCode = type
 						}
+						this.getBaseInfo();
 						mui('.mui-popover').popover('hide');
 					},
 					// 数字输入
 					changeNum(item) {
 						// 判断字符串是否存在点
 						if(item=='.' && this.ethNum.indexOf('.') > -1) return
-						if(this.ethNum == '请输入数量') {
-							this.ethNum = ''
-						}
 						this.ethNum = this.ethNum + item
 					},
 					// 删除数字
 					onDelete() {
-						if(this.ethNum =='请输入数量') return
+						if(this.ethNum =='') return
 						this.ethNum = this.ethNum.slice(0,this.ethNum.length-1)
-						if(this.ethNum == '') {
-							this.ethNum ='请输入数量'
-						}
 					},
 					// 一键兑换
 					onSubmit() {
-						window.location.href=`put.html?typeName1=${this.typeName1}&typeName=${this.typeName}`;
+						window.location.href=`put.html?currentCoin.coinCode=${this.currentCoin.coinCode}&targetCoin.coinCode=${this.targetCoin.coinCode}`;
 					},
 					// 查询币种列
 					queryCoinList () {
 						fetch(queryCoinList, {
+							supportType: `advanced`
 						}, 'POST', {
 							"Content-Type": "application/x-www-form-urlencoded",
 							"cache-control": "no-cache"
 						}).then(res => {
-								console.log(res);
 								if(res.code==1) {
+									const data = res.obj.data;
+									this.coinList = data;
+									this.$nextTick(() => {
+										mui('.mui-scroll-wrapper').scroll({
+											deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+											bounce: true,
+											indicators: false, //是否显示滚动条
+										});
+									})
+									this.currentCoin = 	data[0];
+									this.targetCoin = data[1];	
+									this.getBaseInfo();
 								} else {
 									mui.toast('操作失败！')
 								}							
@@ -343,11 +351,13 @@
 					// 获取兑换汇率基本信息接口
 					getBaseInfo () {
 						fetch(getBaseInfo, {
-							depositCoinCode: this.typeName1,
-							receiveCoinCode: this.typeName
+							depositCoinCode: this.currentCoin.coinCode,
+							receiveCoinCode: this.targetCoin.coinCode
 						}, 'POST').then(res => {
-								console.log(res);
 								if(res.code==1) {
+									const data = res.obj.data;
+									this.receiveCoinFee = data.receiveCoinFee
+									this.minerFee = data.minerFee
 								} else {
 									mui.toast('操作失败！')
 								}							
