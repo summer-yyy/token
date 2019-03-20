@@ -157,24 +157,25 @@
 				left: 0;
 				width: 100%;
 			}
-			#popover .mui-table-view{
+			#popover .mui-scroll{
 				padding: 0 15px;
 			}
-			#popover .mui-table-view-cell{
+			#popover .coinItem{
 				overflow: hidden;
 				line-height: 40px;
 				padding: 10px 0;
 				font-size: 14px;
 				font-weight: bold;
+				border-bottom: 1px solid #E4E4E4;
 			}
-			#popover .mui-table-view-cell img{
+			#popover .coinItem img{
 				width: 40px;
 				height: 40px;
 				display: block;
 				float: left;
 				margin-right: 15px;
 			}
-			#popover .mui-table-view-cell:after{
+			#popover .coinItem:after{
 				left: 0;
 				background-color: #E4E4E4;
 			}
@@ -204,7 +205,7 @@
 							</div>
 							<div class="con-b">
 								<h4>存币</h4>
-								<input type="number" v-model="ethNum" disabled="true" placeholder="请输入数量">
+								<input type="text" v-model="ethNum" disabled="true" placeholder="请输入数量">
 								<!-- <p v-html="ethNum"></p> -->
 							</div>
 						</div>
@@ -247,13 +248,13 @@
 					</ul>
 				</div>
 				<div class="paybtn">
-					<button type="button" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button> 
+					<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button> 
 				</div>
 			</div>
 			<div id="popover" class="mui-popover" style="height: 500px; ">
-				<div class="mui-scroll-wrapper mui-table-view">
+				<div class="mui-scroll-wrapper">
 						<ul class="mui-scroll">
-							<li v-for="coin in coinList" class="mui-table-view-cell" @tap="onChoice(coin.coinCode)" v-if="currentCoin.coinCode!=targetCoin.coinCode||isCoinType">
+							<li v-for="coin in coinList" class="coinItem" @tap="onChoice(coin)">
 								<img :src="coin.coinImageUrl" >
 								<span>{{coin.coinCode}}</span>
 							</li> 
@@ -285,6 +286,9 @@
 				computed: {
 					count () {
 						return this.ethNum * this.receiveCoinFee
+					},
+					isDisabled () {
+						return this.ethNum <= 0;
 					}
 				},
 				methods: {
@@ -300,9 +304,9 @@
 					},
 					onChoice(coin) {
 						if(this.isCoinType) {
-							this.currentCoin.coinCode = type
+							this.currentCoin = coin
 						} else {
-							this.targetCoin.coinCode = type
+							this.targetCoin = coin
 						}
 						this.getBaseInfo();
 						mui('.mui-popover').popover('hide');
@@ -310,7 +314,7 @@
 					// 数字输入
 					changeNum(item) {
 						// 判断字符串是否存在点
-						if(item=='.' && this.ethNum.indexOf('.') > -1) return
+						if(item=='.' && (this.ethNum.indexOf('.') > -1 || this.ethNum == "")) return
 						this.ethNum = this.ethNum + item
 					},
 					// 删除数字
@@ -320,7 +324,14 @@
 					},
 					// 一键兑换
 					onSubmit() {
-						window.location.href=`put.html?currentCoin.coinCode=${this.currentCoin.coinCode}&targetCoin.coinCode=${this.targetCoin.coinCode}`;
+						let params = {
+							currentCoin: JSON.stringify(this.currentCoin),
+							targetCoin: JSON.stringify(this.targetCoin),
+							receiveCoinFee: this.receiveCoinFee,
+							minerFee: this.minerFee,
+							num: this.ethNum,
+						}
+						window.location.href=`put.html?` + urlParamFormat(params);
 					},
 					// 查询币种列
 					queryCoinList () {

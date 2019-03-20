@@ -72,3 +72,12 @@ function getUrlParam(name) {
     if (r != null) return decodeURI(r[2]);
     return null;
 };
+
+	// url参数格式化
+	function urlParamFormat(params) {
+		let arr = [];
+		for(let i in params) {
+			arr.push(`${i}=${params[i]}`)
+		}
+		return arr.join("&");
+	}

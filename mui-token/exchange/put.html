@@ -103,15 +103,15 @@
 							<div class="uni-flex" style="align-items: center; text-align: center;">
 								<div class="uni-flex-item">
 									<div class="img-box">
-										<img :src=`../images/${typeName1}.png` >
+										<img :src=`${currentCoin.coinImageUrl}` >
 									</div>
-									<h4>{{typeName1}}</h4>
+									<h4>{{currentCoin.coinCode}}</h4>
 								</div>
 								<div class="uni-flex-item">
 									<div class="img-box">
-										<img :src=`../images/${typeName}.png` >
+										<img :src=`${targetCoin.coinImageUrl}` >
 									</div>
-									<h4>{{typeName}}</h4>
+									<h4>{{targetCoin.coinCode}}</h4>
 								</div>
 								<div class="img-jt">
 									<img src="../images/icon-jt.png" >
@@ -124,25 +124,25 @@
 									<div class="uni-flex-item">
 										<h4>发送</h4>
 									</div>
-									<p>100.123684798 {{typeName1}}</p>
+									<p> {{num + currentCoin.coinCode}}</p>
 								</div>
 								<div class="uni-flex">
 									<div class="uni-flex-item">
 										<h4>得到</h4>
 									</div>
-									<p>0.123684798 {{typeName}}</p>
+									<p> {{count + targetCoin.coinCode}}</p>
 								</div>
 								<div class="uni-flex">
 									<div class="uni-flex-item">
 										<h4>当前汇率</h4>
 									</div>
-									<p>1 {{typeName1}}≈0.0056854 {{typeName}}</p>
+									<p>1 {{currentCoin.coinCode}} ≈ {{receiveCoinFee + targetCoin.coinCode}}</p>
 								</div>
 								<div class="uni-flex">
 									<div class="uni-flex-item">
-										<h4>手续费：{{typeName1}}</h4>
+										<h4>手续费：{{currentCoin.coinCode}}</h4>
 									</div>
-									<p>24.00</p>
+									<p>{{num * minerFee}}</p>
 								</div>
 								<div class="uni-flex" style="border: none;">
 									<div class="uni-flex-item">
@@ -197,17 +197,30 @@
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/common.js"></script>
+		<script src="../js/api.js"></script>
+		<script src="../js/fetch.js"></script>
 		<script type="text/javascript">
 			new Vue({
 				el: '#app',
 				data: {
 					isActive: false,
-					typeName1: 'ETH',
-					typeName: 'BTC'
+					currentCoin: {},
+					targetCoin: {},
+					receiveCoinFee: 0,
+					minerFee: 0,
+					num: 0,
 				},
 				created() {
-					this.typeName1 = getUrlParam('typeName1');
-					this.typeName = getUrlParam('typeName');
+					this.currentCoin = JSON.parse(getUrlParam('currentCoin'));
+					this.targetCoin = JSON.parse(getUrlParam('targetCoin'));
+					this.receiveCoinFee = getUrlParam('receiveCoinFee');
+					this.minerFee = getUrlParam('minerFee');
+					this.num = getUrlParam('num');
+				},
+				computed: {
+					count () {
+						return this.num * this.receiveCoinFee
+					}
 				},
 				methods: {
 					// 选择兑换方式
@@ -224,11 +237,24 @@
 						console.log(this.isActive)
 					},
 					onSubmit() {
-						mui('.mui-popover').popover('show');
+						fetch(accountExchange, {
+							depositCoinAmt: this.num,
+							receiveCoinAmt: this.count.toFixed(6),
+							equipmentNo: "",
+							sourceFlag: "",
+							developerId: "",
+						}, 'POST').then(res => {
+								if(res.code==1) {
+									mui('.mui-popover').popover('show');
+								} else {
+									mui.toast('操作失败！')
+								}							
+						})
 					},
 					// 关闭模态框
 					onClose() {
 						mui('.mui-popover').popover('hide');
+						window.location.href=`index.html`;
 					}
 				}
 			})
