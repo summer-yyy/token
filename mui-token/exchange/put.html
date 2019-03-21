@@ -136,13 +136,13 @@
 									<div class="uni-flex-item">
 										<h4>当前汇率</h4>
 									</div>
-									<p>1 {{currentCoin.coinCode}} ≈ {{receiveCoinFee + targetCoin.coinCode}}</p>
+									<p>1 {{currentCoin.coinCode}} ≈ {{instantRate + targetCoin.coinCode}}</p>
 								</div>
 								<div class="uni-flex">
 									<div class="uni-flex-item">
 										<h4>手续费：{{currentCoin.coinCode}}</h4>
 									</div>
-									<p>{{num * minerFee}}</p>
+									<p>{{num * (receiveCoinFee * 1e10) / 1e10}}</p>
 								</div>
 								<div class="uni-flex" style="border: none;">
 									<div class="uni-flex-item">
@@ -155,11 +155,11 @@
 								<div class="input-group" v-if="isActive">
 									<div class="input-item">
 										<h3>收币地址</h3>
-										<input type="text" placeholder="请输入BTC收货地址"/>
+										<input type="text" v-model="destinationAddr" :placeholder=`请输入${targetCoin.coinCode}收币地址`/>
 									</div>
 									<div class="input-item">
 										<h3>退币地址</h3>
-										<input type="text" placeholder="请输入BTC收货地址"/>
+										<input type="text" v-model="refundAddr" :placeholder=`请输入${targetCoin.coinCode}退币地址`/>
 									</div>
 								</div>
 							</div>
@@ -206,20 +206,26 @@
 					isActive: false,
 					currentCoin: {},
 					targetCoin: {},
+					instantRate: 0,
 					receiveCoinFee: 0,
-					minerFee: 0,
 					num: 0,
+					destinationAddr: "",
+					refundAddr: "",
 				},
 				created() {
+					this.userId = "10117"
 					this.currentCoin = JSON.parse(getUrlParam('currentCoin'));
 					this.targetCoin = JSON.parse(getUrlParam('targetCoin'));
+					this.instantRate = getUrlParam('instantRate');
 					this.receiveCoinFee = getUrlParam('receiveCoinFee');
-					this.minerFee = getUrlParam('minerFee');
 					this.num = getUrlParam('num');
+				},
+				mounted () {
+					this.initBridge();
 				},
 				computed: {
 					count () {
-						return this.num * this.receiveCoinFee
+						return this.ethNum * (this.instantRate * 1e10) / 1e10
 					}
 				},
 				methods: {
@@ -238,11 +244,14 @@
 					},
 					onSubmit() {
 						fetch(accountExchange, {
+							depositCoinCode: this.currentCoin.coinCode,
+							receiveCoinCode: this.targetCoin.coinCode,
 							depositCoinAmt: this.num,
-							receiveCoinAmt: this.count.toFixed(6),
-							equipmentNo: "",
-							sourceFlag: "",
-							developerId: "",
+							receiveCoinAmt: this.count,
+							sourceFlag: "TokenPadan",
+							developerId: this.userId,
+							refundAddr: this.refundAddr,
+							destinationAddr: this.destinationAddr
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									mui('.mui-popover').popover('show');
@@ -254,7 +263,86 @@
 					// 关闭模态框
 					onClose() {
 						mui('.mui-popover').popover('hide');
-						window.location.href=`index.html`;
+						this.goNative("H01");
+					},
+					initBridge () {
+						var u = navigator.userAgent;
+						var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+						var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+						if(isiOS){
+										function setupWebViewJavascriptBridge(callback) {
+												if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+												if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+												window.WVJBCallbacks = [callback];
+												var WVJBIframe = document.createElement('iframe');
+												WVJBIframe.style.display = 'none';
+												WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+												document.documentElement.appendChild(WVJBIframe);
+												setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+										}
+
+										//native调用js
+										setupWebViewJavascriptBridge(function(bridge) {
+												bridge.registerHandler('testJSFunction', function(data, responseCallback) {
+														alert('JS方法被调用:'+data);
+														responseCallback('js执行过了');
+												})
+										})
+
+
+
+									//js调用native
+									function userAttestation(id){
+											WebViewJavascriptBridge.callHandler('userAttestation', "{\"id\" : "+id+"}", function(response) {
+													// alert('native被调用:' + response);
+													// document.getElementById("returnValue").value = response;
+											});
+									}
+						}
+						else if(isAndroid){
+									function connectWebViewJavascriptBridge(callback) {
+											if (window.WebViewJavascriptBridge) {
+													callback(WebViewJavascriptBridge)
+											} else {
+													document.addEventListener(
+															'WebViewJavascriptBridgeReady'
+															, function() {
+																	callback(WebViewJavascriptBridge)
+															},
+															false
+													);
+											}
+									}
+
+									connectWebViewJavascriptBridge(function(bridge) {
+											bridge.init(function(message, responseCallback) {
+													console.log('JS got a message', message);
+													var data = {
+															'Javascript Responds': '测试中文!'
+													};
+
+													if (responseCallback) {
+															console.log('JS responding with', data);
+															responseCallback(data);
+													}
+											});
+
+											bridge.registerHandler("userAttestation", function(data, responseCallback) {
+			//                  alert("data from Java: = " + data);
+													if (responseCallback) {
+															var responseData = "Javascript Says Right back aka!";
+															responseCallback(responseData);
+													}
+											});
+									})
+									function userAttestation(id){
+											window.WebViewJavascriptBridge.callHandler('userAttestation', "{\"id\" : "+id+"}", function(response) {
+													// alert('native被调用:' + response);
+													// document.getElementById("returnValue").value = response;
+											});
+									}
+						}
+						this.goNative = userAttestation;
 					}
 				}
 			})

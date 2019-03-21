@@ -233,8 +233,8 @@
 						</div>
 					</div>
 					<div class="tips">
-						<p>可用数量：<span>1.1456874796 ETH</span></p>
-						<p>手续费<img :src="currentCoin.coinImageUrl" >：<span>手续费</span><span>(1{{targetCoin.coinCode}}手续费：{{minerFee}})</span></p>
+						<p>可用数量：<span>{{currentCoin.balance+" "+currentCoin.coinCode}}</span></p>
+						<p>手续费<img :src="currentCoin.coinImageUrl" >：<span>{{receiveCoinFee}}</span></p>
 					</div>
 				</div>
 				<div class="main-b">
@@ -251,14 +251,15 @@
 					<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button> 
 				</div>
 			</div>
-			<div id="popover" class="mui-popover" style="height: 500px; ">
+			<div id="popover" class="mui-popover" style="height: 300px; ">
 				<div class="mui-scroll-wrapper">
 						<ul class="mui-scroll">
-							<li v-for="coin in coinList" class="coinItem" @tap="onChoice(coin)">
+							<li v-for="coin in coinList" class="coinItem" @tap="onChoice(coin)" v-show="isCoinType?coin.isShow:true">
 								<img :src="coin.coinImageUrl" >
 								<span>{{coin.coinCode}}</span>
 							</li> 
 						</ul>
+				</div>
 				</div>
 			</div>
 		</div>
@@ -276,22 +277,39 @@
 					currentCoin: {},
 					targetCoin: {},
 					isCoinType: true,
+					instantRate: 0,
 					receiveCoinFee: 0,
-					minerFee: 0,
 					coinList: [],
+					myCoinList: [],
 				},
 				created() {
-					this.queryCoinList();
+					this.userId = "10117"
+					this.queryMyCoinList();
 				},
 				computed: {
 					count () {
-						return this.ethNum * this.receiveCoinFee
+						return this.ethNum * (this.instantRate * 1e10) / 1e10
 					},
 					isDisabled () {
 						return this.ethNum <= 0;
-					}
+					},
 				},
-				methods: {
+				methods: {		
+					filterList () {
+						this.coinList.forEach(coin => {
+							const code = coin.coinCode;
+							let item = this.myCoinList.find(item => item.enName == code)
+							if(item) {
+								coin.isShow = true;
+								coin.balance = item.balance;
+								this.currentCoin = coin;
+							}
+						});
+						if(this.myCoinList.length > 0) {							
+							this.getBaseInfo();
+							setInterval(this.getBaseInfo, 5000);
+						}
+					},
 					// 选择要兑换的币种
 					changeCoinType() {
 						this.isCoinType = true
@@ -327,8 +345,8 @@
 						let params = {
 							currentCoin: JSON.stringify(this.currentCoin),
 							targetCoin: JSON.stringify(this.targetCoin),
+							instantRate: this.instantRate,
 							receiveCoinFee: this.receiveCoinFee,
-							minerFee: this.minerFee,
 							num: this.ethNum,
 						}
 						window.location.href=`put.html?` + urlParamFormat(params);
@@ -351,9 +369,22 @@
 											indicators: false, //是否显示滚动条
 										});
 									})
-									this.currentCoin = 	data[0];
 									this.targetCoin = data[1];	
-									this.getBaseInfo();
+									this.filterList();
+								} else {
+									mui.toast('操作失败！')
+								}							
+						})
+					},
+						// 查询币种列
+					queryMyCoinList () {
+						fetch(coinList + "/" + this.userId, {
+						}, 'POST').then(res => {
+								if(res.code==1) {
+									const data = res.obj;
+									this.myCoinList = data;
+									this.queryCoinList();
+
 								} else {
 									mui.toast('操作失败！')
 								}							
@@ -367,8 +398,8 @@
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									const data = res.obj.data;
+									this.instantRate = data.instantRate
 									this.receiveCoinFee = data.receiveCoinFee
-									this.minerFee = data.minerFee
 								} else {
 									mui.toast('操作失败！')
 								}							

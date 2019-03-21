@@ -33,5 +33,6 @@ let confirmAgree = apiUrl + '/shop/confirmAgree/', // 店铺确认同意{id}
 // 一键兑换
 let queryCoinList = apiUrl2 + '/queryCoinList', // 查询币种列
 getBaseInfo = apiUrl2 + '/getBaseInfo', // 获取兑换汇率基本信息接口
+coinList = apiUrl2 + '/coinList', // 查询平台支持币种列
 accountExchange = apiUrl2 + '/accountExchange', // 创建订单
 queryOrderState = apiUrl2 + '/queryOrderState'; // 查询订单状态
