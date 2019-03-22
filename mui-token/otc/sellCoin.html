@@ -465,7 +465,6 @@
 					this.Screen_width = window.innerWidth
 				},
 				created() {
-					this.userId = getUrlParam('userId') || '11111';
 					this.getData();
 					// console.log(this.$refs.businessMore);
 				},
@@ -517,7 +516,7 @@
 						fetch(buyerBank, {
 							"pageNum": 1,
     					"pageSize": 30,
-							userId: this.userId
+							userId: USER_ID
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									this.$nextTick(() => {
@@ -596,7 +595,7 @@
 							payWay: this.bankId, // 1支付宝,2微信,3银行
 							shopUserId: this.businessInfo.userId, // 商家id
 							type: 2, // 1买币,2是卖币
-							userId: this.userId
+							userId: USER_ID
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									mui('#popover').popover('show');

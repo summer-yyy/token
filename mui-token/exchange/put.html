@@ -155,11 +155,11 @@
 								<div class="input-group" v-if="isActive">
 									<div class="input-item">
 										<h3>收币地址</h3>
-										<input type="text" v-model="destinationAddr" :placeholder=`请输入${targetCoin.coinCode}收币地址`/>
+										<input type="text" v-model="destinationAddr" :placeholder='`请输入${targetCoin.coinCode}收币地址`'/>
 									</div>
 									<div class="input-item">
 										<h3>退币地址</h3>
-										<input type="text" v-model="refundAddr" :placeholder=`请输入${targetCoin.coinCode}退币地址`/>
+										<input type="text" v-model="refundAddr" :placeholder='`请输入${targetCoin.coinCode}退币地址`'/>
 									</div>
 								</div>
 							</div>
@@ -213,7 +213,6 @@
 					refundAddr: "",
 				},
 				created() {
-					this.userId = "10117"
 					this.currentCoin = JSON.parse(getUrlParam('currentCoin'));
 					this.targetCoin = JSON.parse(getUrlParam('targetCoin'));
 					this.instantRate = getUrlParam('instantRate');
@@ -225,7 +224,7 @@
 				},
 				computed: {
 					count () {
-						return this.ethNum * (this.instantRate * 1e10) / 1e10
+						return this.num * (this.instantRate * 1e10) / 1e10
 					}
 				},
 				methods: {
@@ -249,7 +248,7 @@
 							depositCoinAmt: this.num,
 							receiveCoinAmt: this.count,
 							sourceFlag: "TokenPadan",
-							developerId: this.userId,
+							developerId: USER_ID,
 							refundAddr: this.refundAddr,
 							destinationAddr: this.destinationAddr
 						}, 'POST').then(res => {

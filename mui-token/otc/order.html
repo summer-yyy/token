@@ -213,7 +213,6 @@
 				},
 				created() {
 					this.initMui();
-					this.userId = getUrlParam('userId') || '1109';
 					this.type = getUrlParam('type') || 1;
 					this.getList();
 				},
@@ -243,7 +242,7 @@
 							pageSize,
 							status,		// 1进行中 3已完成 0已取消 2全部
 							"type": this.type,		// 1买币记录	2卖币记录
-							"userId": this.userId		// 用户id
+							"userId": USER_ID		// 用户id
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									this.orderList = res.list;

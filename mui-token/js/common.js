@@ -81,3 +81,7 @@ function getUrlParam(name) {
 		}
 		return arr.join("&");
 	}
+
+	// 获取userId
+	sessionStorage.userId = getUrlParam('userId') ? getUrlParam('userId') : sessionStorage.userId;
+	const USER_ID = sessionStorage.userId;

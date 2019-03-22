@@ -404,7 +404,6 @@
 					isDisabled: true
 				},
 				created() {
-					this.userId = getUrlParam('userId') || '1109';
 					this.getData()
 				},
 				methods: {
@@ -477,7 +476,7 @@
 							payWay: this.payWay, // 1支付宝,2微信,3银行
 							shopUserId: this.businessInfo.userId, // 商家id
 							type: 1, // 1买币,2是卖币
-							userId: this.userId
+							userId: USER_ID
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									const id = res.obj.id;

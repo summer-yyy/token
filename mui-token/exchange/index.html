@@ -283,7 +283,6 @@
 					myCoinList: [],
 				},
 				created() {
-					this.userId = "10117"
 					this.queryMyCoinList();
 				},
 				computed: {
@@ -334,6 +333,9 @@
 						// 判断字符串是否存在点
 						if(item=='.' && (this.ethNum.indexOf('.') > -1 || this.ethNum == "")) return
 						this.ethNum = this.ethNum + item
+						if(this.ethNum > this.currentCoin.balance) {
+							this.ethNum = this.currentCoin.balance + "";
+						} 
 					},
 					// 删除数字
 					onDelete() {
@@ -378,7 +380,7 @@
 					},
 						// 查询币种列
 					queryMyCoinList () {
-						fetch(coinList + "/" + this.userId, {
+						fetch(coinList + "/" + USER_ID, {
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									const data = res.obj;

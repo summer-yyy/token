@@ -235,7 +235,6 @@
 				created() {
 					// 获取id
 					this.fundId = getUrlParam('fundId');
-					this.userId = getUrlParam('userId');
 					this.fundName = getUrlParam('fundName');
 					this.type = getUrlParam('type');
 					const tomorrow = moment().add(1,'days');
@@ -267,7 +266,7 @@
 							fetch(buyFund, {
 								amount: this.amount,
 								fundId: this.fundId,
-								userId: this.userId
+								userId: USER_ID
 							}, 'POST').then(res => {
 								console.log(res);
 								if(res.code==1) {

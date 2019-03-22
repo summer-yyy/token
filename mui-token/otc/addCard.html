@@ -107,7 +107,6 @@
 					}
 				},
 				created() {
-					this.userId = "11111";
 					this.getBank();
 				},
 				methods: {
@@ -124,7 +123,7 @@
 					},
 					onSubmit() {
 						console.log(this.bankInfo)
-						fetch(addBank, Object.assign({userId: this.userId},this.bankInfo), 'POST').then(res => {
+						fetch(addBank, Object.assign({userId: USER_ID},this.bankInfo), 'POST').then(res => {
 								if(res.code==1) {
 									history.go(-1);
 								} else {
