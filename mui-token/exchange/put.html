@@ -105,13 +105,13 @@
 									<div class="img-box">
 										<img :src=`${currentCoin.coinImageUrl}` >
 									</div>
-									<h4>{{currentCoin.coinCode}}</h4>
+									<h4>{{currentCoin.enName}}</h4>
 								</div>
 								<div class="uni-flex-item">
 									<div class="img-box">
 										<img :src=`${targetCoin.coinImageUrl}` >
 									</div>
-									<h4>{{targetCoin.coinCode}}</h4>
+									<h4>{{targetCoin.enName}}</h4>
 								</div>
 								<div class="img-jt">
 									<img src="../images/icon-jt.png" >
@@ -124,25 +124,25 @@
 									<div class="uni-flex-item">
 										<h4>发送</h4>
 									</div>
-									<p> {{num + currentCoin.coinCode}}</p>
+									<p> {{num + currentCoin.enName}}</p>
 								</div>
 								<div class="uni-flex">
 									<div class="uni-flex-item">
 										<h4>得到</h4>
 									</div>
-									<p> {{count + targetCoin.coinCode}}</p>
+									<p> {{count + targetCoin.enName}}</p>
 								</div>
 								<div class="uni-flex">
 									<div class="uni-flex-item">
 										<h4>当前汇率</h4>
 									</div>
-									<p>1 {{currentCoin.coinCode}} ≈ {{instantRate + targetCoin.coinCode}}</p>
+									<p>1 {{currentCoin.enName}} ≈ {{instantRate + targetCoin.enName}}</p>
 								</div>
 								<div class="uni-flex">
 									<div class="uni-flex-item">
-										<h4>手续费：{{currentCoin.coinCode}}</h4>
+										<h4>手续费：{{currentCoin.enName}}</h4>
 									</div>
-									<p>{{num * (receiveCoinFee * 1e10) / 1e10}}</p>
+									<p>{{(num * 1e10) * (receiveCoinFee * 1e10) / 1e20}}</p>
 								</div>
 								<div class="uni-flex" style="border: none;">
 									<div class="uni-flex-item">
@@ -155,11 +155,11 @@
 								<div class="input-group" v-if="isActive">
 									<div class="input-item">
 										<h3>收币地址</h3>
-										<input type="text" v-model="destinationAddr" :placeholder='`请输入${targetCoin.coinCode}收币地址`'/>
+										<input type="text" v-model="destinationAddr" :placeholder='`请输入${targetCoin.enName}收币地址`'/>
 									</div>
 									<div class="input-item">
 										<h3>退币地址</h3>
-										<input type="text" v-model="refundAddr" :placeholder='`请输入${targetCoin.coinCode}退币地址`'/>
+										<input type="text" v-model="refundAddr" :placeholder='`请输入${targetCoin.enName}退币地址`'/>
 									</div>
 								</div>
 							</div>
@@ -224,7 +224,7 @@
 				},
 				computed: {
 					count () {
-						return this.num * (this.instantRate * 1e10) / 1e10
+						return (this.num * 1e10) * (this.instantRate * 1e10) / 1e20
 					}
 				},
 				methods: {
@@ -243,8 +243,8 @@
 					},
 					onSubmit() {
 						fetch(accountExchange, {
-							depositCoinCode: this.currentCoin.coinCode,
-							receiveCoinCode: this.targetCoin.coinCode,
+							depositCoinCode: this.currentCoin.enName,
+							receiveCoinCode: this.targetCoin.enName,
 							depositCoinAmt: this.num,
 							receiveCoinAmt: this.count,
 							sourceFlag: "TokenPadan",

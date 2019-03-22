@@ -113,14 +113,15 @@
 						</div>
 						<div class="message-info" v-for="(item, index) in messageList" :key="index">
 							<p class="time" v-if="item.showTime">{{item.createTime}}</p>
-							<div class="info-l" v-if="index==2">
+							<div class="info-l" v-if="item.index==2">
 								<div class="uni-flex">
 									<div class="personal-img" style="margin-right: 10px;">
 										<img src="../images/business-img.png" >
 									</div>
 									<div class="uni-flex-item">
 										<p class="message-text">
-											您好。我是TokenPanda客服，有什么能帮助您的？
+											<!-- 您好。我是TokenPanda客服，有什么能帮助您的？ -->
+											{{item.message}}
 										</p>
 									</div>
 									<div class="empty"></div>
@@ -131,7 +132,7 @@
 									<div class="empty"></div>
 									<div class="uni-flex-item">
 										<p class="message-text">
-											{{item.data}}
+											{{item.message}}
 										</p>
 									</div>
 									<div class="personal-img" style="margin-left: 10px;">
@@ -157,9 +158,10 @@
 		</div>
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
 		<script src="../js/moment.min.js"></script>
 		<script type="text/javascript">
-			var ws = new WebSocket("ws://123.207.167.163:9010/ajaxchattest");
+			var ws = new WebSocket("ws://47.244.9.84:8084/websocket/" + USER_ID);
 			// 打开Socket
 			ws.onopen = function() {
 				console.info('Web Socket 已连接上，使用 send() 方法发送数据');
@@ -180,33 +182,17 @@
 					messageList: [{
 						name: '吴振',
 						photo: '/images/business-img.png',
-						data: '这是测试消息',
+						message: '这是测试消息',
 						userId: 111,
-						isImg: false
-					}, {
-						name: '吴振',
-						photo: '/images/business-img.png',
-						data: '这是测试消息',
-						userId: 111,
-						isImg: false
+						isImg: false,
+						index: 1,
 					},{
 						name: '吴振',
 						photo: '/images/business-img.png',
-						data: '这是测试消息',
+						message: '这是测试消息',
 						userId: 111,
-						isImg: false
-					},{
-						name: '吴振',
-						photo: '/images/business-img.png',
-						data: '这是测试消息',
-						userId: 111,
-						isImg: false
-					},{
-						name: '吴振',
-						photo: '/images/business-img.png',
-						data: '这是测试消息',
-						userId: 111,
-						isImg: false
+						isImg: false,
+						index: 2,
 					}],
 					showTime: true
 				},
@@ -221,6 +207,8 @@
 					getData() {
 					},
 					onMessage(data) {
+						console.log(data)
+						data.index = 2;
 						this.showTime = false
 						var time = 0
 						var timer = setInterval(() => {
@@ -246,16 +234,23 @@
 					},
 					// 发送文本消息
 					onSendText() {
+						// var obj = {
+						// 	name: '吴振',
+						// 	photo: '/images/business-img.png',
+						// 	data: this.inputText,
+						// 	userId: 111,
+						// 	isImg: false,
+						// 	showTime: this.showTime,
+						// 	createTime: moment(new Date()).format("YYYY-MM-DD HH:MM"),
+						// }
 						var obj = {
-							name: '吴振',
-							photo: '/images/business-img.png',
-							data: this.inputText,
-							userId: 111,
-							isImg: false,
-							showTime: this.showTime,
-							createTime: moment(new Date()).format("YYYY-MM-DD HH:MM"),
+								"toUser":"10114",       //接收方用户ID
+								"fromUser": USER_ID,   //发送方用户ID
+								"message": this.inputText  //消息内容
 						}
-						var sendStr = JSON.stringify(obj)
+						var sendStr = JSON.stringify(obj);
+						obj.index=1;
+						this.messageList.push(obj);
 						ws.send(sendStr);
 						this.inputText = ''
 						this.showSend = false

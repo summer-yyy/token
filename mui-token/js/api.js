@@ -1,7 +1,8 @@
 let apiUrl = 'http://47.244.9.84:8080/api/v1';
+// let apiUrl = '/api/v1';
 // let apiUrl2 = 'https://transfer.swft.pro/api/v1';
 // let apiUrl2 = 'http://47.244.9.84:8080/api/v1/swft';
-let apiUrl2 = '/api/v1/swft';
+let apiUrl2 = apiUrl + '/swft';
 // 永续基金
 let buyFund = apiUrl + '/fund/buyFund',
 	fundDetail = apiUrl + '/fund/fundDetail/',

@@ -198,7 +198,7 @@
 										<img :src=`${currentCoin.coinImageUrl}` style="width: 100%;">
 									</div>
 									<div class="uni-flex-item">
-										<p>{{currentCoin.coinCode}}</p>
+										<p>{{currentCoin.enName}}</p>
 										<span class="mui-icon mui-icon-arrowdown"></span>
 									</div>
 								</div>
@@ -220,7 +220,7 @@
 											<img :src=`${targetCoin.coinImageUrl}` style="width: 100%;">
 										</div>
 										<div class="uni-flex-item">
-											<p>{{targetCoin.coinCode}}</p>
+											<p>{{targetCoin.enName}}</p>
 											<span class="mui-icon mui-icon-arrowdown"></span>
 										</div>
 									</div>
@@ -233,16 +233,16 @@
 						</div>
 					</div>
 					<div class="tips">
-						<p>可用数量：<span>{{currentCoin.balance+" "+currentCoin.coinCode}}</span></p>
-						<p>手续费<img :src="currentCoin.coinImageUrl" >：<span>{{receiveCoinFee}}</span></p>
+						<p>可用数量：<span>{{currentCoin.balance+" "+currentCoin.enName}}</span></p>
+						<p>手续费<img :src="currentCoin.coinImageUrl" >：<span>{{receiveCoinFee * 100}}%</span></p>
 					</div>
 				</div>
 				<div class="main-b">
 					<ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" v-for="(item, index) in nums" :key="index" @tap="changeNum(item)">
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" v-for="(item, index) in nums" :key="index" @tap="changeNum(item)">
 							<span v-html="item"></span>
 						</li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" @tap="onDelete">
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" @tap="onDelete">
 							<span><img src="../images/icon-delete.png" ></span>
 						</li>
 					</ul>
@@ -254,9 +254,9 @@
 			<div id="popover" class="mui-popover" style="height: 300px; ">
 				<div class="mui-scroll-wrapper">
 						<ul class="mui-scroll">
-							<li v-for="coin in coinList" class="coinItem" @tap="onChoice(coin)" v-show="isCoinType?coin.isShow:true">
+							<li v-for="coin in myCoinList" class="coinItem" @tap="onChoice(coin)" v-show="coin.enName != currentCoin.enName || isCoinType">
 								<img :src="coin.coinImageUrl" >
-								<span>{{coin.coinCode}}</span>
+								<span>{{coin.enName}}</span>
 							</li> 
 						</ul>
 				</div>
@@ -278,7 +278,7 @@
 					targetCoin: {},
 					isCoinType: true,
 					instantRate: 0,
-					receiveCoinFee: 0,
+					receiveCoinFee: 0.002,
 					coinList: [],
 					myCoinList: [],
 				},
@@ -287,7 +287,7 @@
 				},
 				computed: {
 					count () {
-						return this.ethNum * (this.instantRate * 1e10) / 1e10
+						return (this.ethNum * 1e10) * (this.instantRate * 1e10) / 1e20
 					},
 					isDisabled () {
 						return this.ethNum <= 0;
@@ -295,16 +295,16 @@
 				},
 				methods: {		
 					filterList () {
-						this.coinList.forEach(coin => {
-							const code = coin.coinCode;
-							let item = this.myCoinList.find(item => item.enName == code)
+						this.myCoinList.forEach(coin => {
+							const code = coin.enName;
+							let item = this.coinList.find(item => item.coinCode == code)
 							if(item) {
-								coin.isShow = true;
-								coin.balance = item.balance;
-								this.currentCoin = coin;
+								Object.assign(coin, item);
 							}
 						});
-						if(this.myCoinList.length > 0) {							
+						if(this.myCoinList.length > 0) {	
+							this.currentCoin = this.myCoinList[0];	
+							this.targetCoin = this.myCoinList[1];	
 							this.getBaseInfo();
 							setInterval(this.getBaseInfo, 5000);
 						}
@@ -357,21 +357,12 @@
 					queryCoinList () {
 						fetch(queryCoinList, {
 							supportType: `advanced`
-						}, 'POST', {
-							"Content-Type": "application/x-www-form-urlencoded",
-							"cache-control": "no-cache"
-						}).then(res => {
+						}, 'POST').then(res => {
+								console.log(res);
 								if(res.code==1) {
 									const data = res.obj.data;
 									this.coinList = data;
-									this.$nextTick(() => {
-										mui('.mui-scroll-wrapper').scroll({
-											deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-											bounce: true,
-											indicators: false, //是否显示滚动条
-										});
-									})
-									this.targetCoin = data[1];	
+	
 									this.filterList();
 								} else {
 									mui.toast('操作失败！')
@@ -386,7 +377,13 @@
 									const data = res.obj;
 									this.myCoinList = data;
 									this.queryCoinList();
-
+									this.$nextTick(() => {
+										mui('.mui-scroll-wrapper').scroll({
+											deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+											bounce: true,
+											indicators: false, //是否显示滚动条
+										});
+									})
 								} else {
 									mui.toast('操作失败！')
 								}							
@@ -395,13 +392,13 @@
 					// 获取兑换汇率基本信息接口
 					getBaseInfo () {
 						fetch(getBaseInfo, {
-							depositCoinCode: this.currentCoin.coinCode,
-							receiveCoinCode: this.targetCoin.coinCode
+							depositCoinCode: this.currentCoin.enName,
+							receiveCoinCode: this.targetCoin.enName
 						}, 'POST').then(res => {
 								if(res.code==1) {
 									const data = res.obj.data;
 									this.instantRate = data.instantRate
-									this.receiveCoinFee = data.receiveCoinFee
+									// this.receiveCoinFee = data.receiveCoinFee
 								} else {
 									mui.toast('操作失败！')
 								}							
