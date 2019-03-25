@@ -1,188 +1,205 @@
 <!doctype html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../css/mui.min.css" rel="stylesheet" />
-		<link href="../css/app.css" rel="stylesheet" />
-		<link href="../css/mui.picker.min.css" rel="stylesheet" />
-		<style type="text/css">
-			.mui-bar{
-				background-color: #fff;
-				box-shadow: none;
-			}
-			.mui-title{
-				color: #32303D;
-			}
-			.mui-bar a{
-				color: #32303D;
-			}
-			.main-header{
-				position: fixed;
-				top: 44px;
-				width: 100%;
-				z-index: 100;
-			}
-			.search{
-				padding: 10px 15px;
-				border: 1px solid #F2F2F2;
-				border-width: 1px 0 1px 0;
-				background: #fff;
-			}
-			.search .uni-form-item .uni-flex-item{
-				position: relative;
-			}
-			.search .uni-form-item .uni-flex-item .uni-input{
-				padding: 5px 30px;
-				border-radius: 4px;
-				background: #F1F1F1;
-				color: #999;
-			}
-			.search .uni-form-item .uni-flex-item .mui-icon{
-				position: absolute;
-				left: 5px;
-				top: 6px;
-				z-index: 100;
-				color: #999;
-				font-size: 18px;
-			}
-			.search .uni-form-item .uni-flex-item .mui-icon-clear{
-				top: 6px;
-				right: 5px;
-				left: inherit;
-			}
-			.search .uni-form-item .text{
-				margin-left: 15px;
-				font-size: 15px;
-			}
-			
-			.uni-tab{
-				background: #fff;
-				padding: 0 15px;
-				margin-bottom: 10px;
-			}
-			.uni-tab .uni-flex-item{
-				text-align: center;
-				font-size: 14px;
-				color: #666;
-				padding: 8px 0;
-			}
-			.uni-tab .uni-flex-item.active{
-				color: #12CEB3;
-				font-weight: bold;
-				border-bottom: 3px solid #12CEB3; 
-			}
-			.mui-content {
-				padding: 0!important;
-				position: absolute;
-				width: 100%;
-				bottom: 0;
-				top: 148px;
-				background: none;
-			}
-			.uni-tab-con .order-con{
-				background: #fff;
-				padding: 0 15px 10px;
-				margin-bottom: 10px;
-			}
-			.uni-tab-con .order-con span{
-				font-size: 12px;
-				color: #666;
-			}
-			.uni-tab-con .order-con .num{
-				color: #333;
-				font-size: 14px;
-				font-weight: bold;
-			}
-			.uni-tab-con .order-con .details{
-				padding: 0 10px;
-				background: #12CEB3;
-				font-size: 12px;
-				color: #fff;
-				border-radius: 15px;
-			}
-			.uni-tab-con .order-con-h{
-				padding: 10px 0;
-				border-bottom: 1px solid #eee;
-			}
-			.uni-tab-con .order-con-m{
-				padding: 10px 0;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/app.css" rel="stylesheet" />
+	<link href="../css/mui.picker.min.css" rel="stylesheet" />
+	<style type="text/css">
+		.mui-bar {
+			background-color: #fff;
+			box-shadow: none;
+		}
 
-	<body>
-		<div id="app">
-			<header id="header" class="mui-bar mui-bar-nav">
-				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-				<h1 class="mui-title">一键{{type == 1?`买`:`卖`}}币·我的订单</h1>
-			</header>
-			<div class="main-header">
-				<!-- 搜索 -->
-				<div class="search">
-					<div class="uni-form-item" style="align-items: center;">
-						<div class="uni-flex-item" @click="changeDate">
-							<span class="mui-icon mui-icon-search"></span>
-							<div class="uni-input" style="color: #666;" v-if="showDate">{{date}}</div>
-							<div class="uni-input" v-else>根据日期搜索</div>
-							<span v-if="showDate" class="mui-icon mui-icon-clear" @click.stop="onClear"></span>
-						</div>
-						<span class="text" @click="getList">搜索</span>
+		.mui-title {
+			color: #32303D;
+		}
+
+		.mui-bar a {
+			color: #32303D;
+		}
+
+		.main-header {
+			position: fixed;
+			top: 44px;
+			width: 100%;
+			z-index: 100;
+		}
+
+		.search {
+			padding: 10px 15px;
+			border: 1px solid #F2F2F2;
+			border-width: 1px 0 1px 0;
+			background: #fff;
+		}
+
+		.search .uni-form-item .uni-flex-item {
+			position: relative;
+		}
+
+		.search .uni-form-item .uni-flex-item .uni-input {
+			padding: 5px 30px;
+			border-radius: 4px;
+			background: #F1F1F1;
+			color: #999;
+		}
+
+		.search .uni-form-item .uni-flex-item .mui-icon {
+			position: absolute;
+			left: 5px;
+			top: 6px;
+			z-index: 100;
+			color: #999;
+			font-size: 18px;
+		}
+
+		.search .uni-form-item .uni-flex-item .mui-icon-clear {
+			top: 6px;
+			right: 5px;
+			left: inherit;
+		}
+
+		.search .uni-form-item .text {
+			margin-left: 15px;
+			font-size: 15px;
+		}
+
+		.uni-tab {
+			background: #fff;
+			padding: 0 15px;
+			margin-bottom: 10px;
+		}
+
+		.uni-tab .uni-flex-item {
+			text-align: center;
+			font-size: 14px;
+			color: #666;
+			padding: 8px 0;
+		}
+
+		.uni-tab .uni-flex-item.active {
+			color: #12CEB3;
+			font-weight: bold;
+			border-bottom: 3px solid #12CEB3;
+		}
+
+		.mui-content {
+			padding: 0 !important;
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			top: 148px;
+			background: none;
+		}
+
+		.uni-tab-con .order-con {
+			background: #fff;
+			padding: 0 15px 10px;
+			margin-bottom: 10px;
+		}
+
+		.uni-tab-con .order-con span {
+			font-size: 12px;
+			color: #666;
+		}
+
+		.uni-tab-con .order-con .num {
+			color: #333;
+			font-size: 14px;
+			font-weight: bold;
+		}
+
+		.uni-tab-con .order-con .details {
+			padding: 0 10px;
+			background: #12CEB3;
+			font-size: 12px;
+			color: #fff;
+			border-radius: 15px;
+		}
+
+		.uni-tab-con .order-con-h {
+			padding: 10px 0;
+			border-bottom: 1px solid #eee;
+		}
+
+		.uni-tab-con .order-con-m {
+			padding: 10px 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">一键{{type == 1?`买`:`卖`}}币·我的订单</h1>
+		</header>
+		<div class="main-header">
+			<!-- 搜索 -->
+			<div class="search">
+				<div class="uni-form-item" style="align-items: center;">
+					<div class="uni-flex-item" @click="changeDate">
+						<span class="mui-icon mui-icon-search"></span>
+						<div class="uni-input" style="color: #666;" v-if="showDate">{{date}}</div>
+						<div class="uni-input" v-else>根据日期搜索</div>
+						<span v-if="showDate" class="mui-icon mui-icon-clear" @click.stop="onClear"></span>
 					</div>
-				</div>
-				<!-- 订单列表 -->
-				<div class="uni-flex uni-tab" style="align-items: center;">
-					<div class="uni-flex-item" v-for="(tab,index) in tabBars" :key="index" :class="[tabIndex==index ? 'active' : '']" @tap="onChangeType(index)">
-						<span>{{tab}}</span>
-					</div>
+					<!-- <span class="text" @click="getList">搜索</span>	 -->
 				</div>
 			</div>
-			<div class="mui-content">
-				<div class="uni-tab-con">
-					<div class="mui-scroll-wrapper" id="refreshContainer">
-						<div class="mui-scroll">
-							<div class="order-con" v-for="(item, index) in orderList" :key="index">
-								<div class="order-con-h">
-									<div class="uni-flex">
-										<div class="uni-flex-item">
-											<span>订单号：买币 {{item.id}}</span>
-										</div>
-										<span v-if="item.status==-1">状态：商家取消</span>
-										<span v-else-if="item.status==1">状态：商家处理中</span>
-										<span v-else-if="item.status==3">状态：已完成</span>
-										<span v-else-if="item.status==0">状态：您已取消</span>
+			<!-- 订单列表 -->
+			<div class="uni-flex uni-tab" style="align-items: center;">
+				<div class="uni-flex-item" v-for="(tab,index) in tabBars" :key="index" :class="[tabIndex==index ? 'active' : '']" @tap="onChangeType(index)">
+					<span>{{tab}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="mui-content">
+			<div class="uni-tab-con">
+				<div class="mui-scroll-wrapper" id="refreshContainer">
+					<div class="mui-scroll">
+						<div class="order-con" v-for="(item, index) in orderList" :key="index">
+							<div class="order-con-h">
+								<div class="uni-flex">
+									<div class="uni-flex-item">
+										<span>订单号：买币 {{item.id}}</span>
+									</div>
+									<span v-if="item.status==-1">状态：商家取消</span>
+									<span v-else-if="item.status==1">状态：商家处理中</span>
+									<span v-else-if="item.status==3">状态：已完成</span>
+									<span v-else-if="item.status==0">状态：您已取消</span>
+								</div>
+							</div>
+							<div class="order-con-m">
+								<div class="uni-flex">
+									<div class="uni-flex-item">
+										<span>金额：</span>
+										<span class="num">{{item.money}}CNY</span>
+									</div>
+									<div class="uni-flex-item">
+										<span>数量：</span>
+										<span class="num">{{item.amount}}USDT</span>
 									</div>
 								</div>
-								<div class="order-con-m">
-									<div class="uni-flex">
-										<div class="uni-flex-item">
-											<span>金额：</span>
-											<span class="num">{{item.money}}CNY</span>
+							</div>
+							<div class="order-con-b">
+								<div class="uni-flex" style="align-items: center;">
+									<div class="uni-flex-item">
+										<div class="uni-text">
+											<span>{{type=='1'?'商家': '买家'}}：{{item.nickName}}</span>
+											<span style="margin-left: 20px;" v-if="item.payWay == 1">支付方式：支付宝</span>
+											<span style="margin-left: 20px;" v-else-if="item.payWay == 2">支付方式：微信</span>
+											<span style="margin-left: 20px;" v-else-if="item.payWay == 3">支付方式：银行</span>
+											<span style="margin-left: 20px;" v-else>支付方式：{{item.payWay}}</span>
 										</div>
-										<div class="uni-flex-item">
-											<span>数量：</span>
-											<span class="num">{{item.amount}}USDT</span>
+										<div class="uni-text">
+											<span>时间：{{item.createTime}}</span>
 										</div>
 									</div>
-								</div>
-								<div class="order-con-b">
-									<div class="uni-flex" style="align-items: center;">
-										<div class="uni-flex-item">
-											<div class="uni-text">
-												<span>{{type=='1'?'商家': '买家'}}：{{item.nickName}}</span>
-												<span style="margin-left: 20px;" v-if="item.payWay == 1">支付方式：支付宝</span>
-												<span style="margin-left: 20px;" v-else-if="item.payWay == 2">支付方式：微信</span>
-												<span style="margin-left: 20px;" v-else-if="item.payWay == 3">支付方式：银行</span>
-												<span style="margin-left: 20px;" v-else>支付方式：{{item.payWay}}</span>
-											</div>
-											<div class="uni-text">
-												<span>时间：{{item.createTime}}</span>
-											</div>
-										</div>
-										<span class="details" v-if="type=='1' && item.status!=3" @tap="onDetails">查看</span>
-									</div>
+									<span class="details" v-if="type=='1' && item.status!=3" @tap="onDetails">查看</span>
 								</div>
 							</div>
 						</div>
@@ -190,130 +207,133 @@
 				</div>
 			</div>
 		</div>
-		<script src="../js/vue.min.js"></script>
-		<script src="../js/mui.min.js"></script>
-		<script src="../js/fetch.js"></script>
-		<script src="../js/api.js"></script>
-		<script src="../js/common.js"></script>
-		<script src="../js/mui.picker.min.js"></script>
-		<script type="text/javascript">
-			var dtPicker = new mui.DtPicker({
-				type: "date"
-			})
-			new Vue({
-				el: '#app',
-				data: {
-					status: 1,
-					type: 1,
-					date: '',
-					showDate: false,
-					tabIndex: 0,
-					tabBars: ['进行中', '已完成', '已取消', '全部'],
-					orderList: []
-				},
-				created() {
-					this.initMui();
-					this.type = getUrlParam('type') || 1;
-					this.getList();
-				},
-				methods: {
-					// 初始化mui
-					initMui() {
-						mui.init({
-							pullRefresh : {
-								container:"#refreshContainer",
-								down : {
-									auto:true,
-									callback: this.onPulldownfresh()
-								},
-								up: {
-									auto:true,
-									contentrefresh: '正在加载...',
-									callback: this.onPullupRefresh()
-								}
+	</div>
+	<script src="../js/vue.min.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/fetch.js"></script>
+	<script src="../js/api.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/mui.picker.min.js"></script>
+	<script type="text/javascript">
+		var dtPicker = new mui.DtPicker({
+			type: "month"
+		})
+		new Vue({
+			el: '#app',
+			data: {
+				status: 1,
+				type: 1,
+				date: '',
+				showDate: false,
+				tabIndex: 0,
+				tabBars: ['进行中', '已完成', '已取消', '全部'],
+				orderList: []
+			},
+			created() {
+				this.initMui();
+				this.type = getUrlParam('type') || 1;
+				this.getList();
+			},
+			methods: {
+				// 初始化mui
+				initMui() {
+					mui.init({
+						pullRefresh: {
+							container: "#refreshContainer",
+							down: {
+								auto: true,
+								callback: this.onPulldownfresh()
+							},
+							up: {
+								auto: true,
+								contentrefresh: '正在加载...',
+								callback: this.onPullupRefresh()
 							}
-						});
-					},
-					// 获取列表
-					getList({pageNum = 1, pageSize = 10, status = this.status, date = this.date} = {}) {
-						fetch(myRecords, {
-							date,
-							pageNum,
-							pageSize,
-							status,		// 1进行中 3已完成 0已取消 2全部
-							"type": this.type,		// 1买币记录	2卖币记录
-							"userId": USER_ID		// 用户id
-						}, 'POST').then(res => {
-								if(res.code==1) {
-									this.orderList = res.list;
-								} else {
-									mui.toast('操作失败！')
-								}							
-						})
-					},
-					// 下拉事件
-					onPulldownfresh() {
-						console.log(111)
-					},
-					onPullupRefresh() {
-						console.log(222)
-					},
-					// 选择日期
-					changeDate() {
-						dtPicker.show((item) => {
-							this.date = item.text
-							this.showDate = true
-							this.getList()
-						});
-					},
-					// 清除搜索框
-					onClear() {
-						this.date = ''
-						this.showDate = false
-						this.getList()
-					},
-					// 选择列表类型
-					onChangeType(index) {
-						this.tabIndex = index
-						switch (index){
-							case 0: // 进行中
-								console.log('进行中')
-								this.status = 1;
-								this.getList({status: 1});
-								break;
-							case 1: // 已完成
-								this.status = 3;
-								this.getList({status: 3});
-								console.log('已完成')
-								break;
-							case 2: // 已取消
-								this.status = 0;
-								this.getList({status: 0});
-								console.log('已取消')
-								break;
-							case 3: // 全部
-								this.status = 2;
-								this.getList({status: 2});
-								console.log('全部')
-								break;
-							default:
-								break;
 						}
-					},
-					// 查看订单
-					onDetails() {
-						console.log(111)
-					},
-					onSubmit() {
-						console.log(this.bankInfo)
+					});
+				},
+				// 获取列表
+				getList({ pageNum = 1, pageSize = 10, status = this.status, date = this.date } = {}) {
+					fetch(myRecords, {
+						date,
+						pageNum,
+						pageSize,
+						status,		// 1进行中 3已完成 0已取消 2全部
+						"type": this.type,		// 1买币记录	2卖币记录
+						"userId": USER_ID		// 用户id
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							this.orderList = res.obj.list;
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 下拉事件
+				onPulldownfresh() {
+					console.log(111)
+				},
+				onPullupRefresh() {
+					console.log(222)
+				},
+				// 选择日期
+				changeDate() {
+					dtPicker.show((item) => {
+						this.date = item.text
+						this.showDate = true
+						this.getList()
+					});
+				},
+				// 清除搜索框
+				onClear() {
+					// this.date = ''
+					this.showDate = false
+					this.getList()
+				},
+				// 选择列表类型
+				onChangeType(index) {
+					this.tabIndex = index;
+					this.orderList = [];
+					switch (index) {
+						case 0: // 进行中
+							console.log('进行中')
+							this.status = 1;
+							this.getList({ status: 1 });
+							break;
+						case 1: // 已完成
+							this.status = 3;
+							this.getList({ status: 3 });
+							console.log('已完成')
+							break;
+						case 2: // 已取消
+							this.status = 0;
+							this.getList({ status: 0 });
+							console.log('已取消')
+							break;
+						case 3: // 全部
+							this.status = 2;
+							this.getList({ status: 2 });
+							console.log('全部')
+							break;
+						default:
+							break;
 					}
+				},
+				// 查看订单
+				onDetails() {
+					console.log(111)
+				},
+				onSubmit() {
+					console.log(this.bankInfo)
 				}
-			});
-			mui('.mui-scroll-wrapper').scroll({
-				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-				bounce: true,
-				indicators: false, //是否显示滚动条
-			});
-		</script>
-	</body>
+			}
+		});
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			bounce: true,
+			indicators: false, //是否显示滚动条
+		});
+	</script>
+</body>
+
 </html>

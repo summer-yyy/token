@@ -1,414 +1,465 @@
 <!doctype html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../css/mui.min.css" rel="stylesheet" />
-		<link href="../css/app.css" rel="stylesheet" />
-		<style type="text/css">
-			.mui-bar{
-				box-shadow: none;
-				background: #32303D;
-			}
-			.mui-title{
-				color: #fff;
-			}
-			.mui-bar a{
-				color: #fff;
-			}
-			.mui-content{
-				background: #fff;
-				padding:0!important;
-				position: absolute;
-				top: 44px;
-				bottom: 0;
-				width: 100%;
-				overflow: hidden;
-			}
-			.main-t{
-				padding: 10px 15px 5px;
-				background: #32303D;
-			}
-			.main-t .line{
-				width: 10px;
-				position: relative;
-			}
-			.main-t .line img{
-				position: absolute;
-				left: -14px;
-				top:30px;
-				width: 35px;
-				display: block;
-			}
-			.main-t>.uni-flex>.uni-flex-item{
-				background:rgba(255,255,255,1);
-				box-shadow:0px 0px 10px 0px rgba(0,0,0,0.06);
-				border-radius:11px 0px 0px 11px;
-			}
-			.main-t>.uni-flex>.uni-flex-item:last-child{
-				border-radius:0px 11px 11px 0px;
-			}
-			.main-t .con-t{
-				padding: 20px;
-				border-bottom: 1px solid #E4E4E4;
-			}
-			.main-t .con-t .uni-flex-item{
-				position: relative;
-				height: 40px;
-				line-height: 40px;
-			}
-			.main-t .con-t p{
-				font-size: 18px;
-				font-weight: blod;
-			}
-			.main-t .con-t .icon-img{
-				width: 40px;
-				height: 40px;
-				border: 1px solid #E4E4E4;
-				border-radius: 50%;
-				margin-right: 15px;
-				overflow: hidden;
-			}
-			.main-t .con-t span{
-				font-size: 15px;
-				color: #999;
-				position: absolute;
-				left: 10px;
-				bottom: -3px;
-			}
-			.main-t .con-b{
-				padding: 5px 0px 15px;
-				text-align: center;
-			}
-			.main-t .con-b h4{
-				font-size: 12px;
-				color: #12CEB3;
-				font-weight: normal;
-				margin-bottom: 10px;
-			}
-			.main-t .con-b p{
-				color: #999;
-				overflow: hidden;
-				width: 110px;
-				margin: 0 auto;
-			}
-			.main-t .con-b input{
-				width: 110px;
-				font-size: 14px;
-				color: #999;
-				height: 20px;
-				line-height: 20px;
-				border: none;
-				padding: 0;
-				margin: 0;
-				text-align: center;
-			}
-			.main-t .con-b input::-webkit-input-placeholder {
-				color: #999;
-				font-size: 14px;
-			}
-			.main-t .tips {
-				margin-top: 10px;
-			}
-			.main-t .tips p, .main-t .tips p span{
-				font-size: 12px;
-				color: #fff;
-			}
-			.main-t .tips p img{
-				width: 20px;
-				height: 20px;
-				margin: 0 5px;
-				position: relative;
-				top: 5px;
-			}
-			.mui-grid-view.mui-grid-9{
-				background: none;
-				border: none;
-				padding: 20px 25px;
-				position: absolute;
-				width: 100%;
-				bottom: 80px;
-				top: 216px;
-			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell{
-				border-right: none;
-				height: 25%;
-				overflow: hidden;
-			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell img{
-				width: 35px;
-				display: block;
-				margin: 0 auto;
-			}
-			.mui-grid-view.mui-grid-9 .mui-table-view-cell span{
-				font-size: 30px;
-				font-weight: bold;
-				display: flex;
-				height: 100%;
-				align-items: center;
-				justify-content: center;
-			}
-			.paybtn{
-				padding: 15px;
-				position: absolute;
-				bottom: 20px;
-				left: 0;
-				width: 100%;
-			}
-			#popover .mui-scroll{
-				padding: 0 15px;
-			}
-			#popover .coinItem{
-				overflow: hidden;
-				line-height: 40px;
-				padding: 10px 0;
-				font-size: 14px;
-				font-weight: bold;
-				border-bottom: 1px solid #E4E4E4;
-			}
-			#popover .coinItem img{
-				width: 40px;
-				height: 40px;
-				display: block;
-				float: left;
-				margin-right: 15px;
-			}
-			#popover .coinItem:after{
-				left: 0;
-				background-color: #E4E4E4;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/app.css" rel="stylesheet" />
+	<style type="text/css">
+		.mui-bar {
+			box-shadow: none;
+			background: #32303D;
+		}
 
-	<body>
-		<div id="app">
-			<header id="header" class="mui-bar mui-bar-nav">
-				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-				<h1 class="mui-title">一键兑换</h1>
-			</header>
-			<div class="mui-content">
-				<div class="main-t">
-					<div class="uni-flex">
+		.mui-title {
+			color: #fff;
+		}
+
+		.mui-bar a {
+			color: #fff;
+		}
+
+		.mui-content {
+			background: #fff;
+			padding: 0 !important;
+			position: absolute;
+			top: 44px;
+			bottom: 0;
+			width: 100%;
+			overflow: hidden;
+		}
+
+		.main-t {
+			padding: 10px 15px 5px;
+			background: #32303D;
+		}
+
+		.main-t .line {
+			width: 10px;
+			position: relative;
+		}
+
+		.main-t .line img {
+			position: absolute;
+			left: -14px;
+			top: 30px;
+			width: 35px;
+			display: block;
+		}
+
+		.main-t>.uni-flex>.uni-flex-item {
+			background: rgba(255, 255, 255, 1);
+			box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.06);
+			border-radius: 11px 0px 0px 11px;
+		}
+
+		.main-t>.uni-flex>.uni-flex-item:last-child {
+			border-radius: 0px 11px 11px 0px;
+		}
+
+		.main-t .con-t {
+			padding: 20px;
+			border-bottom: 1px solid #E4E4E4;
+		}
+
+		.main-t .con-t .uni-flex-item {
+			position: relative;
+			height: 40px;
+			line-height: 40px;
+		}
+
+		.main-t .con-t p {
+			font-size: 18px;
+			font-weight: blod;
+		}
+
+		.main-t .con-t .icon-img {
+			width: 40px;
+			height: 40px;
+			border: 1px solid #E4E4E4;
+			border-radius: 50%;
+			margin-right: 15px;
+			overflow: hidden;
+		}
+
+		.main-t .con-t span {
+			font-size: 15px;
+			color: #999;
+			position: absolute;
+			left: 10px;
+			bottom: -3px;
+		}
+
+		.main-t .con-b {
+			padding: 5px 0px 15px;
+			text-align: center;
+		}
+
+		.main-t .con-b h4 {
+			font-size: 12px;
+			color: #12CEB3;
+			font-weight: normal;
+			margin-bottom: 10px;
+		}
+
+		.main-t .con-b p {
+			color: #999;
+			overflow: hidden;
+			width: 110px;
+			margin: 0 auto;
+		}
+
+		.main-t .con-b input {
+			/* width: 110px; */
+			font-size: 14px;
+			color: #999;
+			height: 20px;
+			line-height: 20px;
+			border: none;
+			padding: 0;
+			margin: 0;
+			text-align: center;
+		}
+
+		.main-t .con-b input::-webkit-input-placeholder {
+			color: #999;
+			font-size: 14px;
+		}
+
+		.main-t .tips {
+			margin-top: 10px;
+		}
+
+		.main-t .tips p,
+		.main-t .tips p span {
+			font-size: 12px;
+			color: #fff;
+		}
+
+		.main-t .tips p img {
+			width: 20px;
+			height: 20px;
+			margin: 0 5px;
+			position: relative;
+			top: 5px;
+		}
+
+		.mui-grid-view.mui-grid-9 {
+			background: none;
+			border: none;
+			padding: 20px 25px;
+			position: absolute;
+			width: 100%;
+			bottom: 80px;
+			top: 216px;
+		}
+
+		.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+			border-right: none;
+			height: 25%;
+			overflow: hidden;
+		}
+
+		.mui-grid-view.mui-grid-9 .mui-table-view-cell img {
+			width: 35px;
+			display: block;
+			margin: 0 auto;
+		}
+
+		.mui-grid-view.mui-grid-9 .mui-table-view-cell span {
+			font-size: 30px;
+			font-weight: bold;
+			display: flex;
+			height: 100%;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.paybtn {
+			padding: 15px;
+			position: absolute;
+			bottom: 20px;
+			left: 0;
+			width: 100%;
+		}
+
+		#popover .mui-scroll {
+			padding: 0 15px;
+		}
+
+		#popover .coinItem {
+			overflow: hidden;
+			line-height: 40px;
+			padding: 10px 0;
+			font-size: 14px;
+			font-weight: bold;
+			border-bottom: 1px solid #E4E4E4;
+		}
+
+		#popover .coinItem img {
+			width: 40px;
+			height: 40px;
+			display: block;
+			float: left;
+			margin-right: 15px;
+		}
+
+		#popover .coinItem:after {
+			left: 0;
+			background-color: #E4E4E4;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">一键兑换</h1>
+		</header>
+		<div class="mui-content">
+			<div class="main-t">
+				<div class="uni-flex">
+					<div class="uni-flex-item">
+						<div class="con-t" @tap="changeCoinType">
+							<div class="uni-flex" style="align-items: center;">
+								<div class="icon-img">
+									<img :src=`${currentCoin.coinImageUrl}` style="width: 100%;">
+								</div>
+								<div class="uni-flex-item">
+									<p>{{currentCoin.enName}}</p>
+									<span class="mui-icon mui-icon-arrowdown"></span>
+								</div>
+							</div>
+						</div>
+						<div class="con-b">
+							<h4>存币</h4>
+							<input type="text" v-model="ethNum" disabled="true" :placeholder="`范围${depositMin}~${depositMax}`">
+							<!-- <p v-html="ethNum"></p> -->
+						</div>
+					</div>
+					<div class="line">
+						<img src="../images/icon-exchange.png">
+					</div>
+					<div class="uni-flex-item">
 						<div class="uni-flex-item">
-							<div class="con-t" @tap="changeCoinType">
+							<div class="con-t" @tap="changeBuy">
 								<div class="uni-flex" style="align-items: center;">
 									<div class="icon-img">
-										<img :src=`${currentCoin.coinImageUrl}` style="width: 100%;">
+										<img :src=`${targetCoin.coinImageUrl}` style="width: 100%;">
 									</div>
 									<div class="uni-flex-item">
-										<p>{{currentCoin.enName}}</p>
+										<p>{{targetCoin.enName}}</p>
 										<span class="mui-icon mui-icon-arrowdown"></span>
 									</div>
 								</div>
 							</div>
 							<div class="con-b">
-								<h4>存币</h4>
-								<input type="text" v-model="ethNum" disabled="true" placeholder="请输入数量">
-								<!-- <p v-html="ethNum"></p> -->
-							</div>
-						</div>
-						<div class="line">
-							<img src="../images/icon-exchange.png" >
-						</div>
-						<div class="uni-flex-item">
-							<div class="uni-flex-item">
-								<div class="con-t" @tap="changeBuy">
-									<div class="uni-flex" style="align-items: center;">
-										<div class="icon-img">
-											<img :src=`${targetCoin.coinImageUrl}` style="width: 100%;">
-										</div>
-										<div class="uni-flex-item">
-											<p>{{targetCoin.enName}}</p>
-											<span class="mui-icon mui-icon-arrowdown"></span>
-										</div>
-									</div>
-								</div>
-								<div class="con-b">
-									<h4>折合</h4>
-									<p>{{count}}</p>
-								</div>
+								<h4>折合</h4>
+								<p>{{count}}</p>
 							</div>
 						</div>
 					</div>
-					<div class="tips">
-						<p>可用数量：<span>{{currentCoin.balance+" "+currentCoin.enName}}</span></p>
-						<p>手续费<img :src="currentCoin.coinImageUrl" >：<span>{{receiveCoinFee * 100}}%</span></p>
-					</div>
 				</div>
-				<div class="main-b">
-					<ul class="mui-table-view mui-grid-view mui-grid-9">
-						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" v-for="(item, index) in nums" :key="index" @tap="changeNum(item)">
-							<span v-html="item"></span>
-						</li>
-						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" @tap="onDelete">
-							<span><img src="../images/icon-delete.png" ></span>
-						</li>
-					</ul>
-				</div>
-				<div class="paybtn">
-					<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button> 
+				<div class="tips">
+					<p>可用数量：
+						<span>{{currentCoin.balance+" "+currentCoin.enName}}</span>
+					</p>
+					<p>手续费
+						<img :src="currentCoin.coinImageUrl">：
+						<span>{{receiveCoinFee * 100}}%</span>
+					</p>
 				</div>
 			</div>
-			<div id="popover" class="mui-popover" style="height: 300px; ">
-				<div class="mui-scroll-wrapper">
-						<ul class="mui-scroll">
-							<li v-for="coin in myCoinList" class="coinItem" @tap="onChoice(coin)" v-show="coin.enName != currentCoin.enName || isCoinType">
-								<img :src="coin.coinImageUrl" >
-								<span>{{coin.enName}}</span>
-							</li> 
-						</ul>
-				</div>
-				</div>
+			<div class="main-b">
+				<ul class="mui-table-view mui-grid-view mui-grid-9">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" v-for="(item, index) in nums" :key="index" @tap="changeNum(item)">
+						<span v-html="item"></span>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" @tap="onDelete">
+						<span>
+							<img src="../images/icon-delete.png">
+						</span>
+					</li>
+				</ul>
+			</div>
+			<div class="paybtn">
+				<button type="button" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button>
 			</div>
 		</div>
-		<script src="../js/vue.min.js"></script>
-		<script src="../js/mui.min.js"></script>
-		<script src="../js/api.js"></script>
-		<script src="../js/fetch.js"></script>
-		<script src="../js/common.js"></script>
-		<script type="text/javascript">
-			new Vue({
-				el: '#app',
-				data: {
-					ethNum: '',
-					nums: ['1','2','3','4','5','6','7','8','9','.','0'],
-					currentCoin: {},
-					targetCoin: {},
-					isCoinType: true,
-					instantRate: 0,
-					receiveCoinFee: 0.002,
-					coinList: [],
-					myCoinList: [],
+		<div id="popover" class="mui-popover" style="height: 300px; ">
+			<div class="mui-scroll-wrapper">
+				<ul class="mui-scroll">
+					<li v-for="coin in myCoinList" class="coinItem" @tap="onChoice(coin)" v-show="!isCoinType ? coin.enName != currentCoin.enName : coin.enName != targetCoin.enName">
+						<img :src="coin.coinImageUrl">
+						<span>{{coin.enName}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	</div>
+	<script src="../js/vue.min.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/api.js"></script>
+	<script src="../js/fetch.js"></script>
+	<script src="../js/common.js"></script>
+	<script type="text/javascript">
+		new Vue({
+			el: '#app',
+			data: {
+				ethNum: '',
+				nums: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0'],
+				currentCoin: { enName: "", balance: 0 },
+				targetCoin: { enName: "" },
+				isCoinType: true,
+				instantRate: 0,
+				receiveCoinFee: 0.002,
+				coinList: [],
+				myCoinList: [],
+				depositMax: 0,
+				depositMin: 0,
+			},
+			created() {
+				sessionStorage.params = "";
+				this.queryMyCoinList();
+			},
+			computed: {
+				count() {
+					let num = (this.ethNum * 1e10) * (this.instantRate * 1e10) / 1e20;
+					return Number(num.toFixed(6))
 				},
-				created() {
-					this.queryMyCoinList();
+				isDisabled() {
+					return this.ethNum < this.depositMin || this.ethNum <= 0;
 				},
-				computed: {
-					count () {
-						return (this.ethNum * 1e10) * (this.instantRate * 1e10) / 1e20
-					},
-					isDisabled () {
-						return this.ethNum <= 0;
-					},
-				},
-				methods: {		
-					filterList () {
-						this.myCoinList.forEach(coin => {
-							const code = coin.enName;
-							let item = this.coinList.find(item => item.coinCode == code)
-							if(item) {
-								Object.assign(coin, item);
-							}
-						});
-						if(this.myCoinList.length > 0) {	
-							this.currentCoin = this.myCoinList[0];	
-							this.targetCoin = this.myCoinList[1];	
-							this.getBaseInfo();
-							setInterval(this.getBaseInfo, 5000);
+			},
+			methods: {
+				filterList() {
+					this.myCoinList.forEach(coin => {
+						const code = coin.enName;
+						let item = this.coinList.find(item => item.coinCode == code)
+						if (item) {
+							Object.assign(coin, item);
 						}
-					},
-					// 选择要兑换的币种
-					changeCoinType() {
-						this.isCoinType = true
-						mui('.mui-popover').popover('show');
-					},
-					// 选择兑换币种
-					changeBuy() {
-						this.isCoinType = false
-						mui('.mui-popover').popover('show');
-					},
-					onChoice(coin) {
-						if(this.isCoinType) {
-							this.currentCoin = coin
-						} else {
-							this.targetCoin = coin
-						}
+					});
+					if (this.myCoinList.length > 0) {
+						this.currentCoin = this.myCoinList[0];
+						this.targetCoin = this.myCoinList[1];
 						this.getBaseInfo();
-						mui('.mui-popover').popover('hide');
-					},
-					// 数字输入
-					changeNum(item) {
-						// 判断字符串是否存在点
-						if(item=='.' && (this.ethNum.indexOf('.') > -1 || this.ethNum == "")) return
-						this.ethNum = this.ethNum + item
-						if(this.ethNum > this.currentCoin.balance) {
-							this.ethNum = this.currentCoin.balance + "";
-						} 
-					},
-					// 删除数字
-					onDelete() {
-						if(this.ethNum =='') return
-						this.ethNum = this.ethNum.slice(0,this.ethNum.length-1)
-					},
-					// 一键兑换
-					onSubmit() {
-						let params = {
-							currentCoin: JSON.stringify(this.currentCoin),
-							targetCoin: JSON.stringify(this.targetCoin),
-							instantRate: this.instantRate,
-							receiveCoinFee: this.receiveCoinFee,
-							num: this.ethNum,
+						setInterval(this.getBaseInfo, 5000);
+					}
+				},
+				// 选择要兑换的币种
+				changeCoinType() {
+					this.isCoinType = true
+					mui('.mui-popover').popover('show');
+				},
+				// 选择兑换币种
+				changeBuy() {
+					this.isCoinType = false
+					mui('.mui-popover').popover('show');
+				},
+				onChoice(coin) {
+					if (this.isCoinType) {
+						this.currentCoin = coin
+					} else {
+						this.targetCoin = coin
+					}
+					this.ethNum = "";
+					this.getBaseInfo();
+					mui('.mui-popover').popover('hide');
+				},
+				// 数字输入
+				changeNum(item) {
+					// 判断字符串是否存在点
+					if (item == '.' && (this.ethNum.indexOf('.') > -1 || this.ethNum == "")) return
+					this.ethNum = this.ethNum + item
+					if (this.ethNum > Math.min(this.currentCoin.balance, this.depositMax)) {
+						this.ethNum = Math.min(this.currentCoin.balance, this.depositMax) + "";
+					}
+				},
+				// 删除数字
+				onDelete() {
+					if (this.ethNum == '') return
+					this.ethNum = this.ethNum.slice(0, this.ethNum.length - 1)
+				},
+				// 一键兑换
+				onSubmit() {
+					if (this.isDisabled) {
+						mui.toast('存币金额不在范围之内')
+						return;
+					}
+					let params = {
+						currentCoin: this.currentCoin,
+						targetCoin: this.targetCoin,
+						instantRate: this.instantRate,
+						receiveCoinFee: this.receiveCoinFee,
+						num: this.ethNum,
+					}
+					sessionStorage.params = JSON.stringify(params);
+					window.location.href = `put.html`;
+				},
+				// 查询币种列
+				queryCoinList() {
+					fetch(queryCoinList, {
+						supportType: `advanced`
+					}, 'POST').then(res => {
+						console.log(res);
+						if (res.code == 1) {
+							const data = res.obj.data;
+							this.coinList = data;
+
+							this.filterList();
+						} else {
+							mui.toast('操作失败！')
 						}
-						window.location.href=`put.html?` + urlParamFormat(params);
-					},
-					// 查询币种列
-					queryCoinList () {
-						fetch(queryCoinList, {
-							supportType: `advanced`
-						}, 'POST').then(res => {
-								console.log(res);
-								if(res.code==1) {
-									const data = res.obj.data;
-									this.coinList = data;
-	
-									this.filterList();
-								} else {
-									mui.toast('操作失败！')
-								}							
-						})
-					},
-						// 查询币种列
-					queryMyCoinList () {
-						fetch(coinList + "/" + USER_ID, {
-						}, 'POST').then(res => {
-								if(res.code==1) {
-									const data = res.obj;
-									this.myCoinList = data;
-									this.queryCoinList();
-									this.$nextTick(() => {
-										mui('.mui-scroll-wrapper').scroll({
-											deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-											bounce: true,
-											indicators: false, //是否显示滚动条
-										});
-									})
-								} else {
-									mui.toast('操作失败！')
-								}							
-						})
-					},
-					// 获取兑换汇率基本信息接口
-					getBaseInfo () {
-						fetch(getBaseInfo, {
-							depositCoinCode: this.currentCoin.enName,
-							receiveCoinCode: this.targetCoin.enName
-						}, 'POST').then(res => {
-								if(res.code==1) {
-									const data = res.obj.data;
-									this.instantRate = data.instantRate
-									// this.receiveCoinFee = data.receiveCoinFee
-								} else {
-									mui.toast('操作失败！')
-								}							
-						})
-					},
-				}
-			});
-			mui.init({
-				swipeBack:true //启用右滑关闭功能
-			});
-		</script>
-	</body>
+					})
+				},
+				// 查询币种列
+				queryMyCoinList() {
+					fetch(coinList + "/" + USER_ID, {
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							const data = res.obj;
+							this.myCoinList = data;
+							this.queryCoinList();
+							this.$nextTick(() => {
+								mui('.mui-scroll-wrapper').scroll({
+									deceleration: 0.0005,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+									bounce: true,
+									indicators: false, //是否显示滚动条
+								});
+							})
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 获取兑换汇率基本信息接口
+				getBaseInfo() {
+					fetch(getBaseInfo, {
+						depositCoinCode: this.currentCoin.enName,
+						receiveCoinCode: this.targetCoin.enName
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							const data = res.obj.data;
+							this.instantRate = data.instantRate;
+							this.depositMax = data.depositMax;
+							this.depositMin = data.depositMin;
+							// this.receiveCoinFee = data.receiveCoinFee
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+			}
+		});
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+	</script>
+</body>
+
 </html>

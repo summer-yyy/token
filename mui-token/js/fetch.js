@@ -8,6 +8,8 @@
 // var baseUrl = 'http://47.244.9.84:8080/api/v1'
 // var baseUrl = '/api/v1'
 var baseUrl = ''
+let fetchCount = 0;
+let fetchMask;
 
 /**
  * @description:
@@ -16,11 +18,22 @@ var baseUrl = ''
  * @param {String} type - 请求类型 'POST/GET/DELETE'
  * @return:
  */
-function fetch(url, data, type, config={}) {
+function fetch(url, data, type, config = {}) {
+	fetchCount++;
+	if (fetchMask) {
+		if (fetchCount == 1) {
+			fetchMask.style.display = "block";
+		}
+	} else {
+		fetchMask = document.createElement('div');
+		fetchMask.classList.add("mui-show-loading");
+		fetchMask.classList.add("mui-backdrop");
+		document.body.appendChild(fetchMask);
+	}
 	var type = type.toUpperCase(),
 		url = baseUrl + url;
-		method = 'fetch'
-		config = Object.assign({"Content-type": "application/json"}, config)
+	method = 'fetch'
+	config = Object.assign({ "Content-type": "application/json" }, config)
 	if (type == 'GET') {
 		var dataStr = ''; // 数据拼接字符串
 		Object.keys(data).forEach(key => {
@@ -41,7 +54,7 @@ function fetch(url, data, type, config={}) {
 				// eslint-disable-next-line
 				requestObj = new ActiveXObject();
 			}
-		
+
 			var sendData = '';
 			if (type === 'POST' || type === 'DELETE' || type === 'PUT') {
 				sendData = JSON.stringify(data);
@@ -49,12 +62,16 @@ function fetch(url, data, type, config={}) {
 			requestObj.open(type, url, true);
 			for (let i in config) {
 				requestObj.setRequestHeader(i, config[i]);
-			}	
+			}
 			// requestObj.setRequestHeader("Content-type", "application/json"); //application/x-www-form-urlencoded application/json; charset=utf-8
 			requestObj.send(sendData);
 			// 连接数据库
 			requestObj.onreadystatechange = () => {
 				if (requestObj.readyState === 4) {
+					fetchCount--;
+					if (fetchCount == 0) {
+						fetchMask.style.display = "none";
+					}
 					// HTTP 响应已经完全接收
 					if (requestObj.status === 200) {
 						// 请求成功

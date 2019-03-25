@@ -19,8 +19,10 @@ let addBank = apiUrl + '/otc/addBank', // 添加到账银行卡
 	myRecords = apiUrl + '/otc/myRecords', // 用户买卖币记录
 	oneKeyBuy = apiUrl + '/otc/oneKeyBuy', // 买卖币提交订单
 	orderDetails = apiUrl + '/otc/orderDetails', // 订单详情
-	sellShop = apiUrl + '/otc/sellShop/' // 卖币商家列表 /{pageNum}/{pageSize}
-	
+	sellShop = apiUrl + '/otc/sellShop/', // 卖币商家列表 /{pageNum}/{pageSize}
+	bankList = apiUrl + '/otc/bankList', // 所属银行卡列表 
+	addPayWay = apiUrl + '/otc/addPayWay', // 用户收款方式 
+	otcPayWayList = apiUrl + '/otc/payWayList' // 收款方式列表 
 // 我的店铺
 let confirmAgree = apiUrl + '/shop/confirmAgree/', // 店铺确认同意{id}
 	confirmRefuse = apiUrl + '/shop/confirmRefuse/', // 店铺确认拒绝{id}
@@ -33,7 +35,7 @@ let confirmAgree = apiUrl + '/shop/confirmAgree/', // 店铺确认同意{id}
 
 // 一键兑换
 let queryCoinList = apiUrl2 + '/queryCoinList', // 查询币种列
-getBaseInfo = apiUrl2 + '/getBaseInfo', // 获取兑换汇率基本信息接口
-coinList = apiUrl2 + '/coinList', // 查询平台支持币种列
-accountExchange = apiUrl2 + '/accountExchange', // 创建订单
-queryOrderState = apiUrl2 + '/queryOrderState'; // 查询订单状态
+	getBaseInfo = apiUrl2 + '/getBaseInfo', // 获取兑换汇率基本信息接口
+	coinList = apiUrl2 + '/coinList', // 查询平台支持币种列
+	accountExchange = apiUrl2 + '/accountExchange', // 创建订单
+	queryOrderState = apiUrl2 + '/queryOrderState'; // 查询订单状态

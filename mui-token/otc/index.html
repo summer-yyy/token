@@ -1,509 +1,559 @@
 <!doctype html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../css/mui.min.css" rel="stylesheet" />
-		<link href="../css/app.css" rel="stylesheet" />
-		<style type="text/css">
-			.mui-bar{
-				background-color: #fff;
-			}
-			.mui-title{
-				color: #32303D;
-			}
-			.mui-bar a{
-				color: #32303D;
-			}
-			.mui-content{
-				background: #fff;
-				padding:0!important;
-				position: absolute;
-				top: 50px;
-				bottom: 0;
-				width: 100%;
-			}
-			.content-con{
-				padding: 0 15px;
-				height: 100%;
-			}
-			.business>.uni-flex span{
-				line-height: 40px;
-			}
-			.business h2 span{
-				font-size: 20px;
-				border-bottom: 3px solid #12CEB3;
-			}
-			.business-choice .tit{
-				padding: 10px 0 0px;
-			}
-			.business-choice .tit span{
-				font-size: 12px;
-			}
-			.business-choice .tit .gray{
-				color: #999999;
-			}
-			.business-choice .business-more{
-				overflow: hidden;
-				transition: all 0.3s;
-			}
-			.business-choice .business-more-con{
-				/* background: #F4F4F4; */
-				/* border: 1px solid #DDDDDD; */
-				border-radius: 10px;
-				overflow: hidden;
-			}
-			.mui-table-view.mui-grid-9{
-				width: 100%;
-				background: none;
-				border: none;
-			}
-			.mui-table-view.mui-grid-9 .mui-table-view-cell{
-				padding: 5px;
-				box-sizing: border-box;
-				background: none;
-				border: none;
-			}
-			.mui-table-view.mui-grid-9 .mui-table-view-cell .item-con{
-				border-radius: 10px;
-				width: 100%;
-				text-align: center;
-				display: flex;
-				align-items: center;
-				/* flex-direction: column; */
-				background: #F4F4F4;
-				padding: 10px 20px;
-			}
-			.mui-table-view.mui-grid-9 .mui-table-view-cell:after {
-				height: 0;
-			}
-			.mui-table-view.mui-grid-9 .mui-table-view-cell .item-con.active{
-				background: #DDDDDD;
-			}
-			.mui-table-view.mui-grid-9 .mui-table-view-cell .business-img img{
-				width: 30px;
-				height: 30px;
-			}
-			.mui-table-view.mui-grid-9 .business-img h3{
-				font-size: 10px;
-			}
-			.mui-table-view.mui-grid-9 h4{
-				font-size: 14px;
-				font-weight: bold;
-				margin-bottom: 5px;
-			}
-			.mui-table-view.mui-grid-9 span{
-				font-size: 12px;
-				color: #666;
-			}
-			.business-choice-con{
-				margin-top: 10px;
-				padding: 10px 20px;
-				background: #F4F4F4;
-				border: 1px solid #ddd;
-				border-radius: 10px;
-			}
-			.business-choice-con .business-img{
-				text-align: center;
-			}
-			.business-choice-con .business-img img{
-				width: 30px;
-				height: 30px;
-			}
-			.business-choice-con .business-img h3{
-				font-size: 10px;
-			}
-			.business-choice-con h4{
-				font-size: 14px;
-				font-weight: bold;
-				margin-bottom: 5px;
-			}
-			.business-choice-con span{
-				font-size: 12px;
-				color: #666;
-			}
-			.business .uni-tips{
-				font-size: 12px;
-				color: #999;
-				margin-top: 5px;
-			}
-			.buy{
-				margin-top: 37px;
-			}
-			.buy .uni-tab span{
-				font-size: 13px;
-				color: #666;
-				line-height: 16px;
-			}
-			.buy .uni-tab .active{
-				font-size: 15px;
-				font-weight: bold;
-				color: #32303D;
-			}
-			.buy .uni-tab span:first-child{
-				border-right: 2px solid #12CEB3;
-				padding-right: 10px;
-				margin-right: 10px;
-			}
-			.buy .uni-form-item{
-				border-bottom: 1px solid #E4E4E4;
-				padding: 20px 0 15px;
-			}
-			.buy .uni-form-item input{
-				border-left: 2px solid #12CEB3;
-				border-radius: 0;
-				padding: 0 10px;
-			}
-			.buy .uni-form-item span{
-				font-size: 14px;
-				color: #999;
-			}
-			.payType{
-				padding: 10px 0 20px;
-				border-bottom: 1px solid #E4E4E4;
-			}
-			.payType .uni-title{
-				font-size: 12px;
-				padding: 10px 0;
-			}
-			.payType >.uni-flex{
-				margin: 0 -7.5px;
-			}
-			.payType >.uni-flex>.uni-flex-item{
-				padding: 0 7.5px;
-			}
-			.payType .check-box{
-				border-radius: 4px;
-				border: 1px solid #12CEB3;
-				padding: 5px 10px;
-			}
-			.payType .check-box img{
-				width: 29.5px;
-				height: 29.5px;
-				display: block;
-			}
-			.payType .check-box .circle{
-				display: inline-block;
-				width: 15px;
-				height: 15px;
-				border:1px solid #DDDDDD;
-				border-radius: 50%;
-				position: relative;
-			}
-			.payType .check-box .circle-filled{
-				border-color:#12CEB3; 
-			}
-			.payType .check-box .circle-filled:before{
-				position: absolute;
-				left: 2px;
-				top:2px;
-				content: '';
-				width: 9px;
-				height: 9px;
-				border-radius: 50%;
-				background: #12CEB3;
-			}
-			.payInfo{
-				padding: 15px 0 28px;
-			}
-			.payInfo h4{
-				font-size: 12px;
-				font-weight: normal;
-				line-height: 24px;
-			}
-			.payInfo span{
-				font-size: 12px;
-				line-height: 24px;
-				color: #999999;
-			}
-			.payBtn{
-				padding: 0 0 50px 0;
-			}
-			.payBtn button[disabled]{
-				background: #BFC2C7;
-				box-shadow: 0px 5px 6px 0px rgba(191,194,199,0.2)
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/app.css" rel="stylesheet" />
+	<style type="text/css">
+		.mui-bar {
+			background-color: #fff;
+		}
 
-	<body>
-		<div id="app">
-			<header id="header" class="mui-bar mui-bar-nav">
-				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-				<h1 class="mui-title uni-flex">
-					<span class="active uni-flex-item">一键买币</span>
-					<span class="uni-flex-item border-r" @tap="changeRoute('sellCoin')">一键卖币</span>
-				</h1>
-				<span @tap="changeRoute('order',{type: 1})" class="header-r">我的订单</span>
-			</header>
-			<div class="mui-content">
-				<div class="mui-scroll-wrapper">
-					<div class="mui-scroll">
-						<div class="content-con">
-							<div class="business">
-								<div class="uni-flex" style="align-items: center;">
-									<div class="uni-flex-item">
-										<h2>
-											<span>USDT</span>
-										</h2>
-									</div>
-									<span>人民币</span>
+		.mui-title {
+			color: #32303D;
+		}
+
+		.mui-bar a {
+			color: #32303D;
+		}
+
+		.mui-content {
+			background: #fff;
+			padding: 0 !important;
+			position: absolute;
+			top: 50px;
+			bottom: 0;
+			width: 100%;
+		}
+
+		.content-con {
+			padding: 0 15px;
+			height: 100%;
+		}
+
+		.business>.uni-flex span {
+			line-height: 40px;
+		}
+
+		.business h2 span {
+			font-size: 20px;
+			border-bottom: 3px solid #12CEB3;
+		}
+
+		.business-choice .tit {
+			padding: 10px 0 0px;
+		}
+
+		.business-choice .tit span {
+			font-size: 12px;
+		}
+
+		.business-choice .tit .gray {
+			color: #999999;
+		}
+
+		.business-choice .business-more {
+			overflow: hidden;
+			transition: all 0.3s;
+		}
+
+		.business-choice .business-more-con {
+			/* background: #F4F4F4; */
+			/* border: 1px solid #DDDDDD; */
+			border-radius: 10px;
+			overflow: hidden;
+		}
+
+		.mui-table-view.mui-grid-9 {
+			width: 100%;
+			background: none;
+			border: none;
+		}
+
+		.mui-table-view.mui-grid-9 .mui-table-view-cell {
+			padding: 5px;
+			box-sizing: border-box;
+			background: none;
+			border: none;
+		}
+
+		.mui-table-view.mui-grid-9 .mui-table-view-cell .item-con {
+			border-radius: 10px;
+			width: 100%;
+			text-align: center;
+			display: flex;
+			align-items: center;
+			/* flex-direction: column; */
+			background: #F4F4F4;
+			padding: 10px 20px;
+		}
+
+		.mui-table-view.mui-grid-9 .mui-table-view-cell:after {
+			height: 0;
+		}
+
+		.mui-table-view.mui-grid-9 .mui-table-view-cell .item-con.active {
+			background: #DDDDDD;
+		}
+
+		.mui-table-view.mui-grid-9 .mui-table-view-cell .business-img img {
+			width: 30px;
+			height: 30px;
+		}
+
+		.mui-table-view.mui-grid-9 .business-img h3 {
+			font-size: 10px;
+		}
+
+		.mui-table-view.mui-grid-9 h4 {
+			font-size: 14px;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		.mui-table-view.mui-grid-9 span {
+			font-size: 12px;
+			color: #666;
+		}
+
+		.business-choice-con {
+			margin-top: 10px;
+			padding: 10px 20px;
+			background: #F4F4F4;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+		}
+
+		.business-choice-con .business-img {
+			text-align: center;
+		}
+
+		.business-choice-con .business-img img {
+			width: 30px;
+			height: 30px;
+		}
+
+		.business-choice-con .business-img h3 {
+			font-size: 10px;
+		}
+
+		.business-choice-con h4 {
+			font-size: 14px;
+			font-weight: bold;
+			margin-bottom: 5px;
+		}
+
+		.business-choice-con span {
+			font-size: 12px;
+			color: #666;
+		}
+
+		.business .uni-tips {
+			font-size: 12px;
+			color: #999;
+			margin-top: 5px;
+		}
+
+		.buy {
+			margin-top: 37px;
+		}
+
+		.buy .uni-tab span {
+			font-size: 13px;
+			color: #666;
+			line-height: 16px;
+		}
+
+		.buy .uni-tab .active {
+			font-size: 15px;
+			font-weight: bold;
+			color: #32303D;
+		}
+
+		.buy .uni-tab span:first-child {
+			border-right: 2px solid #12CEB3;
+			padding-right: 10px;
+			margin-right: 10px;
+		}
+
+		.buy .uni-form-item {
+			border-bottom: 1px solid #E4E4E4;
+			padding: 20px 0 15px;
+		}
+
+		.buy .uni-form-item input {
+			border-left: 2px solid #12CEB3;
+			border-radius: 0;
+			padding: 0 10px;
+		}
+
+		.buy .uni-form-item span {
+			font-size: 14px;
+			color: #999;
+		}
+
+		.payType {
+			padding: 10px 0 20px;
+			border-bottom: 1px solid #E4E4E4;
+		}
+
+		.payType .uni-title {
+			font-size: 12px;
+			padding: 10px 0;
+		}
+
+		.payType>.uni-flex {
+			margin: 0 -7.5px;
+		}
+
+		.payType>.uni-flex>.uni-flex-item {
+			padding: 0 7.5px;
+		}
+
+		.payType .check-box {
+			border-radius: 4px;
+			border: 1px solid #12CEB3;
+			padding: 5px 10px;
+		}
+
+		.payType .check-box img {
+			width: 29.5px;
+			height: 29.5px;
+			display: block;
+		}
+
+		.payType .check-box .circle {
+			display: inline-block;
+			width: 15px;
+			height: 15px;
+			border: 1px solid #DDDDDD;
+			border-radius: 50%;
+			position: relative;
+		}
+
+		.payType .check-box .circle-filled {
+			border-color: #12CEB3;
+		}
+
+		.payType .check-box .circle-filled:before {
+			position: absolute;
+			left: 2px;
+			top: 2px;
+			content: '';
+			width: 9px;
+			height: 9px;
+			border-radius: 50%;
+			background: #12CEB3;
+		}
+
+		.payInfo {
+			padding: 15px 0 28px;
+		}
+
+		.payInfo h4 {
+			font-size: 12px;
+			font-weight: normal;
+			line-height: 24px;
+		}
+
+		.payInfo span {
+			font-size: 12px;
+			line-height: 24px;
+			color: #999999;
+		}
+
+		.payBtn {
+			padding: 0 0 50px 0;
+		}
+
+		.payBtn button[disabled] {
+			background: #BFC2C7;
+			box-shadow: 0px 5px 6px 0px rgba(191, 194, 199, 0.2)
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title uni-flex">
+				<span class="active uni-flex-item">一键买币</span>
+				<span class="uni-flex-item border-r" @tap="changeRoute('sellCoin')">一键卖币</span>
+			</h1>
+			<span @tap="changeRoute('order',{type: 1})" class="header-r">我的订单</span>
+		</header>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<div class="content-con">
+						<div class="business">
+							<div class="uni-flex" style="align-items: center;">
+								<div class="uni-flex-item">
+									<h2>
+										<span>USDT</span>
+									</h2>
 								</div>
-								<div class="business-choice">
-									<div class="tit">
-										<div class="uni-flex" style="align-items: center;">
-											<div class="uni-flex-item">
-												<span>默认商家</span>
-												<span class="gray">(点击更多，可切换不同商家)</span>
-											</div>
-											<div class="more" @tap="showMore=!showMore">
-												<span class="gray">{{showMore?"收起":"更多"}}</span>
-												<span :class="['mui-icon', showMore?'mui-icon-arrowup':'mui-icon-arrowright']"></span>
-											</div>
+								<span>人民币</span>
+							</div>
+							<div class="business-choice">
+								<div class="tit">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="uni-flex-item">
+											<span>默认商家</span>
+											<span class="gray">(点击更多，可切换不同商家)</span>
+										</div>
+										<div class="more" @tap="showMore=!showMore">
+											<span class="gray">{{showMore?"收起":"更多"}}</span>
+											<span :class="['mui-icon', showMore?'mui-icon-arrowup':'mui-icon-arrowright']"></span>
 										</div>
 									</div>
-									<div class="business-more" :style="{height:showMore ? height + 'px' : '0px', marginTop:showMore ?'10px':'0'}" v-if="shopList.length>0">
-										<div :id="elId" class="business-more-con" ref="businessMore">
-											<ul class="mui-table-view mui-grid-9">
-												<li class="mui-table-view-cell mui-media" v-for="(item, index) in shopList" :key="index" @click="chocieShop(item, index)">
-													<!-- <div :class="['item-con', index==shopIndex ?'active':'']"> -->
-														<!-- <div class="business-img">
+								</div>
+								<div class="business-more" :style="{height:showMore ? height + 'px' : '0px', marginTop:showMore ?'10px':'0'}" v-if="shopList.length>0">
+									<div :id="elId" class="business-more-con" ref="businessMore">
+										<ul class="mui-table-view mui-grid-9">
+											<li class="mui-table-view-cell mui-media" v-for="(item, index) in shopList" :key="index" @click="chocieShop(item, index)">
+												<!-- <div :class="['item-con', index==shopIndex ?'active':'']"> -->
+												<!-- <div class="business-img">
 															<img :src="item.icon" >
 														</div>
 														<p>{{item.nickName}}</p> -->
-														<div style="align-items: center;" :class="['uni-flex', 'item-con', index==shopIndex ?'active':'']">
-															<div class="business-img">
-																<img :src="item.icon" >
-																<h3>{{item.nickName}}</h3>
-															</div>
-															<div class="uni-flex-item" style="text-align: right;">
-																<h4>参考单价: {{item.price || 0}} CNT/USDT</h4>
-																<p style="color: #666;">剩余USDT {{item.amount || 0}}</p>
-																<span>已交易 {{item.count || 0}} 笔</span>
-															</div>
-														</div>
-													<!-- </div> -->
-												</li>
-											</ul>
-										</div>
-									</div>
-									<div class="business-choice-con" v-show="!showMore">
-										<div class="uni-flex" style="align-items: center;">
-											<div class="business-img">
-												<img :src="businessInfo.icon" >
-												<h3>{{businessInfo.nickName}}</h3>
-											</div>
-											<div class="uni-flex-item" style="text-align: right;">
-												<h4>参考单价: {{businessInfo.price || 0}} CNT/USDT</h4>
-												<p style="color: #666;">剩余USDT {{businessInfo.amount || 0}}</p>
-												<span>已交易 {{businessInfo.count}} 笔</span>
-											</div>
-										</div>
+												<div style="align-items: center;" :class="['uni-flex', 'item-con', index==shopIndex ?'active':'']">
+													<div class="business-img">
+														<img :src="item.icon">
+														<h3>{{item.nickName}}</h3>
+													</div>
+													<div class="uni-flex-item" style="text-align: right;">
+														<h4>参考单价: {{item.price || 0}} CNY/USDT</h4>
+														<p style="color: #666;">剩余USDT {{item.amount || 0}}</p>
+														<span>已交易 {{item.count || 0}} 笔</span>
+													</div>
+												</div>
+												<!-- </div> -->
+											</li>
+										</ul>
 									</div>
 								</div>
-								<div class="uni-tips">注: 本平台只提供交易入口，真实交易由商家提供服务</div>
-							</div>
-							<div class="buy">
-								<div class="uni-flex uni-tab" style="align-items: center;">
-									<span v-for="(tab,index) in tabBars" :key="index" :class="[tabIndex==index ? 'active' : '']" @tap="onChangeBuy(index)">{{tab}}</span>
-								</div>
-								<div class="uni-form-item">
-									<input class="uni-input" v-model="buyNum" type="number" @input="changeBuyNum" :placeholder="tabIndex==0?'请输入购买金额':'请输入购买数量'" />
-									<span>{{tabIndex==0?'CNY':'USDT'}}</span>
-								</div>
-							</div>
-							<div class="payType">
-								<div class="uni-title">选择付款方式</div>
-								<div class="uni-flex" style="align-items: center;">
-									<div class="uni-flex-item" v-for="(item, index) in payTypes" :key="index" @tap="onCheckPay(item)">
-										<div class="check-box uni-flex" :style="{alignItems: 'center', borderColor: item.checked?'#12CEB3':'#DDDDDD'}">
-											<div class="check-box-con uni-flex-item">
-												<img :src="item.icon" >
-											</div>
-											<span :class="['circle', item.checked?'circle-filled':'']"></span>
+								<div class="business-choice-con" v-show="!showMore">
+									<div class="uni-flex" style="align-items: center;">
+										<div class="business-img">
+											<img :src="businessInfo.icon">
+											<h3>{{businessInfo.nickName}}</h3>
+										</div>
+										<div class="uni-flex-item" style="text-align: right;">
+											<h4>参考单价: {{businessInfo.price || 0}} CNT/USDT</h4>
+											<p style="color: #666;">剩余USDT {{businessInfo.amount || 0}}</p>
+											<span>已交易 {{businessInfo.count}} 笔</span>
 										</div>
 									</div>
 								</div>
 							</div>
-							<div class="payInfo">
-								<div class="uni-flex">
-									<div class="uni-flex-item">
-										<h4>成交单价:</h4>
+							<div class="uni-tips">注: 本平台只提供交易入口，真实交易由商家提供服务</div>
+						</div>
+						<div class="buy">
+							<div class="uni-flex uni-tab" style="align-items: center;">
+								<span v-for="(tab,index) in tabBars" :key="index" :class="[tabIndex==index ? 'active' : '']" @tap="onChangeBuy(index)">{{tab}}</span>
+							</div>
+							<div class="uni-form-item">
+								<input class="uni-input" v-model="buyNum" type="number" @input="changeBuyNum" :placeholder="tabIndex==0?'请输入购买金额':'请输入购买数量'"
+								/>
+								<span>{{tabIndex==0?'CNY':'USDT'}}</span>
+							</div>
+						</div>
+						<div class="payType">
+							<div class="uni-title">选择付款方式</div>
+							<div class="uni-flex" style="align-items: center;">
+								<div class="uni-flex-item" v-for="(item, index) in payTypes" :key="index" @tap="onCheckPay(item)">
+									<div class="check-box uni-flex" :style="{alignItems: 'center', borderColor: item.checked?'#12CEB3':'#DDDDDD'}">
+										<div class="check-box-con uni-flex-item">
+											<img :src="item.icon">
+										</div>
+										<span :class="['circle', item.checked?'circle-filled':'']"></span>
 									</div>
-									<span>{{buyNum==''?'输入金额后获取':businessInfo.price + ' CNT/USDT'}}</span>
-								</div>
-								<div class="uni-flex">
-									<div class="uni-flex-item">
-										<h4>成交数量:</h4>
-									</div>
-									<span>{{dealInfo.amount}} {{buyNum==''?'-':'USDT'}}</span>
-								</div>
-								<div class="uni-flex">
-									<div class="uni-flex-item">
-										<h4>成交总额:</h4>
-									</div>
-									<span>{{dealInfo.money}} {{buyNum==''?'-':'CNY'}}</span>
 								</div>
 							</div>
-							<div class="payBtn">
-								<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @tap="goBuy">一键购买</button>
+						</div>
+						<div class="payInfo">
+							<div class="uni-flex">
+								<div class="uni-flex-item">
+									<h4>成交单价:</h4>
+								</div>
+								<span>{{buyNum==''?'输入金额后获取':businessInfo.price + ' CNT/USDT'}}</span>
 							</div>
+							<div class="uni-flex">
+								<div class="uni-flex-item">
+									<h4>成交数量:</h4>
+								</div>
+								<span>{{dealInfo.amount}} {{buyNum==''?'-':'USDT'}}</span>
+							</div>
+							<div class="uni-flex">
+								<div class="uni-flex-item">
+									<h4>成交总额:</h4>
+								</div>
+								<span>{{dealInfo.money}} {{buyNum==''?'-':'CNY'}}</span>
+							</div>
+						</div>
+						<div class="payBtn">
+							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @tap="goBuy">一键购买</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<script src="../js/vue.min.js"></script>
-		<script src="../js/mui.min.js"></script>
-		<script src="../js/common.js"></script>
-		<script src="../js/api.js"></script>
-		<script src="../js/fetch.js"></script>
-		<script type="text/javascript">
-			var elId = `Uni_${Math.ceil(Math.random() * 10e5).toString(36)}`
-			new Vue({
-				el: '#app',
-				data: {
-					elId: elId,
-					showMore: false,
-					shopIndex: 0,
-					shopList: [],
-					// 默认商家详情
-					businessInfo: {
-						image: '',
-						price: '',
-						soldNum: ''
+	</div>
+	<script src="../js/vue.min.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script src="../js/api.js"></script>
+	<script src="../js/fetch.js"></script>
+	<script type="text/javascript">
+		var elId = `Uni_${Math.ceil(Math.random() * 10e5).toString(36)}`
+		new Vue({
+			el: '#app',
+			data: {
+				elId: elId,
+				showMore: false,
+				shopIndex: 0,
+				shopList: [],
+				// 默认商家详情
+				businessInfo: {
+					image: '',
+					price: '',
+					soldNum: ''
+				},
+				height: 0,
+				tabIndex: 0,
+				tabBars: ['按金额购买', '按数量购买'],
+				buyNum: '',
+				payTypes: [
+					{
+						icon: '../images/icon-zfb.png',
+						type: 1,
+						checked: true
 					},
-					height: 0,
-					tabIndex: 0,
-					tabBars: ['按金额购买', '按数量购买'],
-					buyNum: '',
-					payTypes: [
-						{
-							icon: '../images/icon-zfb.png',
-							type: 1,
-							checked: true
-						},
-						{
-							icon: '../images/icon-yh.png',
-							type: 3,
-							checked: false
-						},
-						{
-							icon: '../images/icon-wx.png',
-							type: 2,
-							checked: false
-						}
-					],
-					payWay: 1,
-					dealInfo: {
+					{
+						icon: '../images/icon-yh.png',
+						type: 3,
+						checked: false
+					},
+					{
+						icon: '../images/icon-wx.png',
+						type: 2,
+						checked: false
+					}
+				],
+				payWay: 1,
+				dealInfo: {
+					amount: '',
+					money: ''
+				},
+				isDisabled: true
+			},
+			created() {
+				this.getData()
+			},
+			methods: {
+				// 获取数据
+				getData() {
+					fetch(buyShop + '/1/30', {}, 'POST').then(res => {
+						this.shopList = res.obj.list
+						// 默认商家信息
+						this.businessInfo = this.shopList[0]
+						this.$nextTick(() => {
+							this.height = this.$refs.businessMore.offsetHeight
+						})
+					})
+				},
+				// 选择商家
+				chocieShop(item, index) {
+					this.showMore = false;
+					this.shopIndex = index
+					this.businessInfo = item;
+					this.dealInfo = {
 						amount: '',
 						money: ''
-					},
-					isDisabled: true
-				},
-				created() {
-					this.getData()
-				},
-				methods: {
-					// 获取数据
-					getData() {
-						fetch(buyShop + '/1/30', {}, 'POST').then(res => {
-							this.shopList = res.obj.list
-							// 默认商家信息
-							this.businessInfo = this.shopList[0]
-							this.$nextTick(() => {
-								this.height = this.$refs.businessMore.offsetHeight
-							})
-						})
-					},
-					// 选择商家
-					chocieShop(item, index) {
-						this.showMore = false;
-						this.shopIndex = index
-						this.businessInfo = item;
-						this.dealInfo={
-							amount: '',
-							money: ''
-						}
-						this.isDisabled = true
-						this.buyNum = ''
-					},
-					// 选择购买方式
-					onChangeBuy(index) {
-						this.tabIndex = index
-						this.dealInfo={
-							amount: '',
-							money: ''
-						}
-						this.isDisabled = true
-						this.buyNum = ''
-					},
-					// 输入购买量
-					changeBuyNum() {
-						this.isDisabled = true
-						if(this.buyNum && this.buyNum!='') {
-							this.dealInfo = {
-								amount: this.tabIndex == 0? numFormat(this.buyNum/this.businessInfo.price): this.buyNum,
-								money: this.tabIndex == 0? this.buyNum: numFormat(this.buyNum*this.businessInfo.price),
-							}
-							this.isDisabled = false
-						} else {
-							this.dealInfo = {
-								amount: '',
-								money: ''
-							}
-							this.isDisabled = true
-							this.buyNum = ''
-						}
-					},
-					// 选择付款方式
-					onCheckPay(item) {
-						this.payTypes.forEach(v=> {
-							v.checked = false
-						})
-						item.checked = true;
-						this.payWay = item.type;
-						console.log(this.payWay)
-					},
-					// 一键购买
-					goBuy() {
-						if(this.isDisabled) return;
-						fetch(oneKeyBuy, {
-							amount: this.dealInfo.amount,
-							money: this.dealInfo.money,
-							payWay: this.payWay, // 1支付宝,2微信,3银行
-							shopUserId: this.businessInfo.userId, // 商家id
-							type: 1, // 1买币,2是卖币
-							userId: USER_ID
-						}, 'POST').then(res => {
-								if(res.code==1) {
-									const id = res.obj.id;
-									window.location.href="/otc/payment.html?id="+id
-								} else {
-									mui.toast('操作失败！')
-								}							
-						})
-					},
-					// 页面跳转
-					changeRoute(name, params) {
-						let arr = [];
-						for(let i in params) {
-							arr.push(`${i}=${params[i]}`)
-						}
-						window.location.href= name + ".html?"+arr.join("&");
 					}
+					this.isDisabled = true
+					this.buyNum = ''
+				},
+				// 选择购买方式
+				onChangeBuy(index) {
+					this.tabIndex = index
+					this.dealInfo = {
+						amount: '',
+						money: ''
+					}
+					this.isDisabled = true
+					this.buyNum = ''
+				},
+				// 输入购买量
+				changeBuyNum() {
+					this.isDisabled = true
+					if (this.buyNum && this.buyNum != '') {
+						this.dealInfo = {
+							amount: this.tabIndex == 0 ? numFormat(this.buyNum / this.businessInfo.price) : this.buyNum,
+							money: this.tabIndex == 0 ? this.buyNum : numFormat(this.buyNum * this.businessInfo.price),
+						}
+						this.isDisabled = false
+					} else {
+						this.dealInfo = {
+							amount: '',
+							money: ''
+						}
+						this.isDisabled = true
+						this.buyNum = ''
+					}
+				},
+				// 选择付款方式
+				onCheckPay(item) {
+					this.payTypes.forEach(v => {
+						v.checked = false
+					})
+					item.checked = true;
+					this.payWay = item.type;
+					console.log(this.payWay)
+				},
+				// 一键购买
+				goBuy() {
+					if (this.isDisabled) return;
+					fetch(oneKeyBuy, {
+						amount: this.dealInfo.amount,
+						money: this.dealInfo.money,
+						payWay: this.payWay, // 1支付宝,2微信,3银行
+						shopUserId: this.businessInfo.userId, // 商家id
+						type: 1, // 1买币,2是卖币
+						userId: USER_ID
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							const id = res.obj.id;
+							window.location.href = "/otc/payment.html?id=" + id
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 页面跳转
+				changeRoute(name, params) {
+					let arr = [];
+					for (let i in params) {
+						arr.push(`${i}=${params[i]}`)
+					}
+					window.location.href = name + ".html?" + arr.join("&");
 				}
-			});
-			mui.init({
-				swipeBack:true //启用右滑关闭功能
-			});
-			mui('.mui-scroll-wrapper').scroll({
-				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-				bounce: true,
-				indicators: false, //是否显示滚动条
-			});
-		</script>
-	</body>
+			}
+		});
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			bounce: true,
+			indicators: false, //是否显示滚动条
+		});
+	</script>
+</body>
+
 </html>
