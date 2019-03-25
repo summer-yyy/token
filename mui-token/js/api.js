@@ -1,9 +1,8 @@
-let apiUrl = 'http://47.244.9.84:8085/api/v1';
+let apiUrl = 'http://47.244.9.84:8080/api/v1';
 // let apiUrl = '/api/v1';
 // let apiUrl2 = 'https://transfer.swft.pro/api/v1';
 // let apiUrl2 = 'http://47.244.9.84:8080/api/v1/swft';
 let apiUrl2 = apiUrl + '/swft';
-let apiUrl3 = 'http://47.244.9.84:8080/api/v1';
 
 // 永续基金
 let buyFund = apiUrl + '/fund/buyFund',
@@ -43,4 +42,4 @@ let queryCoinList = apiUrl2 + '/queryCoinList', // 查询币种列
 	queryOrderState = apiUrl2 + '/queryOrderState'; // 查询订单状态
 
 // IM
-let IMList = apiUrl3 + '/message/list'; // 消息列表
+let IMList = apiUrl + '/message/list'; // 消息列表
