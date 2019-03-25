@@ -94,7 +94,7 @@
 						<div class="section" v-if="payWay == 3">
 							<div class="section-tit"></div>
 							<h2>所属银行</h2>
-							<p @click="bankChange" :style="{color: bankInfo.bank==''?'#ccc': ''}">{{bankInfo.bankName==''?'请输入准确的银行卡号': bankInfo.bankName}}</p>
+							<p @click="bankChange" :style="{color: bankInfo.bank==''?'#ccc': ''}">{{bankInfo.bankName==''?'点击选择所属银行': bankInfo.bankName}}</p>
 						</div>
 						<div class="tips">{{payType.payName}}信息非常重要，请务必确保填写准确</div>
 						<div class="payBtn">

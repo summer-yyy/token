@@ -157,7 +157,7 @@
 								<div class="uni-flex-item">
 									<h4>手续费：{{currentCoin.enName}}</h4>
 								</div>
-								<p>{{(num * 1e10) * (receiveCoinFee * 1e10) / 1e20}}</p>
+								<p>{{receiveCoinFeeFmt}}</p>
 							</div>
 							<div class="uni-flex" style="border: none;">
 								<div class="uni-flex-item">
@@ -245,8 +245,12 @@
 			},
 			computed: {
 				count() {
-					let num = (this.num * 1e10) * (this.instantRate * 1e10) / 1e20;
+					let num = floatObj.multiply(this.num, this.instantRate);
 					return Number(num.toFixed(6))
+				},
+				receiveCoinFeeFmt () {
+					let num = floatObj.multiply(this.num, this.receiveCoinFee);
+					return num
 				}
 			},
 			methods: {
@@ -283,7 +287,7 @@
 						developerId: USER_ID,
 						refundAddr: this.refundAddr,
 						destinationAddr: this.destinationAddr
-					}, 'POST').then(res => {
+					}, 'POST',{} ,true).then(res => {
 						if (res.code == 1) {
 							mui('.mui-popover').popover('show');
 						} else {

@@ -1,0 +1,236 @@
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+        <link href="../css/mui.min.css" rel="stylesheet" />
+        <style type="text/css">
+            .mui-bar{
+                height: 64px;
+                padding-top: 20px;
+            }
+            .mui-content{
+                padding-top: 64px !important;
+            }
+            .width{
+                position: absolute;
+                width: 100%;
+                min-height: 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                -moz-transform: translateY(-50%);
+                -webkit-transform: translateY(-50%);
+                -o-transform: translateY(-50%);
+            }
+            .height{
+                position: absolute;
+                height: 100%;
+                min-width: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                -ms-transform: translateX(-50%);
+                -moz-transform: translateX(-50%);
+                -webkit-transform: translateX(-50%);
+                -o-transform: translateX(-50%);
+            }
+            .tips{
+                padding: 12px;
+            }
+            .tips p{
+                margin: 0;
+                line-height: 1.5
+            }
+            .photo-list{
+                background-color: #fff;
+                padding: 6px;
+            }
+            .photo-list .photo-box , .add-btn{
+                position: relative;
+                float: left;
+                margin: 1%;
+                width: 23%;
+                height: 0;
+                padding-bottom: 23%;
+                border-radius: 3px;
+                overflow: hidden;
+            }
+            .add-btn{
+                border: dashed 1px #DDD;
+                font-size: 30px;
+            }
+            .delete{
+                font-size: 20px;
+            }
+            .add-btn , .delete{
+                position: relative;
+                font-family: Muiicons;
+                font-weight: 400;
+                font-style: normal;
+                line-height: 1;
+                display: inline-block;
+                text-decoration: none;
+                -webkit-font-smoothing: antialiased;
+            }
+            .add-btn:after{
+                content: '\e468';
+                position: absolute;
+                left: 50%;
+                top: 35%;
+                transform: translateX(-50%);
+                color: #aaa;
+            }
+            .delete:after{
+                content: '\e401';
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                color: #fff;
+            }
+            .photo-box .delete{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 24px;
+                background-color: rgba(0,0,0,.4);
+            }
+        </style>
+        
+    </head>
+
+    <body>
+        
+        <header class="mui-bar mui-bar-nav">
+            <h1 class="mui-title">从相册上传图片</h1>
+        </header>
+        
+        <div class="mui-content">
+            <div class="tips">
+                    <p>上传照片</p>
+            </div>
+            <div class="photo-list mui-clearfix" id="list">
+                    <div class="photo-box">
+                        <!-- <img src="../images/activity1.png" /> -->
+                        <div class="delete"></div>
+                    </div>
+                <div class="add-btn" id="btn"></div>
+            </div>
+        </div>
+        
+        <script src="../js/mui.min.js"></script>
+        <script type="text/javascript">
+            mui.init();
+            
+            //DOM获取及变量
+            var list = document.getElementById('list');
+            var btn  = document.getElementById('btn');
+            var setNum = 9 ;  //图片最大选择数量
+            
+            /* *
+             * 调取系统相册需在API加载完成后发生
+             */
+            mui.plusReady(function(){
+                //添加图片按钮点击
+                btn.addEventListener('tap',function(){
+                    var num = setNum;
+                    if( list.querySelector('.photo-box') ){
+                        var box = list.getElementsByClassName('photo-box');
+                        num -= box.length;
+                    }
+                    galleryImgs( num );
+                });
+                
+            },false);
+            
+            // 从相册中选择多张图片 
+            function galleryImgs( num ){
+                // 从相册中选择图片
+                console.log("从相册中选择多张图片:");
+                plus.gallery.pick( function(e){
+                        for(var i in e.files){
+                            console.log( e.files[i] );
+                            insertPhoto( e.files[i] ); //将图片放在页面上
+                        }
+                }, function ( e ) {
+                        console.log( "取消选择图片" );
+                },{ 
+                        filter   : "image",     //系统相册选择器中可选择的文件类型 "image" , "video" , "none"
+                        multiple : true,        //是否支持多选
+                        maximum  : num,         //最多选择的文件数量，上面设置了全局变量
+                        system   : false,       //是否使用系统文件选择界面，iOS下无效
+                        onmaxed  : function(){  //超出选择最大文件数时触发
+                        mui.toast( '最多选择' + num + '张图片' )
+                    }
+                });
+            }
+            
+            //将选择的图片转base64并加入到页面中
+            function insertPhoto ( data ){
+                var imgClass ;  //img的class名
+                //创建image对象并转换base64码
+                var img = new Image();
+                    img.src = data ;
+                    img.onload = function(){
+                        //创建canvas画布
+                        var canvas = document.createElement("canvas"); 
+                        //在css中不要直接给img设置宽高,否则此处会获取到css设置的值
+                        var width  = img.width;
+                        var height = img.height;
+                        //比较图片宽高设置图片显示和canvas画布尺寸
+                        if (width > height) { 
+                                imgClass = 'height';
+                            if (width > 500) { 
+                                height = Math.round(height *= 500 / width); 
+                                width = 500; 
+                            } 
+                        } else { 
+                                imgClass = 'width';
+                            if (height > 500) { 
+                                width = Math.round(width *= 500 / height); 
+                                height = 500; 
+                            } 
+                        } 
+                        canvas.width  = width;                               //设置新的图片的宽度
+                        canvas.height = height;                              //设置新的图片的长度
+                        var ctx = canvas.getContext("2d"); 
+                        ctx.drawImage(img, 0, 0, width, height);             //绘图
+                        var dataURL = canvas.toDataURL("image/png", 0.8);    //供img标签使用的src路径
+                        //将最后拿到的图片类名和src放入页面中
+                        var div = document.createElement('div');
+                            div.setAttribute('class','photo-box');
+                            div.innerHTML = '<img class="' + imgClass + '" src="' + dataURL + '"/>\
+                                            <div class="delete"></div>';
+                        list.insertBefore( div , btn );
+                        btnHidden();  //显示或隐藏添加按钮
+                    }
+            }
+            
+            //删除
+            mui('#list').on('tap','.delete',function(){
+                this.parentNode.remove();
+                btnHidden();  //显示或隐藏添加按钮
+            })
+            
+            // 在5+文档中关于多图选择参数中 maximum 的解释是
+            // 取值范围为1到Infinity，默认值为Infinity，即不限制选择的图片数。 如果设置的值非法则使用默认值Infinity。
+            // 我们在点击是会使用 -= 来出来 pNum ，会得到负值而导致使用默认值
+            // 故在每次添加图片时进行判断，是否隐藏添加按钮
+            function btnHidden(){
+                if ( list.querySelector('.photo-box') ) {
+                    var box = list.getElementsByClassName('photo-box');
+                    if( box.length > setNum - 1 ){
+                        btn.classList.add('mui-hidden');
+                    } else {
+                        btn.classList.remove('mui-hidden');
+                    }
+                } else {
+                    btn.classList.remove('mui-hidden');
+                }
+            }
+        </script>
+    </body>
+
+</html>

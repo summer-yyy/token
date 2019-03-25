@@ -492,7 +492,7 @@
 				// 输入购买量
 				changeBuyNum() {
 					this.isDisabled = true
-					if (this.buyNum && this.buyNum != '') {
+					if (this.buyNum != '') {
 						this.dealInfo = {
 							amount: this.tabIndex == 0 ? numFormat(this.buyNum / this.businessInfo.price) : this.buyNum,
 							money: this.tabIndex == 0 ? this.buyNum : numFormat(this.buyNum * this.businessInfo.price),
@@ -529,7 +529,7 @@
 					}, 'POST').then(res => {
 						if (res.code == 1) {
 							const id = res.obj.id;
-							window.location.href = "/otc/payment.html?id=" + id
+							window.location.href = "payment.html?id=" + id
 						} else {
 							mui.toast('操作失败！')
 						}

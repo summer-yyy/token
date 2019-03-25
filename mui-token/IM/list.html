@@ -68,15 +68,15 @@
 			<div class="mui-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll" style="padding: 0 15px;">
-						<div class="uni-flex" style="align-items: center;" v-for="(item, index) in 10" :key="index">
+						<div class="uni-flex" style="align-items: center;" v-for="(item, index) in list" :key="index">
 							<div class="personal-img">
-								<img src="../images/business-img.png" >
+								<img :src="item.icon">
 							</div>
 							<div class="uni-flex-item">
 								<div class="info">
-									<h4>老玩家</h4>
-									<p>什么时候能到账？</p>
-									<span :class="['state', index>3?'isRead':'']">{{index>3?'已读':'未读'}}</span>
+									<h4>{{item.nickName}}</h4>
+									<p>{{item.content}}</p>
+									<span :class="['state', item.isRead == 1 ?'isRead':'']">{{item.isRead == 1?'已读':'未读'}}</span>
 								</div>
 							</div>
 						</div>
@@ -86,24 +86,41 @@
 		</div>
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
+		<script src="../js/common.js"></script>
+		<script src="../js/api.js"></script>
+		<script src="../js/fetch.js"></script>
 		<script type="text/javascript">
 			new Vue({
 				el: '#app',
 				data: {
+					list: [],
 				},
 				created() {
+					this.getData();
 				},
 				methods: {
+					// 获取数据
+					getData() {
+						fetch(IMList, { 
+							pageNum: 1,
+							pageSize: 30,
+							userId: USER_ID
+						}, 'POST').then(res => {
+							this.list = res.obj.list
+							this.$nextTick(() => {
+								mui('.mui-scroll-wrapper').scroll({
+									deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+									bounce: true,
+									indicators: false, //是否显示滚动条
+								});
+							})
+						})
+					},
 				}
 			});
 			mui.init({
 				swipeBack:true //启用右滑关闭功能
-			});
-			mui('.mui-scroll-wrapper').scroll({
-				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-				bounce: true,
-				indicators: false, //是否显示滚动条
-			});
+			});	
 		</script>
 	</body>
 </html>

@@ -97,6 +97,7 @@
 			<header id="header" class="mui-bar mui-bar-nav">
 				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 				<h1 class="mui-title">TokenPanda 客服</h1>
+				<span @tap="changeRoute('list')" class="header-r">消息列表</span>
 			</header>
 			<div class="mui-content">
 				<div class="mui-scroll-wrapper">
@@ -119,7 +120,8 @@
 										<img src="../images/business-img.png" >
 									</div>
 									<div class="uni-flex-item">
-										<p class="message-text">
+										<img width="100px" height="50px" :src="item.message" v-if="/^data:image/.test(item.message)" >
+										<p class="message-text" v-else>
 											<!-- 您好。我是TokenPanda客服，有什么能帮助您的？ -->
 											{{item.message}}
 										</p>
@@ -131,7 +133,8 @@
 								<div class="uni-flex">
 									<div class="empty"></div>
 									<div class="uni-flex-item">
-										<p class="message-text">
+										<img width="100px" height="50px" :src="item.message" v-if="/^data:image/.test(item.message)" >
+										<p class="message-text" v-else>
 											{{item.message}}
 										</p>
 									</div>
@@ -144,6 +147,7 @@
 					</div>
 				</div>
 			</div>
+
 			<div class="im-footer">
 				<div class="uni-flex" style="align-items: center;">
 					<div class="uni-flex-item">
@@ -151,10 +155,12 @@
 					</div>
 					<div class="sendBtn">
 						<span v-if="showSend" @tap="onSendText">发送</span>
+<input type="file"  id="picFile" @change="readFile"/>
+
 						<img src="../images/send-img.png" v-else>
 					</div>
 				</div>
-			</div>
+			</div>			
 		</div>
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
@@ -233,7 +239,11 @@
 						}
 					},
 					// 发送文本消息
-					onSendText() {
+					onSendText(obj = {
+								"toUser":"10114",       //接收方用户ID
+								"fromUser": USER_ID,   //发送方用户ID
+								"message": this.inputText  //消息内容
+						}) {
 						// var obj = {
 						// 	name: '吴振',
 						// 	photo: '/images/business-img.png',
@@ -243,17 +253,33 @@
 						// 	showTime: this.showTime,
 						// 	createTime: moment(new Date()).format("YYYY-MM-DD HH:MM"),
 						// }
-						var obj = {
-								"toUser":"10114",       //接收方用户ID
-								"fromUser": USER_ID,   //发送方用户ID
-								"message": this.inputText  //消息内容
-						}
 						var sendStr = JSON.stringify(obj);
 						obj.index=1;
 						this.messageList.push(obj);
 						ws.send(sendStr);
 						this.inputText = ''
 						this.showSend = false
+					},
+				 readFile(e){ 
+					 		let _this = this;
+							var file = e.target.files[0]; 	
+							console.log(file)
+							if(!file) return;
+							//判断类型是不是图片
+							if(!/image\/\w+/.test(file.type)){   
+											alert("请确保文件为图像类型"); 
+											return false; 
+							} 
+							var reader = new FileReader(); 
+							reader.readAsDataURL(file); 
+							reader.onload = function(e){ 
+								console.log(this.result); //就是base64
+								_this.onSendText({
+										"toUser":"10114",       //接收方用户ID
+										"fromUser": USER_ID,   //发送方用户ID
+										"message": this.result  //消息内容
+								});
+							}
 					}
 				}
 			});

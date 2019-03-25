@@ -328,7 +328,7 @@
 			},
 			computed: {
 				count() {
-					let num = (this.ethNum * 1e10) * (this.instantRate * 1e10) / 1e20;
+					let num = floatObj.multiply(this.ethNum, this.instantRate);
 					return Number(num.toFixed(6))
 				},
 				isDisabled() {
@@ -405,7 +405,7 @@
 				queryCoinList() {
 					fetch(queryCoinList, {
 						supportType: `advanced`
-					}, 'POST').then(res => {
+					}, 'POST', {} ,true).then(res => {
 						console.log(res);
 						if (res.code == 1) {
 							const data = res.obj.data;
@@ -420,7 +420,7 @@
 				// 查询币种列
 				queryMyCoinList() {
 					fetch(coinList + "/" + USER_ID, {
-					}, 'POST').then(res => {
+					}, 'POST',{} ,true).then(res => {
 						if (res.code == 1) {
 							const data = res.obj;
 							this.myCoinList = data;

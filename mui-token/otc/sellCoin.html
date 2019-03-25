@@ -322,9 +322,75 @@
 			color: #12CEB3;
 		}
 
+		.buy .addBank .uni-text .userName {
+			font-size: 17px;
+			font-weight: 500;
+			color: #32303D;
+			margin-left: 4px; 
+		}
+		.buy .addBank .uni-text .userNumber {
+			font-size: 14px;
+			font-weight: 500;
+			margin-left: 10px; 
+			color: #999;
+		}
+
 		.buy .addBank .mui-icon-arrowright {
 			color: #ccc;
 			font-size: 16px;
+		}
+		.container_of_slide .slide_list {
+			transition: all 100ms;
+			transition-timing-function: ease-out;
+			min-width: 200%;
+			overflow: hidden;
+			border-bottom: 1px solid #E4E4E4;
+		}
+
+		.container_of_slide .slide_list .uni-flex {
+			padding: 0 15px;
+			box-sizing: border-box;
+			height: 75px;
+			float: left;
+		}
+
+		.container_of_slide .slide_list .bank-img {
+			margin-right: 10px;
+		}
+
+		.container_of_slide .slide_list .bank-img img {
+			width: 42px;
+			height: 42px;
+		}
+
+		.container_of_slide .slide_list h4 {
+			font-size: 17px;
+			line-height: 20px;
+			font-weight: bold;
+		}
+
+		.container_of_slide .slide_list span {
+			font-size: 14px;
+			color: #999;
+		}
+
+		.container_of_slide .slide_list .slide_btn {
+			float: left;
+			display: flex;
+			flex-direction: row;
+			height: 100%;
+			min-width: 50px;
+			align-items: center;
+		}
+
+		.container_of_slide .slide_list .slide_btn span {
+			height: 100%;
+			color: #fff;
+			text-align: center;
+			padding: 0 25px;
+			font-size: 17px;
+			line-height: 75px;
+			background: #ff3b32;
 		}
 	</style>
 </head>
@@ -426,11 +492,25 @@
 							<!-- 添加银行卡 -->
 							<div class="addBank">
 								<div class="uni-flex" style="align-items: center;" @click="addBank">
-									<div class="uni-flex-item" v-for="type in payTypes" v-if="type.checked">
-										<h5>选择到账{{type.name}}</h5>
+									<div class="uni-flex-item" v-if="!cardInfo.userNumber">
+										<h5>选择到账{{payType.name}}</h5>
 										<div class="uni-text">
-											<span class="mui-icon mui-icon-plusempty"></span>添加{{type.payName}}</div>
+											<span class="mui-icon mui-icon-plusempty"></span>添加{{payType.payName}}</div>
 									</div>
+									<div class="uni-flex-item" v-else>
+											<h5>选择到账{{payType.name}}</h5>
+											<div class="uni-text" style="display: flex; align-items: center;">
+												<img :src="cardInfo.icon" width="21px" height="21px">
+												<template v-if="payWay == 3">
+													<span class="userName">{{cardInfo.bank}}</span>
+													<span class="userNumber">尾号{{cardInfo.userNumber.substr(-4)}} 储蓄卡</span>
+												</template>
+												<template v-else>
+														<span class="userName">{{cardInfo.userName}}</span>
+														<span class="userNumber">{{cardInfo.userNumber}}</span>
+													</template>
+											</div>
+										</div>
 									<span class="mui-icon mui-icon-arrowright"></span>
 								</div>
 							</div>
@@ -462,13 +542,25 @@
 						<div class="slide_list" @touchstart="touchStart($event,index)" @touchend="touchEnd($event,index)" @touchmove="touchMove($event,index)"
 						 @click="recover(index)" :style="{transform:'translate3d('+item.slide_x+'px, 0, 0)'}">
 							<div class="uni-flex" :style="{width: Screen_width + 'px', alignItems: 'center'}">
-								<div class="bank-img">
-									<img :src="item.img">
-								</div>
-								<div class="uni-flex-item">
-									<h4>{{item.bank}}</h4>
-									<span>{{item.userNumber}}</span>
-								</div>
+								<template v-if="payWay == 3">
+									<div class="bank-img">
+										<img :src="item.icon">
+									</div>
+									<div class="uni-flex-item">
+										<h4>{{item.bank}}</h4>
+										<span>尾号{{item.userNumber.substr(-4)}} 储蓄卡</span>
+									</div>
+								</template>
+								<template v-else>
+									<div class="bank-img">
+										<img :src="payType.icon">
+									</div>
+									<div class="uni-flex-item">
+										<h4>{{item.userName}}</h4>
+										<span>{{item.userNumber}}</span>
+									</div>
+								</template>
+						
 							</div>
 							<div class="slide_btn" @click="removeBank(index)">
 								<span>删除</span>
@@ -550,7 +642,11 @@
 					amount: '',
 					money: ''
 				},
-				isDisabled: true
+				Screen_width: 0,
+				cardInfo: {}
+			},
+			mounted() {
+				this.Screen_width = window.innerWidth
 			},
 			created() {
 				this.getData()
@@ -558,6 +654,9 @@
 			computed: {
 				payType() {
 					return this.payTypes.find(item => item.checked);
+				},
+				isDisabled () {
+					return !this.buyNum || !this.cardInfo.userNumber;
 				}
 			},
 			methods: {
@@ -581,7 +680,6 @@
 						amount: '',
 						money: ''
 					}
-					this.isDisabled = true
 					this.buyNum = ''
 				},
 				// 选择购买方式
@@ -591,15 +689,13 @@
 						amount: '',
 						money: ''
 					}
-					this.isDisabled = true
 					this.buyNum = ''
 				},
 				// 输入购买量
 				changeBuyNum() {
-					this.isDisabled = true
-					if (this.buyNum && this.buyNum != '') {
+					if (this.buyNum != '') {
 						this.dealInfo = {
-							amount: this.buyNum * 1e10 * (this.businessInfo.price * 1e10) / 1e20,
+							amount: floatObj.multiply(this.buyNum, this.businessInfo.price),
 							money: this.buyNum,
 						}
 						this.isDisabled = false
@@ -608,7 +704,6 @@
 							amount: '',
 							money: ''
 						}
-						this.isDisabled = true
 						this.buyNum = ''
 					}
 				},
@@ -619,7 +714,7 @@
 					})
 					item.checked = true;
 					this.payWay = item.type;
-					console.log(this.payWay)
+					this.cardInfo = {};
 				},
 				// 添加银行
 				addBank() {
@@ -638,7 +733,7 @@
 							this.$nextTick(() => {
 								this.bankList = res.obj;
 								this.bankList.forEach(item => {
-									item.slide_x = 0;
+									this.$set(item, "slide_x", 0);
 								})
 							})
 						} else {
@@ -698,7 +793,8 @@
 				},
 				// 点击回复原状
 				recover(index) {
-					console.log(111)
+					this.cardInfo = this.bankList[index];
+					mui('#bankSheet').popover('hide');
 					if (this.bankList[index]) {
 						this.bankList[index].slide_x = 0;
 					}
@@ -714,10 +810,10 @@
 					fetch(oneKeyBuy, {
 						amount: this.dealInfo.amount,
 						money: this.dealInfo.money,
-						payWay: this.payWay, // 1支付宝,2微信,3银行
+						payWay: this.cardInfo.userNumber, // 1支付宝,2微信,3银行
 						shopUserId: this.businessInfo.userId, // 商家id
 						type: 2, // 1买币,2是卖币
-						userId: USER_ID
+						userId: USER_ID,
 					}, 'POST').then(res => {
 						if (res.code == 1) {
 							mui('#popover').popover('show');
