@@ -190,9 +190,9 @@
 									<div class="uni-flex-item">
 										<div class="uni-text">
 											<span>{{type=='1'?'商家': '买家'}}：{{item.nickName}}</span>
-											<span style="margin-left: 20px;" v-if="item.payWay == 1">支付方式：支付宝</span>
-											<span style="margin-left: 20px;" v-else-if="item.payWay == 2">支付方式：微信</span>
-											<span style="margin-left: 20px;" v-else-if="item.payWay == 3">支付方式：银行</span>
+											<span style="margin-left: 20px;" v-if="item.payWay == 1">{{type=='1'?'支付': '收款'}}支付方式：支付宝</span>
+											<span style="margin-left: 20px;" v-else-if="item.payWay == 2">{{type=='1'?'支付': '收款'}}支付方式：微信</span>
+											<span style="margin-left: 20px;" v-else-if="item.payWay == 3">{{type=='1'?'支付': '收款'}}方式：银行</span>
 											<span style="margin-left: 20px;" v-else>支付方式：{{item.payWay}}</span>
 										</div>
 										<div class="uni-text">

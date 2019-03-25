@@ -216,7 +216,7 @@
 <body>
 	<div id="app">
 		<header id="header" class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" @click="back"></a>
 			<h1 class="mui-title">一键兑换</h1>
 		</header>
 		<div class="mui-content">
@@ -303,6 +303,7 @@
 	</div>
 	<script src="../js/vue.min.js"></script>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/coinList.js"></script>
 	<script src="../js/api.js"></script>
 	<script src="../js/fetch.js"></script>
 	<script src="../js/common.js"></script>
@@ -317,7 +318,7 @@
 				isCoinType: true,
 				instantRate: 0,
 				receiveCoinFee: 0.002,
-				coinList: [],
+				coinList: JSON.parse((localStorage && localStorage.coinList) || "[]"),
 				myCoinList: [],
 				depositMax: 0,
 				depositMin: 0,
@@ -336,6 +337,9 @@
 				},
 			},
 			methods: {
+				back() {
+					userAttestation(100)
+				},
 				filterList() {
 					this.myCoinList.forEach(coin => {
 						const code = coin.enName;
@@ -403,24 +407,30 @@
 				},
 				// 查询币种列
 				queryCoinList() {
-					fetch(queryCoinList, {
-						supportType: `advanced`
-					}, 'POST', {} ,true).then(res => {
-						console.log(res);
-						if (res.code == 1) {
-							const data = res.obj.data;
-							this.coinList = data;
-
-							this.filterList();
-						} else {
-							mui.toast('操作失败！')
-						}
-					})
+					let isLoading = true;
+					if (this.coinList.length > 0) {
+						isLoading = false;
+					}
+					this.coinList = storageCoinList;
+					this.filterList();
+					// fetch(queryCoinList, {
+					// 	supportType: `advanced`
+					// }, 'POST', {}, isLoading).then(res => {
+					// 	if (res.code == 1) {
+					// 		const data = res.obj.data;
+					// 		if (localStorage)
+					// 			localStorage.coinList = JSON.stringify(data || []);
+					// 		this.coinList = data;
+					// 		this.filterList();
+					// 	} else {
+					// 		mui.toast('操作失败！')
+					// 	}
+					// })
 				},
 				// 查询币种列
 				queryMyCoinList() {
 					fetch(coinList + "/" + USER_ID, {
-					}, 'POST',{} ,true).then(res => {
+					}, 'POST', {}, true).then(res => {
 						if (res.code == 1) {
 							const data = res.obj;
 							this.myCoinList = data;

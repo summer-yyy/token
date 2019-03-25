@@ -326,12 +326,13 @@
 			font-size: 17px;
 			font-weight: 500;
 			color: #32303D;
-			margin-left: 4px; 
+			margin-left: 4px;
 		}
+
 		.buy .addBank .uni-text .userNumber {
 			font-size: 14px;
 			font-weight: 500;
-			margin-left: 10px; 
+			margin-left: 10px;
 			color: #999;
 		}
 
@@ -339,6 +340,7 @@
 			color: #ccc;
 			font-size: 16px;
 		}
+
 		.container_of_slide .slide_list {
 			transition: all 100ms;
 			transition-timing-function: ease-out;
@@ -498,19 +500,19 @@
 											<span class="mui-icon mui-icon-plusempty"></span>添加{{payType.payName}}</div>
 									</div>
 									<div class="uni-flex-item" v-else>
-											<h5>选择到账{{payType.name}}</h5>
-											<div class="uni-text" style="display: flex; align-items: center;">
-												<img :src="cardInfo.icon" width="21px" height="21px">
-												<template v-if="payWay == 3">
-													<span class="userName">{{cardInfo.bank}}</span>
-													<span class="userNumber">尾号{{cardInfo.userNumber.substr(-4)}} 储蓄卡</span>
-												</template>
-												<template v-else>
-														<span class="userName">{{cardInfo.userName}}</span>
-														<span class="userNumber">{{cardInfo.userNumber}}</span>
-													</template>
-											</div>
+										<h5>选择到账{{payType.name}}</h5>
+										<div class="uni-text" style="display: flex; align-items: center;">
+											<img :src="cardInfo.icon" width="21px" height="21px">
+											<template v-if="payWay == 3">
+												<span class="userName">{{cardInfo.bank}}</span>
+												<span class="userNumber">尾号{{cardInfo.userNumber.substr(-4)}} 储蓄卡</span>
+											</template>
+											<template v-else>
+												<span class="userName">{{cardInfo.userName}}</span>
+												<span class="userNumber">{{cardInfo.userNumber}}</span>
+											</template>
 										</div>
+									</div>
 									<span class="mui-icon mui-icon-arrowright"></span>
 								</div>
 							</div>
@@ -560,7 +562,7 @@
 										<span>{{item.userNumber}}</span>
 									</div>
 								</template>
-						
+
 							</div>
 							<div class="slide_btn" @click="removeBank(index)">
 								<span>删除</span>
@@ -655,7 +657,7 @@
 				payType() {
 					return this.payTypes.find(item => item.checked);
 				},
-				isDisabled () {
+				isDisabled() {
 					return !this.buyNum || !this.cardInfo.userNumber;
 				}
 			},
@@ -810,7 +812,7 @@
 					fetch(oneKeyBuy, {
 						amount: this.dealInfo.amount,
 						money: this.dealInfo.money,
-						payWay: this.cardInfo.userNumber, // 1支付宝,2微信,3银行
+						payWay: this.cardInfo.id, // 1支付宝,2微信,3银行
 						shopUserId: this.businessInfo.userId, // 商家id
 						type: 2, // 1买币,2是卖币
 						userId: USER_ID,

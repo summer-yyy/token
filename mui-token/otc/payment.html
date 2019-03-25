@@ -576,6 +576,7 @@
 							}, 'POST').then(res => {
 								if (res.code == 1) {
 									this.isSuccess = true;
+									clearInterval(this.timer);
 									this.getData(10 * 60);
 								} else {
 									mui.toast('操作失败！')

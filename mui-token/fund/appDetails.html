@@ -315,7 +315,7 @@
 <body>
 	<div id="app">
 		<header id="header" class="mui-bar mui-bar-nav" v-cloak>
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" @click.stop="back"></a>
 			<h1 class="mui-title">{{dataInfo.fundName}}</h1>
 			<div class="shareIcon" @click="onShareImg">
 				<img src="../images/icon-share.png">
@@ -686,6 +686,9 @@
 				this.initData();
 			},
 			methods: {
+				back() {
+					userAttestation(100)
+				},
 				// 初始化数据
 				initData() {
 					this.pageNum = 1

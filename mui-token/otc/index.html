@@ -279,7 +279,7 @@
 <body>
 	<div id="app">
 		<header id="header" class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" @click="back"></a>
 			<h1 class="mui-title uni-flex">
 				<span class="active uni-flex-item">一键买币</span>
 				<span class="uni-flex-item border-r" @tap="changeRoute('sellCoin')">一键卖币</span>
@@ -456,6 +456,9 @@
 				this.getData()
 			},
 			methods: {
+				back() {
+					userAttestation(100)
+				},
 				// 获取数据
 				getData() {
 					fetch(buyShop + '/1/30', {}, 'POST').then(res => {
