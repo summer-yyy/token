@@ -23,7 +23,8 @@ let addBank = apiUrl + '/otc/addBank', // 添加到账银行卡
 	sellShop = apiUrl + '/otc/sellShop', // 卖币商家列表 /{pageNum}/{pageSize}
 	bankList = apiUrl + '/otc/bankList', // 所属银行卡列表 
 	addPayWay = apiUrl + '/otc/addPayWay', // 用户收款方式 
-	otcPayWayList = apiUrl + '/otc/payWayList' // 收款方式列表 
+	otcPayWayList = apiUrl + '/otc/payWayList', // 收款方式列表 
+	salability = apiUrl + '/otc/salability' // 可用余额 
 // 我的店铺
 let confirmAgree = apiUrl + '/shop/confirmAgree/', // 店铺确认同意{id}
 	confirmRefuse = apiUrl + '/shop/confirmRefuse/', // 店铺确认拒绝{id}

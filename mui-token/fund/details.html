@@ -20,13 +20,13 @@
 			color: #32303D;
 		}
 
-		.mui-content {
+		/* .mui-content {
 			padding: 0 !important;
 			position: absolute;
 			top: 44px;
 			bottom: 0;
 			width: 100%;
-		}
+		} */
 
 		.mui-content-h {
 			background: #12CEB3;
@@ -322,8 +322,10 @@
 			</div>
 		</header>
 		<div class="mui-content" v-cloak>
-			<div class="mui-scroll-wrapper">
-				<div class="mui-scroll">
+			<div class="">
+				<div class="">
+						<!-- <div class="mui-scroll-wrapper">
+								<div class="mui-scroll"> -->
 					<div id="capture">
 						<div class="mui-content-h">
 							<div class="uni-flex" style="align-items: center;">
@@ -341,7 +343,7 @@
 							</div>
 							<div class="tags">
 								<span>{{dataInfo.enName}}</span>
-								<span>基金标签</span>
+								<span v-if="dataInfo.label">{{dataInfo.label}}</span>
 							</div>
 						</div>
 						<div class="info">
@@ -553,7 +555,7 @@
 									font-family:PingFangSC-Regular;
 									font-weight:400;
 									color:rgba(153,153,153,1);
-									line-height:40px;">昨日收益</div>
+									line-height:40px;">{{dataInfo.introduction}}</div>
 								</div>
 							</div>
 						</div>
@@ -744,10 +746,11 @@
 					}
 				},
 				onShareImg() {
-					html2canvas(document.querySelector("#capture")).then(canvas => {
-						this.shareImg = canvas.toDataURL("image/png");
-						mui('.mui-popover').popover('show');
-					});
+					userAttestation(103);
+					// html2canvas(document.querySelector("#capture")).then(canvas => {
+					// 	this.shareImg = canvas.toDataURL("image/png");
+					// 	mui('.mui-popover').popover('show');
+					// });
 				},
 				// 页面跳转
 				changeRoute(name) {

@@ -241,7 +241,6 @@
 				this.num = params.num;
 			},
 			mounted() {
-				this.initBridge();
 			},
 			computed: {
 				count() {
@@ -298,87 +297,8 @@
 				// 关闭模态框
 				onClose() {
 					mui('.mui-popover').popover('hide');
-					this.goNative("H01");
+					userAttestation(102);
 				},
-				initBridge() {
-					var u = navigator.userAgent;
-					var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
-					var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-					if (isiOS) {
-						function setupWebViewJavascriptBridge(callback) {
-							if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
-							if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
-							window.WVJBCallbacks = [callback];
-							var WVJBIframe = document.createElement('iframe');
-							WVJBIframe.style.display = 'none';
-							WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
-							document.documentElement.appendChild(WVJBIframe);
-							setTimeout(function () { document.documentElement.removeChild(WVJBIframe) }, 0)
-						}
-
-						//native调用js
-						setupWebViewJavascriptBridge(function (bridge) {
-							bridge.registerHandler('testJSFunction', function (data, responseCallback) {
-								alert('JS方法被调用:' + data);
-								responseCallback('js执行过了');
-							})
-						})
-
-
-
-						//js调用native
-						function userAttestation(id) {
-							WebViewJavascriptBridge.callHandler('userAttestation', "{\"id\" : " + id + "}", function (response) {
-								// alert('native被调用:' + response);
-								// document.getElementById("returnValue").value = response;
-							});
-						}
-					}
-					else if (isAndroid) {
-						function connectWebViewJavascriptBridge(callback) {
-							if (window.WebViewJavascriptBridge) {
-								callback(WebViewJavascriptBridge)
-							} else {
-								document.addEventListener(
-									'WebViewJavascriptBridgeReady'
-									, function () {
-										callback(WebViewJavascriptBridge)
-									},
-									false
-								);
-							}
-						}
-
-						connectWebViewJavascriptBridge(function (bridge) {
-							bridge.init(function (message, responseCallback) {
-								console.log('JS got a message', message);
-								var data = {
-									'Javascript Responds': '测试中文!'
-								};
-
-								if (responseCallback) {
-									console.log('JS responding with', data);
-									responseCallback(data);
-								}
-							});
-
-							bridge.registerHandler("userAttestation", function (data, responseCallback) {
-								//                  alert("data from Java: = " + data);
-								if (responseCallback) {
-									var responseData = "Javascript Says Right back aka!";
-									responseCallback(responseData);
-								}
-							});
-						})
-						function userAttestation(id) {
-							window.WebViewJavascriptBridge.callHandler('userAttestation', "{\"id\" : " + id + "}", function (response) {
-								// alert('native被调用:' + response);
-								// document.getElementById("returnValue").value = response;
-							});
-						}
-					}
-					this.goNative = userAttestation;
-				}
 			}
 		})
 		mui.init({

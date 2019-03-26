@@ -327,7 +327,7 @@
 														<h3>{{item.nickName}}</h3>
 													</div>
 													<div class="uni-flex-item" style="text-align: right;">
-														<h4>参考单价: {{item.price || 0}} CNY/USDT</h4>
+														<h4>单价: {{item.price || 0}} CNY/USDT</h4>
 														<p style="color: #666;">剩余USDT {{item.amount || 0}}</p>
 														<span>已交易 {{item.count || 0}} 笔</span>
 													</div>
@@ -344,7 +344,7 @@
 											<h3>{{businessInfo.nickName}}</h3>
 										</div>
 										<div class="uni-flex-item" style="text-align: right;">
-											<h4>参考单价: {{businessInfo.price || 0}} CNT/USDT</h4>
+											<h4>单价: {{businessInfo.price || 0}} CNT/USDT</h4>
 											<p style="color: #666;">剩余USDT {{businessInfo.amount || 0}}</p>
 											<span>已交易 {{businessInfo.count}} 笔</span>
 										</div>
@@ -495,7 +495,7 @@
 				// 输入购买量
 				changeBuyNum() {
 					this.isDisabled = true
-					if (this.buyNum != '') {
+					if (this.buyNum !== '') {
 						this.dealInfo = {
 							amount: this.tabIndex == 0 ? numFormat(this.buyNum / this.businessInfo.price) : this.buyNum,
 							money: this.tabIndex == 0 ? this.buyNum : numFormat(this.buyNum * this.businessInfo.price),

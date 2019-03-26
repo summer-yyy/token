@@ -448,7 +448,7 @@
 														<h3>{{item.nickName}}</h3>
 													</div>
 													<div class="uni-flex-item" style="text-align: right;">
-														<h4>参考单价: {{item.price || 0}} CNY/USDT</h4>
+														<h4>单价: {{item.price || 0}} CNY/USDT</h4>
 														<p style="color: #666;">剩余USDT {{item.amount || 0}}</p>
 														<span>已交易 {{item.count || 0}} 笔</span>
 													</div>
@@ -465,7 +465,7 @@
 											<h3>{{businessInfo.nickName}}</h3>
 										</div>
 										<div class="uni-flex-item" style="text-align: right;">
-											<h4>参考单价: {{businessInfo.price || 0}} CNT/USDT</h4>
+											<h4>单价: {{businessInfo.price || 0}} CNT/USDT</h4>
 											<p style="color: #666;">剩余USDT {{businessInfo.amount || 0}}</p>
 											<span>已交易 {{businessInfo.count}} 笔</span>
 										</div>
@@ -502,12 +502,13 @@
 									<div class="uni-flex-item" v-else>
 										<h5>选择到账{{payType.name}}</h5>
 										<div class="uni-text" style="display: flex; align-items: center;">
-											<img :src="cardInfo.icon" width="21px" height="21px">
 											<template v-if="payWay == 3">
+												<img :src="cardInfo.icon" width="21px" height="21px">
 												<span class="userName">{{cardInfo.bank}}</span>
 												<span class="userNumber">尾号{{cardInfo.userNumber.substr(-4)}} 储蓄卡</span>
 											</template>
 											<template v-else>
+												<img :src="payType.icon" width="21px" height="21px">
 												<span class="userName">{{cardInfo.userName}}</span>
 												<span class="userNumber">{{cardInfo.userNumber}}</span>
 											</template>
@@ -518,6 +519,7 @@
 							</div>
 							<div class="uni-form-item">
 								<input class="uni-input" v-model="buyNum" type="number" @input="changeBuyNum" placeholder="请输入卖出USDT数量" />
+								<span class="salability" style="color:#BFC2C7;">余额：{{salability}} USDT</span>
 							</div>
 						</div>
 						<div class="payInfo">
@@ -645,13 +647,15 @@
 					money: ''
 				},
 				Screen_width: 0,
-				cardInfo: {}
+				cardInfo: {},
+				salability: 0
 			},
 			mounted() {
 				this.Screen_width = window.innerWidth
 			},
 			created() {
 				this.getData()
+				this.getSalability()
 			},
 			computed: {
 				payType() {
@@ -671,6 +675,12 @@
 						this.$nextTick(() => {
 							this.height = this.$refs.businessMore.offsetHeight
 						})
+					})
+				},
+				// 获取余额
+				getSalability() {
+					fetch(salability + '/' + USER_ID, {}, 'POST').then(res => {
+						this.salability = res.obj
 					})
 				},
 				// 选择商家
@@ -695,7 +705,7 @@
 				},
 				// 输入购买量
 				changeBuyNum() {
-					if (this.buyNum != '') {
+					if (this.buyNum !== '') {
 						this.dealInfo = {
 							amount: floatObj.multiply(this.buyNum, this.businessInfo.price),
 							money: this.buyNum,

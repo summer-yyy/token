@@ -20,13 +20,13 @@
 			color: #32303D;
 		}
 
-		.mui-content {
+		/* .mui-content {
 			padding: 0 !important;
 			position: absolute;
 			top: 44px;
 			bottom: 0;
 			width: 100%;
-		}
+		} */
 
 		.mui-content-h {
 			background: #12CEB3;
@@ -315,15 +315,17 @@
 <body>
 	<div id="app">
 		<header id="header" class="mui-bar mui-bar-nav" v-cloak>
-			<a class="mui-icon mui-icon-left-nav mui-pull-left" @click.stop="back"></a>
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" @click="back"></a>
 			<h1 class="mui-title">{{dataInfo.fundName}}</h1>
 			<div class="shareIcon" @click="onShareImg">
 				<img src="../images/icon-share.png">
 			</div>
 		</header>
 		<div class="mui-content" v-cloak>
-			<div class="mui-scroll-wrapper">
-				<div class="mui-scroll">
+			<div class="">
+				<div class="">
+						<!-- <div class="mui-scroll-wrapper">
+								<div class="mui-scroll"> -->
 					<div id="capture">
 						<div class="mui-content-h">
 							<div class="uni-flex" style="align-items: center;">
@@ -341,7 +343,7 @@
 							</div>
 							<div class="tags">
 								<span>{{dataInfo.enName}}</span>
-								<span>基金标签</span>
+								<span v-if="dataInfo.label">{{dataInfo.label}}</span>
 							</div>
 						</div>
 						<div class="info">
@@ -553,7 +555,7 @@
 									font-family:PingFangSC-Regular;
 									font-weight:400;
 									color:rgba(153,153,153,1);
-									line-height:40px;">昨日收益</div>
+									line-height:40px;">{{dataInfo.introduction}}</div>
 								</div>
 							</div>
 						</div>
@@ -674,11 +676,11 @@
 			},
 			mounted() {
 				this.myChart = echarts.init(document.getElementById('echart-box'));
-				mui('.mui-scroll-wrapper').scroll({
-					deceleration: 0.0005,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-					bounce: true,
-					indicators: false, //是否显示滚动条
-				});
+				// mui('.mui-scroll-wrapper').scroll({
+				// 	deceleration: 0.0005,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+				// 	bounce: true,
+				// 	indicators: false, //是否显示滚动条
+				// });
 			},
 			created() {
 				// 获取id
@@ -747,13 +749,18 @@
 					}
 				},
 				onShareImg() {
-					html2canvas(document.querySelector("#capture")).then(canvas => {
-						this.shareImg = canvas.toDataURL("image/png");
-						mui('.mui-popover').popover('show');
-					});
+					userAttestation(103);
+					// html2canvas(document.querySelector("#capture")).then(canvas => {
+					// 	this.shareImg = canvas.toDataURL("image/png");
+					// 	mui('.mui-popover').popover('show');
+					// });
 				},
 				// 页面跳转
 				changeRoute(name) {
+					if(!USER_ID) {
+						userAttestation(101);
+						return;
+					}
 					window.location.href = name + ".html?fundId=" + this.fundId + '&type=' + this.dataInfo.enName + '&fundName=' + this.dataInfo.fundName
 				}
 			}

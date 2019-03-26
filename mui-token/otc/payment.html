@@ -346,7 +346,7 @@
 											<span>{{orderDetails.nickName}}</span>
 										</div>
 									</div>
-									<div class="icon-contact" @click="changeRoute('imChat')">
+									<div class="icon-contact" @click="changeRoute('../IM/room')">
 										<img src="../images/icon-contact.png">
 										<span>联系卖家</span>
 									</div>
@@ -392,11 +392,12 @@
 									<span class="time" v-for="(item , index) in timeStr.slice(3).split(':')" :key="index">{{item}}</span>
 									<span class="tips">货币即将到账</span>
 									<span class="gray">(98.6%会在10分钟内到账)</span>
+									<p style="font-size: 14px; margin-top:10px;">成功付款后，需要商家确认并放币，请耐心等待。您可以通过右上方“联系商家”按钮，发起实时对话~</p>
 								</div>
 								<!-- 未收到币 -->
 								<div class="notReceived" v-else>
 									<span>未收到币？</span>
-									<span class="remind" @click="changeRoute('imChat')">提醒商家</span>
+									<span class="remind" @click="changeRoute('../IM/room')">提醒商家</span>
 									<span>发币</span>
 									<p class="appeal">
 										<img src="../images/icon-appeal.png">
@@ -558,6 +559,7 @@
 				},
 				// 取消订单
 				onCancel() {
+					if (isCancel) {history.go(-1);return;}
 					mui('.mui-popover').popover('show');
 					this.popoverOption = {
 						title: '取消订单',

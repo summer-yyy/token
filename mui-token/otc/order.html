@@ -120,6 +120,21 @@
 			border-radius: 15px;
 		}
 
+		.uni-tab-con .order-con .appeal {
+			color: #12CEB3;
+			font-size: 14px;
+			margin-left: 10px;
+			height: 20px;
+			display: flex;
+			align-items: center;
+		}
+
+		.uni-tab-con .order-con .appeal img {
+			width: 15px;
+			height: 15px;
+			margin-right: 6px;
+		}
+
 		.uni-tab-con .order-con-h {
 			padding: 10px 0;
 			border-bottom: 1px solid #eee;
@@ -127,6 +142,54 @@
 
 		.uni-tab-con .order-con-m {
 			padding: 10px 0;
+		}
+		/* 弹窗 */
+
+		.mui-popover {
+			padding: 20px 15px;
+		}
+
+		.popover-header h4 {
+			font-size: 17px;
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		.popover-content p {
+			font-size: 13px;
+		}
+
+		.popover-footer {
+			margin-top: 25px;
+		}
+
+		.popover-footer .uni-flex {
+			margin: 0 -10px;
+		}
+
+		.popover-footer .uni-flex .uni-flex-item {
+			padding: 0 10px;
+		}
+
+		.popover-footer button {
+			height: 35px;
+			line-height: 24px;
+			border-radius: 22px;
+			font-size: 15px;
+			color: #fff;
+			width: 100%;
+			border: none;
+		}
+
+		.popover-footer .cancel-btn {
+			background: rgba(191, 194, 199, 1);
+			box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.11);
+		}
+
+		.popover-footer .confirm-btn {
+			background: rgba(18, 206, 179, 1);
+			box-shadow: 0px 5px 6px 0px rgba(18, 206, 179, 0.2);
 		}
 	</style>
 </head>
@@ -165,7 +228,7 @@
 							<div class="order-con-h">
 								<div class="uni-flex">
 									<div class="uni-flex-item">
-										<span>订单号：买币 {{item.id}}</span>
+										<span>订单号：{{type=='1'?'买': '卖'}}币 {{item.id}}</span>
 									</div>
 									<span v-if="item.status==-1">状态：商家取消</span>
 									<span v-else-if="item.status==1">状态：商家处理中</span>
@@ -190,16 +253,18 @@
 									<div class="uni-flex-item">
 										<div class="uni-text">
 											<span>{{type=='1'?'商家': '买家'}}：{{item.nickName}}</span>
-											<span style="margin-left: 20px;" v-if="item.payWay == 1">{{type=='1'?'支付': '收款'}}支付方式：支付宝</span>
-											<span style="margin-left: 20px;" v-else-if="item.payWay == 2">{{type=='1'?'支付': '收款'}}支付方式：微信</span>
+											<span style="margin-left: 20px;" v-if="item.payWay == 1">{{type=='1'?'支付': '收款'}}方式：支付宝</span>
+											<span style="margin-left: 20px;" v-else-if="item.payWay == 2">{{type=='1'?'支付': '收款'}}方式：微信</span>
 											<span style="margin-left: 20px;" v-else-if="item.payWay == 3">{{type=='1'?'支付': '收款'}}方式：银行</span>
 											<span style="margin-left: 20px;" v-else>支付方式：{{item.payWay}}</span>
 										</div>
-										<div class="uni-text">
-											<span>时间：{{item.createTime}}</span>
+										<div class="uni-text" style="display: flex;">
+											<span style="flex: 1;">时间：{{item.createTime}}</span>
+											<span class="details" v-if="type=='1' && item.status!=3" @tap="onDetails(item.id)">查看</span>			
+											<span class="appeal" v-if="type=='2' && item.status!=3" @tap="changeRoute('../IM/room')"><img src="../images/icon-contact.png">联系卖家</span>
+											<span class="appeal" v-if="type=='2' && item.status!=3" @tap="appeal"><img src="../images/icon-appeal.png">提交申诉</span>
 										</div>
-									</div>
-									<span class="details" v-if="type=='1' && item.status!=3" @tap="onDetails">查看</span>
+									</div>									
 								</div>
 							</div>
 						</div>
@@ -207,6 +272,24 @@
 				</div>
 			</div>
 		</div>
+		<div id="popover" class="mui-popover">
+				<div class="popover-header">
+					<h4>订单申诉</h4>
+				</div>
+				<div class="popover-content">
+					<div class="popup-cancel">
+						<p>请添加客服QQ：{{appealQQ}}
+							<span class="copy" style="color: #12CEB3; font-size: 13px;" :data-clipboard-text="appealQQ">复制</span>，提起申诉后资产将会冻结，申诉专员将介入本次交易，直至申诉结束。恶意申诉者一经核实将被冻结账户，请勿恶意操作。</p>
+					</div>
+				</div>
+				<div class="popover-footer">
+					<div class="uni-flex" style="justify-content:center;">
+						<div class="uni-flex-item" style="max-width: 50%;">
+							<button type="button" class="mui-btn confirm-btn" @click="onConfirm">确认</button>
+						</div>
+					</div>
+				</div>
+			</div>
 	</div>
 	<script src="../js/vue.min.js"></script>
 	<script src="../js/mui.min.js"></script>
@@ -214,6 +297,7 @@
 	<script src="../js/api.js"></script>
 	<script src="../js/common.js"></script>
 	<script src="../js/mui.picker.min.js"></script>
+	<script src="../js/clipboard.min.js"></script>
 	<script type="text/javascript">
 		var dtPicker = new mui.DtPicker({
 			type: "month"
@@ -221,6 +305,7 @@
 		new Vue({
 			el: '#app',
 			data: {
+				appealQQ: "282502811",
 				status: 1,
 				type: 1,
 				date: '',
@@ -234,7 +319,20 @@
 				this.type = getUrlParam('type') || 1;
 				this.getList();
 			},
+			mounted () {
+				this.copy();
+			},
 			methods: {
+				copy() {
+					const clipboard = new ClipboardJS('.copy');
+					clipboard.on("success", function (e) {
+						mui.toast("复制成功");
+						e.clearSelection();
+					});
+					clipboard.on("error", function (e) {
+						mui.toast("复制失败");
+					});
+				},
 				// 初始化mui
 				initMui() {
 					mui.init({
@@ -320,12 +418,26 @@
 					}
 				},
 				// 查看订单
-				onDetails() {
-					console.log(111)
+				onDetails(id) {
+					this.changeRoute("payment", {id: id})
 				},
 				onSubmit() {
 					console.log(this.bankInfo)
-				}
+				},
+				// 页面跳转
+				changeRoute(name, params) {
+					let arr = [];
+					for (let i in params) {
+						arr.push(`${i}=${params[i]}`)
+					}
+					window.location.href = name + ".html?" + arr.join("&");
+				},
+				appeal() {
+					mui('.mui-popover').popover('show');
+				},
+				onConfirm () {
+					mui('.mui-popover').popover('hide');
+				},
 			}
 		});
 		mui('.mui-scroll-wrapper').scroll({

@@ -39,8 +39,8 @@ h1,h2,h3,h4,h5{
 #popover.mui-popover{
 	width: 250px;
 	left: 50%;
-	margin-left: -125px;
-	top: 20%;
+	top: 50%;
+	transform: translate3d(-50%, -50%, 0);
 	position: fixed;
 }
 .mui-popover .mui-table-view{
@@ -48,9 +48,7 @@ h1,h2,h3,h4,h5{
 }
 /* 提交成功模态框 */
 #popover.mui-popover-success {
-	top: 40%;
 	width: 280px;
-	margin-left: -140px;
 }
 #popover.mui-popover-success .mui-popover-main{
 	position: relative;

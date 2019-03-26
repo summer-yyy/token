@@ -209,8 +209,8 @@ function initBridge() {
 
         //native调用js
         setupWebViewJavascriptBridge(function (bridge) {
-            bridge.registerHandler('testJSFunction', function (data, responseCallback) {
-                alert('JS方法被调用:' + data);
+            bridge.registerHandler('userAttestation', function (data, responseCallback) {
+                // alert('JS方法被调用:' + data);
                 responseCallback('js执行过了');
             })
         })
@@ -220,7 +220,7 @@ function initBridge() {
         //js调用native
         function userAttestation(id) {
             WebViewJavascriptBridge.callHandler('userAttestation', "{\"id\" : " + id + "}", function (response) {
-                alert('native被调用:' + response);
+                // alert('native被调用:' + response);
                 // document.getElementById("returnValue").value = response;
             });
         }
