@@ -273,6 +273,9 @@
 			background: #BFC2C7;
 			box-shadow: 0px 5px 6px 0px rgba(191, 194, 199, 0.2)
 		}
+		.mui-toast-container {  
+				top: 50%; 
+		}  
 	</style>
 </head>
 
@@ -344,7 +347,7 @@
 											<h3>{{businessInfo.nickName}}</h3>
 										</div>
 										<div class="uni-flex-item" style="text-align: right;">
-											<h4>单价: {{businessInfo.price || 0}} CNT/USDT</h4>
+											<h4>单价: {{businessInfo.price || 0}} CNY/USDT</h4>
 											<p style="color: #666;">剩余USDT {{businessInfo.amount || 0}}</p>
 											<span>已交易 {{businessInfo.count}} 笔</span>
 										</div>
@@ -358,7 +361,7 @@
 								<span v-for="(tab,index) in tabBars" :key="index" :class="[tabIndex==index ? 'active' : '']" @tap="onChangeBuy(index)">{{tab}}</span>
 							</div>
 							<div class="uni-form-item">
-								<input class="uni-input" v-model="buyNum" type="number" @input="changeBuyNum" :placeholder="tabIndex==0?'请输入购买金额':'请输入购买数量'"
+								<input class="uni-input" v-model="buyNum" type="number" @input="changeBuyNum" :placeholder="tabIndex==0?'100元起':'20USDT起'"
 								/>
 								<span>{{tabIndex==0?'CNY':'USDT'}}</span>
 							</div>
@@ -381,7 +384,7 @@
 								<div class="uni-flex-item">
 									<h4>成交单价:</h4>
 								</div>
-								<span>{{buyNum==''?'输入金额后获取':businessInfo.price + ' CNT/USDT'}}</span>
+								<span>{{buyNum==''?'输入金额后获取':businessInfo.price + ' CNY/USDT'}}</span>
 							</div>
 							<div class="uni-flex">
 								<div class="uni-flex-item">
@@ -501,7 +504,8 @@
 				changeBuyNum() {
 					this.isDisabled = true
 					if (this.buyNum !== '') {
-						this.buyNum = this.buyNum.toFixed(2);
+						console.log(this.buyNum)
+						// this.buyNum = this.buyNum.toFixed(2);
 						this.dealInfo = {
 							amount: this.tabIndex == 0 ? numFormat(this.buyNum / this.businessInfo.price) : this.buyNum,
 							money: this.tabIndex == 0 ? this.buyNum : numFormat(this.buyNum * this.businessInfo.price),
@@ -530,14 +534,14 @@
 					if (this.isDisabled) return;
 					let errorStr = "";
 					if (this.dealInfo.money < 100 && this.tabIndex == 0) {
-						errorStr = "最小买币额度为100.00元，请重新输入"
+						errorStr = "最小买币额度为100元，请重新输入"
 					} else if(this.dealInfo.amount < 20 && this.tabIndex == 1){
-						errorStr = "最小买币额度为20.00USDT，请重新输入";
+						errorStr = "最小买币额度为20USDT，请重新输入";
 					} else if(this.dealInfo.amount > this.businessInfo.amount){
 						errorStr = "购买额度超过商家可出售额度，请重新输入";
 					}
 					if (errorStr) {
-						mui.toast(errorStr);
+						mui.toast(errorStr,{ type:'div' });
 						return;
 					}
 					fetch(oneKeyBuy, {
