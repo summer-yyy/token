@@ -624,22 +624,25 @@
 						type: 1,
 						name: "支付宝",
 						payName: '支付宝账号',
-						checked: true
+						checked: true,
+						cardList: []
 					},
 					{
 						icon: '../images/icon-yh.png',
 						payName: '银行卡',
 						name: "银行卡",
 						type: 3,
-						checked: false
+						checked: false,
+						cardList: []
 					},
-					{
-						icon: '../images/icon-wx.png',
-						payName: '微信号',
-						name: "微信",
-						type: 2,
-						checked: false
-					}
+					// {
+					// 	icon: '../images/icon-wx.png',
+					// 	payName: '微信号',
+					// 	name: "微信",
+					// 	type: 2,
+					// 	checked: false,
+					// cardList: []
+					// }
 				],
 				payWay: 1,
 				dealInfo: {
@@ -656,6 +659,8 @@
 			created() {
 				this.getData()
 				this.getSalability()
+				this.getPayWayList();
+				this.bankList = this.payType.cardList;
 			},
 			computed: {
 				payType() {
@@ -706,9 +711,10 @@
 				// 输入购买量
 				changeBuyNum() {
 					if (this.buyNum !== '') {
+						this.buyNum = this.buyNum.toFixed(2);
 						this.dealInfo = {
-							amount: floatObj.multiply(this.buyNum, this.businessInfo.price),
-							money: this.buyNum,
+							money: floatObj.multiply(this.buyNum, this.businessInfo.price).toFixed(2),
+							amount: this.buyNum,
 						}
 						this.isDisabled = false
 					} else {
@@ -727,11 +733,14 @@
 					item.checked = true;
 					this.payWay = item.type;
 					this.cardInfo = {};
+					if(!item.cardList || item.cardList.length == 0) {
+						this.getPayWayList();
+					}
+					this.bankList = item.cardList;
 				},
 				// 添加银行
 				addBank() {
 					mui('#bankSheet').popover('show');
-					this.getPayWayList();
 				},
 				// 选择银行
 				chocieBank(bank) {
@@ -740,11 +749,12 @@
 				// 获取账号列表
 				getPayWayList() {
 					fetch(otcPayWayList + "/" + USER_ID + "/" + this.payWay, {
-					}, 'POST').then(res => {
+					}, 'POST', {},false).then(res => {
 						if (res.code == 1) {
 							this.$nextTick(() => {
-								this.bankList = res.obj;
-								this.bankList.forEach(item => {
+								let payType = this.payTypes.find(item => item.type == this.payWay)
+								payType.cardList = res.obj;
+								payType.cardList.forEach(item => {
 									this.$set(item, "slide_x", 0);
 								})
 							})
@@ -819,6 +829,16 @@
 				// 一键购买
 				goBuy() {
 					if (this.isDisabled) return;
+					if(this.dealInfo.money < 20){
+						mui.toast("最小卖币额度为20.00USDT，请重新输入");
+						return;
+					} else if(this.dealInfo.amount > this.businessInfo.amount){
+						mui.toast("出售额度超过商家可购买额度，请重新输入");
+						return;
+					} else if(this.dealInfo.amount > this.salability){
+						mui.toast("余额不足，请重新输入");
+						return;
+					}
 					fetch(oneKeyBuy, {
 						amount: this.dealInfo.amount,
 						money: this.dealInfo.money,

@@ -455,6 +455,11 @@
 			created() {
 				this.getData()
 			},
+			mounted() {
+				mui.init({
+					swipeBack: true //启用右滑关闭功能
+				});
+			},
 			methods: {
 				back() {
 					userAttestation(100)
@@ -496,6 +501,7 @@
 				changeBuyNum() {
 					this.isDisabled = true
 					if (this.buyNum !== '') {
+						this.buyNum = this.buyNum.toFixed(2);
 						this.dealInfo = {
 							amount: this.tabIndex == 0 ? numFormat(this.buyNum / this.businessInfo.price) : this.buyNum,
 							money: this.tabIndex == 0 ? this.buyNum : numFormat(this.buyNum * this.businessInfo.price),
@@ -522,6 +528,18 @@
 				// 一键购买
 				goBuy() {
 					if (this.isDisabled) return;
+					let errorStr = "";
+					if (this.dealInfo.money < 100 && this.tabIndex == 0) {
+						errorStr = "最小买币额度为100.00元，请重新输入"
+					} else if(this.dealInfo.amount < 20 && this.tabIndex == 1){
+						errorStr = "最小买币额度为20.00USDT，请重新输入";
+					} else if(this.dealInfo.amount > this.businessInfo.amount){
+						errorStr = "购买额度超过商家可出售额度，请重新输入";
+					}
+					if (errorStr) {
+						mui.toast(errorStr);
+						return;
+					}
 					fetch(oneKeyBuy, {
 						amount: this.dealInfo.amount,
 						money: this.dealInfo.money,
@@ -547,9 +565,6 @@
 					window.location.href = name + ".html?" + arr.join("&");
 				}
 			}
-		});
-		mui.init({
-			swipeBack: true //启用右滑关闭功能
 		});
 		mui('.mui-scroll-wrapper').scroll({
 			deceleration: 0.0005,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006

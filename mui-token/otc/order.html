@@ -302,7 +302,7 @@
 		var dtPicker = new mui.DtPicker({
 			type: "month"
 		})
-		new Vue({
+		let vue = new Vue({
 			el: '#app',
 			data: {
 				appealQQ: "282502811",
@@ -312,14 +312,15 @@
 				showDate: false,
 				tabIndex: 0,
 				tabBars: ['进行中', '已完成', '已取消', '全部'],
-				orderList: []
+				orderList: [],
+				pageNum: 1,
 			},
 			created() {
-				this.initMui();
 				this.type = getUrlParam('type') || 1;
-				this.getList();
+				// this.getList();
 			},
 			mounted () {
+				this.initMui();
 				this.copy();
 			},
 			methods: {
@@ -337,21 +338,21 @@
 				initMui() {
 					mui.init({
 						pullRefresh: {
-							container: "#refreshContainer",
+							container: ".mui-scroll-wrapper",
 							down: {
 								auto: true,
-								callback: this.onPulldownfresh()
+								callback: this.onPulldownfresh
 							},
 							up: {
-								auto: true,
+								auto: false,
 								contentrefresh: '正在加载...',
-								callback: this.onPullupRefresh()
+								callback: this.onPullupRefresh
 							}
 						}
 					});
 				},
 				// 获取列表
-				getList({ pageNum = 1, pageSize = 10, status = this.status, date = this.date } = {}) {
+				getList({ pageNum = this.pageNum, pageSize = 10, status = this.status, date = this.date } = {}) {
 					fetch(myRecords, {
 						date,
 						pageNum,
@@ -359,9 +360,14 @@
 						status,		// 1进行中 3已完成 0已取消 2全部
 						"type": this.type,		// 1买币记录	2卖币记录
 						"userId": USER_ID		// 用户id
-					}, 'POST').then(res => {
+					}, 'POST', {}, false).then(res => {
 						if (res.code == 1) {
-							this.orderList = res.obj.list;
+							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+							let list = res.obj.list;
+							if (list.lenth == pageSize) {
+								this.pageNum++;
+							}
+							this.orderList.splice((pageNum - 1)*pageSize, pageSize,...list);
 						} else {
 							mui.toast('操作失败！')
 						}
@@ -369,10 +375,10 @@
 				},
 				// 下拉事件
 				onPulldownfresh() {
-					console.log(111)
+					this.getList();
 				},
 				onPullupRefresh() {
-					console.log(222)
+					this.getList();
 				},
 				// 选择日期
 				changeDate() {
@@ -384,7 +390,7 @@
 				},
 				// 清除搜索框
 				onClear() {
-					// this.date = ''
+					this.date = ''
 					this.showDate = false
 					this.getList()
 				},

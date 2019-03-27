@@ -532,7 +532,7 @@
 				// 获取详情
 				getDetail(id) {
 					fetch(orderDetails + "/" + id, {
-					}, 'POST').then(res => {
+					}, 'POST',{},true).then(res => {
 						this.orderDetails = res.obj;
 						if (this.orderDetails.status == 2) { // 已付款
 							this.isSuccess = true;
@@ -559,7 +559,7 @@
 				},
 				// 取消订单
 				onCancel() {
-					if (isCancel) {history.go(-1);return;}
+					if (this.isCancel) {history.go(-1);return;}
 					mui('.mui-popover').popover('show');
 					this.popoverOption = {
 						title: '取消订单',
@@ -575,7 +575,7 @@
 					switch (this.popoverOption.type) {
 						case 1: // 操作成功按钮
 							fetch(confirmPayment + "/" + this.id, {
-							}, 'POST').then(res => {
+							}, 'POST',{},true).then(res => {
 								if (res.code == 1) {
 									this.isSuccess = true;
 									clearInterval(this.timer);
@@ -587,7 +587,7 @@
 							break;
 						case 2: // 操作取消按钮
 							fetch(cancelTrade + "/" + this.id, {
-							}, 'POST').then(res => {
+							}, 'POST',{},true).then(res => {
 								if (res.code == 1) {
 									this.isCancel = true;
 									history.go(-1);
