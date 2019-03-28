@@ -138,3 +138,38 @@ function fetch(url, data, type, config = {}, isLoading = true) {
 	// 	});
 	// }
 }
+
+function uploadFile (url, sendData) {
+	return new Promise((resolve, reject) => {
+				if (window.XMLHttpRequest) {
+					// eslint-disable-next-line
+					requestObj = new XMLHttpRequest();
+				} else {
+					// eslint-disable-next-line
+					requestObj = new ActiveXObject();
+				}
+				requestObj.open('post', url, true);
+				// requestObj.setRequestHeader("Content-type", "multipart/form-data"); //application/x-www-form-urlencoded application/json; charset=utf-8
+				requestObj.send(sendData);
+				// 连接数据库
+				requestObj.onreadystatechange = () => {
+					if (requestObj.readyState === 4) {				
+						// HTTP 响应已经完全接收
+						if (requestObj.status === 200) {
+							// 请求成功
+							var obj = requestObj.response;
+							if (typeof obj !== 'object') {
+								obj = JSON.parse(obj);
+							}
+							resolve(obj);
+						} else {
+							var obj = requestObj.response;
+							if (typeof obj !== 'object') {
+								obj = JSON.parse(obj);
+							}
+							reject(obj);
+						}
+					}
+				};
+			});
+}

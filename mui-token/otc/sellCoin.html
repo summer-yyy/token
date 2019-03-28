@@ -300,6 +300,46 @@
 			font-weight: bold;
 		}
 
+		#pwd .bankSheet-content {
+			padding: 20px;
+		}
+		#pwd .bankSheet-content .title {
+			font-size: 15px;
+		}
+		#pwd .bankSheet-content .pwdBox {
+			display: flex;
+			justify-content: space-between;
+			margin: 20px 0 43px;
+			position: relative;
+		}
+		#pwd .bankSheet-content .pwd{
+			opacity: 0;
+			height: 0;
+			width: 0;
+		}
+		#pwd .bankSheet-content .pwdBox .number{
+			width: 45px;
+			text-align: center;
+			height: 45px;
+			line-height: 45px;
+			border-bottom: 1px solid #BFC2C7;
+			font-size: 24px;
+			font-weight: 700; 
+		}
+		#pwd .bankSheet-content-footer{
+			font-size: 15px;
+			border-radius: 40px;
+			background: #BFC2C7;
+			text-align: center;
+			color: #fff;
+			height: 40px;
+			line-height: 40px;
+			padding: 0;
+		}
+		#pwd .bankSheet-content-footer.active{
+			background: #12CEB3;
+		}
+
 		.buy .addBank {
 			padding: 10px;
 			margin-top: 10px;
@@ -521,7 +561,7 @@
 								</div>
 							</div>
 							<div class="uni-form-item">
-								<input class="uni-input" v-model="buyNum" type="number" @input="changeBuyNum" placeholder="请输入卖出USDT数量" />
+								<input class="uni-input" v-model="buyNum" type="number" @input="changeBuyNum" placeholder="20USDT起" />
 								<span class="salability" style="color:#BFC2C7;">余额：{{salability}} USDT</span>
 							</div>
 						</div>
@@ -530,11 +570,11 @@
 								<div class="uni-flex-item">
 									<h4>CNY数目:</h4>
 								</div>
-								<span>{{buyNum==''?'-': dealInfo.amount}}</span>
+								<span>{{buyNum==''?'-': dealInfo.money}}</span>
 							</div>
 						</div>
 						<div class="payBtn">
-							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @tap="goBuy">一键卖币</button>
+							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @click="showPwd">一键卖币</button>
 						</div>
 					</div>
 				</div>
@@ -580,6 +620,22 @@
 				</div>
 			</div>
 		</div>
+		<!-- 输入密码 -->
+		<div id="pwd" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<div class="bankSheet-header">支付密码</div>
+			<div class="bankSheet-content">
+				<div>
+					<p class="title">资金密码</p>
+					<div class="pwdBox" @click="inputPwd">
+						<input class="pwd" v-model="pwd" type="tel" maxlength="6">
+						<div class="number" v-for="index in 6">{{index > (pwd+"").length ? "": "*"}}</div>
+					</div>
+				</div>	
+				<div :class="['bankSheet-content-footer',(pwd+'').length == 6 ? 'active' : '']" @click="checkPwd">
+					确定
+				</div>		
+			</div>		
+		</div>
 		<!-- 提交成功 -->
 		<div id="popover" class="mui-popover mui-popover-success">
 			<div class="mui-popover-main">
@@ -601,11 +657,13 @@
 	<script src="../js/common.js"></script>
 	<script src="../js/api.js"></script>
 	<script src="../js/fetch.js"></script>
+	<script src="../js/md5.min.js"></script>
 	<script type="text/javascript">
 		var elId = `Uni_${Math.ceil(Math.random() * 10e5).toString(36)}`
 		new Vue({
 			el: '#app',
 			data: {
+				pwd: "",
 				elId: elId,
 				showMore: false,
 				shopIndex: 0,
@@ -714,7 +772,9 @@
 				// 输入购买量
 				changeBuyNum() {
 					if (this.buyNum !== '') {
-						this.buyNum = this.buyNum.toFixed(2);
+						if(!Number.isInteger(this.buyNum)){
+							this.buyNum = Number(Math.floor(this.buyNum * 100) / 100);
+						}
 						this.dealInfo = {
 							money: floatObj.multiply(this.buyNum, this.businessInfo.price).toFixed(2),
 							amount: this.buyNum,
@@ -749,6 +809,42 @@
 				chocieBank(bank) {
 					console.log(bank)
 				},
+				// 输入密码
+				inputPwd () {
+					mui(".pwd")[0].focus();
+				},
+				showPwd () {
+					if (this.isDisabled) return;
+					if(this.dealInfo.amount < 20){
+						mui.toast("最小卖币额度为20USDT，请重新输入");
+						return;
+					} else if(this.dealInfo.amount > this.businessInfo.amount){
+						mui.toast("出售额度超过商家可购买额度，请重新输入");
+						return;
+					} else if(this.dealInfo.amount > this.salability){
+						mui.toast("余额不足，请重新输入");
+						return;
+					}
+					mui('#pwd').popover('show');
+				},
+				// 提交密码
+				checkPwd () {
+					if((this.pwd+'').length < 6){
+						return;
+					}
+					fetch(validatePayPassword, {
+						userId: USER_ID,
+						payPassword: md5(this.pwd+'').toUpperCase()
+					}, 'POST', {},false).then(res => {
+						if (res.code == 1) {
+							mui('#pwd').popover('hide');
+							this.goBuy();
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+
+				},
 				// 获取账号列表
 				getPayWayList() {
 					fetch(otcPayWayList + "/" + USER_ID + "/" + this.payWay, {
@@ -759,6 +855,9 @@
 								payType.cardList = res.obj;
 								payType.cardList.forEach(item => {
 									this.$set(item, "slide_x", 0);
+									if(item.late == 1) {
+										this.cardInfo = item;
+									}
 								})
 							})
 						} else {
@@ -831,17 +930,6 @@
 				},
 				// 一键购买
 				goBuy() {
-					if (this.isDisabled) return;
-					if(this.dealInfo.money < 20){
-						mui.toast("最小卖币额度为20.00USDT，请重新输入");
-						return;
-					} else if(this.dealInfo.amount > this.businessInfo.amount){
-						mui.toast("出售额度超过商家可购买额度，请重新输入");
-						return;
-					} else if(this.dealInfo.amount > this.salability){
-						mui.toast("余额不足，请重新输入");
-						return;
-					}
 					fetch(oneKeyBuy, {
 						amount: this.dealInfo.amount,
 						money: this.dealInfo.money,

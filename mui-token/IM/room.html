@@ -76,7 +76,7 @@
 				bottom: 0;
 				left: 0;
 				right: 0;
-				z-index: 1000;
+				z-index: 100;
 				height: 56px;
 				overflow: hidden;
 			}
@@ -114,16 +114,16 @@
 						</div>
 						<div class="message-info" v-for="(item, index) in messageList" :key="index">
 							<p class="time" v-if="item.showTime">{{item.createTime}}</p>
-							<div class="info-l" v-if="item.index==2">
+							<div class="info-l" v-if="item.fromUser != userId">
 								<div class="uni-flex">
 									<div class="personal-img" style="margin-right: 10px;">
-										<img src="../images/business-img.png" >
+										<img :src="item.fromUserIcon || '../images/business-img.png'" >
 									</div>
 									<div class="uni-flex-item">
-										<img width="100px" height="50px" :src="item.message" v-if="/^data:image/.test(item.message)" >
+										<img width="100px" height="50px" :src="item.message || item.content" v-if="item.type == 1"@click="showPic(item.message || item.content)" >
 										<p class="message-text" v-else>
 											<!-- 您好。我是TokenPanda客服，有什么能帮助您的？ -->
-											{{item.message}}
+											{{item.message || item.content}}
 										</p>
 									</div>
 									<div class="empty"></div>
@@ -133,13 +133,13 @@
 								<div class="uni-flex">
 									<div class="empty"></div>
 									<div class="uni-flex-item">
-										<img width="100px" height="50px" :src="item.message" v-if="/^data:image/.test(item.message)" >
+										<img width="120px" :src="item.message || item.content" v-if="item.type == 1" @click="showPic(item.message || item.content)" >
 										<p class="message-text" v-else>
-											{{item.message}}
+											{{item.message || item.content}}
 										</p>
 									</div>
 									<div class="personal-img" style="margin-left: 10px;">
-										<img src="../images/business-img.png" >
+										<img :src="item.fromUserIcon || '../images/business-img.png'" >
 									</div>
 								</div>
 							</div>
@@ -154,20 +154,22 @@
 						<input class="uni-input" v-model="inputText" @input="changeInput" type="text" placeholder="输入您想沟通的信息"/>
 					</div>
 					<div class="sendBtn">
-						<span v-if="showSend" @tap="onSendText">发送</span>
-<input type="file" style="display: none;"  id="picFile" @change="readFile"/>
-
-						<img src="../images/send-img.png" v-else>
+						<span v-if="showSend" @click="onSendText">发送</span>
+						<img src="../images/send-img.png" v-else @click="choosePic">
+						<input type="file" style="display: none;"  id="picFile" @change="readFile" accept="image/jpg,image/jpeg,image/png,image/PNG"/>
 					</div>
 				</div>
-			</div>			
+			</div>	
 		</div>
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/common.js"></script>
+		<script src="../js/api.js"></script>
+		<script src="../js/fetch.js"></script>
 		<script src="../js/moment.min.js"></script>
 		<script type="text/javascript">
-			var ws = new WebSocket("ws://47.244.9.84:8084/websocket/" + USER_ID);
+			var ws = null;
+			ws = new WebSocket("ws://47.244.9.84:8084/websocket/" + USER_ID);
 			// 打开Socket
 			ws.onopen = function() {
 				console.info('Web Socket 已连接上，使用 send() 方法发送数据');
@@ -178,39 +180,47 @@
 			}
 			ws.onclose = function() { 
 				// 关闭 websocket
-				alert("连接已关闭..."); 
+				// alert("连接已关闭..."); 
+				vue.isClose = true;
 			};
 			var vue = new Vue({
 				el: '#app',
 				data: {
+					userId: USER_ID,
 					showSend: false,
 					inputText: '',
-					messageList: [{
-						name: '吴振',
-						photo: '/images/business-img.png',
-						message: '这是测试消息',
-						userId: 111,
-						isImg: false,
-						index: 1,
-					},{
-						name: '吴振',
-						photo: '/images/business-img.png',
-						message: '这是测试消息',
-						userId: 111,
-						isImg: false,
-						index: 2,
-					}],
-					showTime: true
+					messageList: [],
+					showTime: true,
+					isClose: false
 				},
 				mounted() {
 					this.height = this.$refs.scrollWrap.offsetHeight
 					this.scrollHeight = window.innerHeight - this.height-56-44
 				},
 				created() {
+					this.messageId = getUrlParam('messageId');
+					this.toUser = getUrlParam('toUser');
+					if (this.messageId) {
+						this.getData();
+					}
+				},
+				watch: {
+					messageList () {
+							this.$nextTick(() => {
+								mui('.mui-scroll-wrapper').scroll().reLayout();
+								mui('.mui-scroll-wrapper').scroll().scrollToBottom(100);
+							})
+					}
 				},
 				methods: {
 					// 获取聊天信息
 					getData() {
+						fetch(IMhistory, { 
+							messageId: this.messageId,
+							pageNum: 1,
+							pageSize: 30}, 'POST').then(res => {
+							this.messageList = res.obj.list
+						})
 					},
 					onMessage(data) {
 						console.log(data)
@@ -225,12 +235,15 @@
 							}
 						}, 1000)
 						this.messageList.push(data);
-						this.$nextTick(() => {
-							this.height = this.$refs.scrollWrap.offsetHeight
-							this.scrollHeight = window.innerHeight - this.height-56-44
-							mui('.mui-scroll-wrapper').scroll().reLayout();
-							mui('.mui-scroll-wrapper').scroll().scrollTo(0,this.scrollHeight,100);
-						})
+					},
+					showPic(url) {
+						var mask = mui.createMask();//callback为用户点击蒙版时自动执行的回调；
+						mask.show();//显示遮罩
+						mask[0].style.backgroundImage = `url(${url})`;
+						mask[0].style.backgroundPosition = `center`;
+						mask[0].style.backgroundSize = `contain`;
+						mask[0].style.backgroundRepeat = `no-repeat`;
+						mask[0].style.backgroundColor = `#000`;
 					},
 					changeInput() {
 						this.showSend = false
@@ -238,12 +251,16 @@
 							this.showSend = true
 						}
 					},
+					choosePic () {
+						mui("#picFile")[0].click();
+					},
 					// 发送文本消息
-					onSendText(obj = {
-								"toUser":"10114",       //接收方用户ID
+					onSendText() {
+						let obj = {
+								"toUser":this.toUser,       //接收方用户ID
 								"fromUser": USER_ID,   //发送方用户ID
 								"message": this.inputText  //消息内容
-						}) {
+						}
 						// var obj = {
 						// 	name: '吴振',
 						// 	photo: '/images/business-img.png',
@@ -254,8 +271,10 @@
 						// 	createTime: moment(new Date()).format("YYYY-MM-DD HH:MM"),
 						// }
 						var sendStr = JSON.stringify(obj);
-						obj.index=1;
 						this.messageList.push(obj);
+						if(this.isClose) {
+							ws = new WebSocket("ws://47.244.9.84:8084/websocket/" + USER_ID);
+						}
 						ws.send(sendStr);
 						this.inputText = ''
 						this.showSend = false
@@ -267,19 +286,52 @@
 							if(!file) return;
 							//判断类型是不是图片
 							if(!/image\/\w+/.test(file.type)){   
-											alert("请确保文件为图像类型"); 
+											mui.toast("请确保文件为图像类型"); 
 											return false; 
 							} 
+							let formData = new FormData();
+							formData.append("file", file);
+							console.log(formData)
+							uploadFile(uploadPic, formData).then(res => {
+								let obj = {
+										"toUser":_this.toUser,       //接收方用户ID
+										"fromUser": USER_ID,   //发送方用户ID
+										"message": res.obj.pic  //消息内容
+								}
+								var sendStr = JSON.stringify(obj);
+								if(_this.isClose) {
+									ws = new WebSocket("ws://47.244.9.84:8084/websocket/" + USER_ID);
+								}
+								ws.send(sendStr);
+								e.target.value = "";
+							})
+							// fetch(uploadPic, formData,'POST', {
+							// 	"Content-Type": "application/x-www-form-urlencoded",
+							// 	"Content-Type": "multipart/form-data"
+							// }).then(res => {
+							// 	console.log(res)
+							// })
 							var reader = new FileReader(); 
 							reader.readAsDataURL(file); 
 							reader.onload = function(e){ 
 								console.log(this.result); //就是base64
-								_this.onSendText({
-										"toUser":"10114",       //接收方用户ID
+								let obj = ({
+										"toUser":_this.toUser,       //接收方用户ID
 										"fromUser": USER_ID,   //发送方用户ID
-										"message": this.result  //消息内容
+										"message": this.result,  //消息内容
+										"type": 1
 								});
+								_this.messageList.push(obj);
+								console.log(_this.messageList); //就是base64
 							}
+					},
+					// 页面跳转
+					changeRoute(name, params) {
+						let arr = [];
+						for (let i in params) {
+							arr.push(`${i}=${params[i]}`)
+						}
+						window.location.href = name + ".html?" + arr.join("&");
 					}
 				}
 			});
@@ -288,7 +340,7 @@
 			});
 			mui('.mui-scroll-wrapper').scroll({
 				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-				startY: vue.scrollHeight,
+				// startY: vue.scrollHeight,
 				bounce: false,
 				indicators: false, //是否显示滚动条
 			});

@@ -68,7 +68,7 @@
 			<div class="mui-content">
 				<div class="mui-scroll-wrapper">
 					<div class="mui-scroll" style="padding: 0 15px;">
-						<div class="uni-flex" style="align-items: center;" v-for="(item, index) in list" :key="index">
+						<div class="uni-flex" style="align-items: center;" v-for="(item, index) in list" :key="index" @click="changeRoute('room',{messageId:item.messageId})">
 							<div class="personal-img">
 								<img :src="item.icon">
 							</div>
@@ -106,7 +106,20 @@
 							pageSize: 30,
 							userId: USER_ID
 						}, 'POST').then(res => {
+							// let list= [
+							// 		{
+							// 		"messageId": 18, 	 	 	 	 	 //消息ID 
+							// 		"fromUser": 10114, 
+							// 		"toUser": 10116,
+							// 		"icon": "http://13.113.136.60/5409fcff-4096-46e3-8925-8fe1ccdfae42.png", //头像
+							// 		"nickName": "熊猫⽤户10116", 		 	 	 	 	 //昵称 
+							// 		"content": "4565", 	 	 	 	 	 	 //消息⽂本
+							// 		"isRead": 1, 	 	 	 	 	 // 0未读；1已读
+							// 		"deleted": 0
+							// 		}
+							// 		]
 							this.list = res.obj.list
+							// this.list = list
 							this.$nextTick(() => {
 								mui('.mui-scroll-wrapper').scroll({
 									deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
@@ -116,6 +129,14 @@
 							})
 						})
 					},
+					// 页面跳转
+					changeRoute(name, params) {
+						let arr = [];
+						for (let i in params) {
+							arr.push(`${i}=${params[i]}`)
+						}
+						window.location.href = name + ".html?" + arr.join("&");
+					}
 				}
 			});
 			mui.init({

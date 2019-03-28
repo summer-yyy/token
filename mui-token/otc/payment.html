@@ -509,7 +509,14 @@
 						e.clearSelection();
 					});
 					clipboard.on("error", function (e) {
-						mui.toast("复制失败");
+						console.log("copy hack")
+						var input = document.createElement("input");
+            input.value = message;
+            document.body.appendChild(input);
+            input.select();
+            input.setSelectionRange(0, input.value.length), document.execCommand('Copy');
+            document.body.removeChild(input);
+						mui.toast("复制成功");
 					});
 				},
 				// 获取数据

@@ -400,7 +400,7 @@
 							</div>
 						</div>
 						<div class="payBtn">
-							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @tap="goBuy">一键购买</button>
+							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @click="goBuy">一键购买</button>
 						</div>
 					</div>
 				</div>
@@ -505,7 +505,9 @@
 					this.isDisabled = true
 					if (this.buyNum !== '') {
 						console.log(this.buyNum)
-						// this.buyNum = this.buyNum.toFixed(2);
+						if(!Number.isInteger(this.buyNum)){
+							this.buyNum = Number(Math.floor(this.buyNum * 100) / 100);
+						}
 						this.dealInfo = {
 							amount: this.tabIndex == 0 ? numFormat(this.buyNum / this.businessInfo.price) : this.buyNum,
 							money: this.tabIndex == 0 ? this.buyNum : numFormat(this.buyNum * this.businessInfo.price),
