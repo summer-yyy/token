@@ -584,37 +584,46 @@
 		<div id="bankSheet" class="mui-popover mui-popover-bottom mui-popover-action ">
 			<div class="bankSheet-header">选择到账{{payType.name}}</div>
 			<div class="bankSheet-content">
-				<div class="bankSheet-content-con">
-					<div class="container_of_slide" v-for="(item,index) in bankList" :key="index">
-						<div class="slide_list" @touchstart="touchStart($event,index)" @touchend="touchEnd($event,index)" @touchmove="touchMove($event,index)"
-						 @click="recover(index)" :style="{transform:'translate3d('+item.slide_x+'px, 0, 0)'}">
-							<div class="uni-flex" :style="{width: Screen_width + 'px', alignItems: 'center'}">
-								<template v-if="payWay == 3">
-									<div class="bank-img">
-										<img :src="item.icon">
-									</div>
-									<div class="uni-flex-item">
-										<h4>{{item.bank}}</h4>
-										<span>尾号{{item.userNumber.substr(-4)}} 储蓄卡</span>
-									</div>
-								</template>
-								<template v-else>
-									<div class="bank-img">
-										<img :src="payType.icon">
-									</div>
-									<div class="uni-flex-item">
-										<h4>{{item.userName}}</h4>
-										<span>{{item.userNumber}}</span>
-									</div>
-								</template>
+				<div class="bankSheet-content-con" style=" position: relative;">
+				<div class="mui-scroll-wrapper">
 
-							</div>
-							<div class="slide_btn" @click="removeBank(index)">
-								<span>删除</span>
+					<div class="mui-scroll">
+						<div class="cardList">
+							<div class="container_of_slide" v-for="(item,index) in bankList" :key="index">
+									<!-- <div class="slide_list" @touchstart="touchStart($event,index)" @touchend="touchEnd($event,index)" @touchmove="touchMove($event,index)"
+									@click="recover(index)" :style="{transform:'translate3d('+item.slide_x+'px, 0, 0)'}"> -->
+								<div class="slide_list"
+								@click="recover(index)" :style="{transform:'translate3d('+item.slide_x+'px, 0, 0)'}">
+									<div class="uni-flex" :style="{width: Screen_width + 'px', alignItems: 'center'}">
+										<template v-if="payWay == 3">
+											<div class="bank-img">
+												<img :src="item.icon">
+											</div>
+											<div class="uni-flex-item">
+												<h4>{{item.bank}}</h4>
+												<span>尾号{{item.userNumber.substr(-4)}} 储蓄卡</span>
+											</div>
+										</template>
+										<template v-else>
+											<div class="bank-img">
+												<img :src="payType.icon">
+											</div>
+											<div class="uni-flex-item">
+												<h4>{{item.userName}}</h4>
+												<span>{{item.userNumber}}</span>
+											</div>
+										</template>
+
+									</div>
+									<div class="slide_btn" @click="removeBank(index)">
+										<span>删除</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 				<div class="bankSheet-content-footer" @click="changeRoute('addCard', {payWay: payWay})">
 					<span class="mui-icon mui-icon-plusempty"></span>添加新的到账{{payType.payName}}
 				</div>
@@ -721,7 +730,6 @@
 				this.getData()
 				this.getSalability()
 				this.getPayWayList();
-				this.bankList = this.payType.cardList;
 			},
 			computed: {
 				payType() {
@@ -799,7 +807,18 @@
 					if(!item.cardList || item.cardList.length == 0) {
 						this.getPayWayList();
 					}
-					this.bankList = item.cardList;
+					this.bankList = item.cardList;	
+					item.cardList.forEach(info => {
+						this.$set(info, "slide_x", 0);
+						if(info.late == 1) {
+							this.cardInfo = info;
+						}
+					})
+					this.$nextTick(() => {
+						let height = item.cardList.length * 76;
+						mui(".bankSheet-content-con")[0].style.height = height > 350 ? '350px' : height + 'px';
+						mui('.mui-scroll-wrapper').scroll()[1].reLayout();
+					})	
 				},
 				// 添加银行
 				addBank() {
@@ -824,7 +843,8 @@
 					} else if(this.dealInfo.amount > this.salability){
 						mui.toast("余额不足，请重新输入");
 						return;
-					}
+					}			
+					this.pwd = "";
 					mui('#pwd').popover('show');
 				},
 				// 提交密码
@@ -837,8 +857,12 @@
 						payPassword: md5(this.pwd+'').toUpperCase()
 					}, 'POST', {},false).then(res => {
 						if (res.code == 1) {
-							mui('#pwd').popover('hide');
-							this.goBuy();
+							if (res.obj.result == 1) {
+								mui('#pwd').popover('hide');
+								this.goBuy();
+							} else {
+								mui.toast('密码错误！')
+							}							
 						} else {
 							mui.toast('操作失败！')
 						}
@@ -853,11 +877,17 @@
 							this.$nextTick(() => {
 								let payType = this.payTypes.find(item => item.type == this.payWay)
 								payType.cardList = res.obj;
+								this.bankList = payType.cardList;
 								payType.cardList.forEach(item => {
 									this.$set(item, "slide_x", 0);
 									if(item.late == 1) {
 										this.cardInfo = item;
 									}
+								})
+								this.$nextTick(() => {
+									let height = payType.cardList.length * 76;
+									mui(".bankSheet-content-con")[0].style.height = height > 350 ? '350px' : height + 'px';
+									mui('.mui-scroll-wrapper').scroll()[1].reLayout();
 								})
 							})
 						} else {

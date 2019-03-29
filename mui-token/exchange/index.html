@@ -452,7 +452,7 @@
 					fetch(getBaseInfo, {
 						depositCoinCode: this.currentCoin.enName,
 						receiveCoinCode: this.targetCoin.enName
-					}, 'POST').then(res => {
+					}, 'POST',{},false).then(res => {
 						if (res.code == 1) {
 							const data = res.obj.data;
 							this.instantRate = data.instantRate;

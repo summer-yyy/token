@@ -26,15 +26,17 @@ let addBank = apiUrl + '/otc/addBank', // 添加到账银行卡
 	otcPayWayList = apiUrl + '/otc/payWayList', // 收款方式列表 
 	salability = apiUrl + '/otc/salability' // 可用余额 
 // 我的店铺
-let confirmAgree = apiUrl + '/shop/confirmAgree/', // 店铺确认同意{id}
-	confirmRefuse = apiUrl + '/shop/confirmRefuse/', // 店铺确认拒绝{id}
-	payWayList = apiUrl + '/shop/payWayList/', // 查询收款方式{userId}
-	shopInfo = apiUrl + '/shop/shopInfo/', // 查询货币管理{userId}/{status}
+let confirmAgree = apiUrl + '/shop/confirmAgree', // 店铺确认同意{id}
+	confirmRefuse = apiUrl + '/shop/confirmRefuse', // 店铺确认拒绝{id}
+	payWayList = apiUrl + '/shop/payWayList', // 查询收款方式{userId}
+	shopInfo = apiUrl + '/shop/shopInfo', // 查询货币管理{userId}/{status}
 	updateAmount = apiUrl + '/shop/updateAmount', // 修改货币数量
 	updatePayWay = apiUrl + '/shop/updatePayWay', // 添加修改收款方式
 	updatePrice = apiUrl + '/shop/updatePrice', // 修改货币单价
-	userBuyRecord = apiUrl + '/shop/userBuyRecord/' // 店铺-用户交易记录
-
+	userBuyRecord = apiUrl + '/shop/userBuyRecord', // 店铺-用户交易记录
+	yearCount = apiUrl + '/shop/yearCount', // 某年某月
+	tradeCount = apiUrl + '/shop/tradeCount' // 头部信息
+	 
 // 一键兑换
 let queryCoinList = apiUrl2 + '/queryCoinList', // 查询币种列
 	getBaseInfo = apiUrl2 + '/getBaseInfo', // 获取兑换汇率基本信息接口

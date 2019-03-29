@@ -364,7 +364,7 @@
 						<div class="uni-flex">
 							<div class="uni-flex-item">
 								<div class="date-week">
-									<span :class="[index==weekIndex?'active':'', index==1?'border':'']" v-for="(item, index) in dateWeeks" :key="index" @tap="weekIndex=index">{{item}}</span>
+									<span :class="[index==weekIndex?'active':'', index==1?'border':'']" v-for="(item, index) in dateWeeks" :key="index" @tap="changeTab(index)">{{item}}</span>
 								</div>
 							</div>
 							<div class="date-time" @tap="changeDate">
@@ -378,15 +378,15 @@
 					<div class="dataInfo">
 						<div class="uni-flex">
 							<div class="uni-flex-item">
-								<h5>123</h5>
+								<h5>{{info.count}}</h5>
 								<span>交易笔数</span>
 							</div>
 							<div class="uni-flex-item">
-								<h5>51419.547</h5>
+								<h5>{{info.amount}}</h5>
 								<span>交易USDT数</span>
 							</div>
 							<div class="uni-flex-item">
-								<h5>10000.00</h5>
+								<h5>{{info.money}}</h5>
 								<span>交易金额</span>
 							</div>
 						</div>
@@ -400,14 +400,14 @@
 				<!-- 订单管理 -->
 				<div class="content-con" v-show="tabIndex==0">
 					<div class="uni-tab uni-flex">
-						<div class="uni-flex-item active">
+						<div :class="['uni-flex-item', status == 1 ? '' : 'active']" @click="changeOrder(0)">
 							<span>新订单</span>
 						</div>
-						<div class="uni-flex-item" style="position: relative;" @tap="showMenu=!showMenu">
+						<div :class="['uni-flex-item', status != 1 ? '' : 'active']" style="position: relative;" @click="changeOrder(1)">
 							<span>{{stateIndex==0?'已处理':stateIndex==1?'已同意':stateIndex==2?'已拒绝':stateIndex==3?'已取消':''}}</span>
 							<span class="mui-icon mui-icon-arrowdown"></span>
 							<ul class="menu" :style="{height:showMenu? '160px' : '0px'}">
-								<li v-for="(item, index) in stateMenu" :key="index" @tap.stop="onChangeState(index)">
+								<li v-for="(item, index) in stateMenu" :key="index" @click.stop="onChangeState(index)">
 									<span v-if="stateIndex!=index">{{item}}</span>
 								</li>
 							</ul>
@@ -416,13 +416,14 @@
 					<div class="uni-tab-con">
 						<div class="mui-scroll-wrapper" id="mui-scroll-wrapper">
 							<div class="mui-scroll">
-								<div class="order-con" v-for="(item, index) in 10" :key="index">
+								<div>
+								<div class="order-con" v-for="(item, index) in orderList" :key="index">
 									<div class="order-con-h">
 										<div class="uni-flex" style="align-items: center;">
 											<div class="uni-flex-item">
-												<span>订单号：买币 201902123</span>
+												<span>订单号：买币{{item.id}}</span>
 											</div>
-											<div class="contact">
+											<div class="contact" @click="changeRoute('../IM/room')">
 												<img src="../images/icon-contact.png" >
 												<span>联系买家</span>
 											</div>
@@ -432,11 +433,11 @@
 										<div class="uni-flex">
 											<div class="uni-flex-item">
 												<span>金额：</span>
-												<span class="num">100CNY</span>
+												<span class="num">{{item.money}}CNY</span>
 											</div>
 											<div class="uni-flex-item">
 												<span>数量：</span>
-												<span class="num">10USDT</span>
+												<span class="num">{{item.amount}}USDT</span>
 											</div>
 										</div>
 									</div>
@@ -444,19 +445,23 @@
 										<div class="uni-flex" style="align-items: center;">
 											<div class="uni-flex-item">
 												<div class="uni-text">
-													<span>用户昵称/ID：熊猫用户 10423</span>
+													<span>用户昵称/ID：{{item.userName}}</span>
 												</div>
 												<div class="uni-text">
-													<span>支付方式：支付宝</span>
+													<span v-if="item.payWay==1">支付方式：支付宝</span>
+													<span v-if="item.payWay==2">支付方式：微信</span>
+													<span v-if="item.payWay==3">支付方式：银行卡</span>
 												</div>
 												<div class="uni-text">
-													<span>时间：2019-02-07 10:30:21</span>
+													<span>时间：{{item.createTime}}</span>
 												</div>
 											</div>
-											<span class="details details-1" v-if="type=='0'" @tap="onReject">拒绝</span>
-											<span class="details" v-if="type=='0'" @tap="onAgree">同意</span>
+											<span class="details details-1" v-if="status==1&&type=='1'" @tap="onReject(item.id)">拒绝</span>
+											<span class="details" v-if="status==1&&type=='1'" @tap="onAgree(item.id)">同意</span>
+											<span class="details details-1" v-if="status!=1">{{item.status==0?'已取消':item.status==-1?'已拒绝':item.status==2?'已付款':item.status==3?'已同意':''}}</span>
 										</div>
 									</div>
+								</div>
 								</div>
 							</div>
 						</div>
@@ -546,7 +551,7 @@
 					</div>
 					<div class="uni-form-item">
 						<span>¥</span>
-						<input type="number" v-model="moneyNum" class="uni-input"/>
+						<input type="number" v-model="moneyNum" class="uni-input" placeholder=""/>
 						<img src="../images/icon-edit.png" >
 					</div>
 				</div>
@@ -581,7 +586,9 @@
 		<script src="../js/vue.min.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/mui.picker.min.js"></script>
+		<script src="../js/common.js"></script>
 		<script src="../js/fetch.js"></script>
+		<script src="../js/api.js"></script>
 		<script type="text/javascript">
 			var dtPicker = new mui.DtPicker({
 				type: "month"
@@ -600,7 +607,7 @@
 						year:  year,
 						month: month,
 					},
-					type: 0, // 用户买入, 1用户卖出
+					type: 1, // 1用户买入, 2用户卖出
 					tabIndex: 0,
 					tabBars: ['订单管理', '收款方式管理', '货币管理'],
 					showMenu: false,
@@ -614,18 +621,112 @@
 						type: 1
 					},
 					// 货币管理
-					moneyNum: '6.68'
+					moneyNum: '',
+					orderList: [],
+					orderId: '',
+					info: {
+						"count": 0, //交易笔数
+						"amount": 0, //交易USDT数
+						"money": 0//交易金额
+					},
+					pageNum: 1,
+					pageSize: 10,
+					status: 1,
 				},
 				created() {
-					// this.getData()
+					this.initData();
 				},
 				methods: {
 					// 初始化数据
 					initData() {
-						mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+						this.getTradeCount(1);
+					},
+					changeTab (index) {
+						this.weekIndex = index;
+						let day = 1;
+						if (index == 0) {
+							day = 1;
+						} else if (index == 1) {
+							day = 7;
+						} else if (index == 2) {
+							day = 30;
+							this.date = {
+								year:  year,
+								month: month,
+							};
+						}
+						this.getTradeCount(day);
+					},
+					changeOrder (index) {
+						if(index==0) {
+							this.status = 1;
+							pulldownRefresh();
+						} else {
+							if(this.status == 1) {
+								if (this.stateIndex == 0) {
+									this.status = 2;
+								}
+								if (this.stateIndex == 1) {
+									this.status = 3;
+								}
+								if (this.stateIndex == 2) {
+									this.status = 0;
+								}
+								if (this.stateIndex == 3) {
+									this.status = -1;
+								}
+								pulldownRefresh();
+							} else {
+								this.showMenu = !this.showMenu;
+							}
+						}
 					},
 					// 获取数据
 					getData() {
+						fetch(userBuyRecord, {
+								"pageNum": this.pageNum,
+								"pageSize": this.pageSize,
+								"status": this.status,	//1新订单2已处理3已同意0已取消-1已拒绝
+								"type": this.type,	//1一键买币2一键卖币
+								"userId": USER_ID
+							}, 'POST', {}, false).then(res => {
+							if (res.code == 1) {
+								let list = res.obj.list;
+								this.orderList.splice((this.pageNum - 1)*this.pageSize, this.pageSize,...list);
+								if (list.length < this.pageSize) {
+									this.pageNum--;
+									mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+									mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+								} else {
+									mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+									mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+								}	
+							} else {
+								mui.toast('操作失败！')
+							}
+						})
+					},
+					// 获取头部数据
+					getTradeCount(day) {
+						fetch(tradeCount+"/"+USER_ID+"/"+day+"/"+this.type, {
+							}, 'POST').then(res => {
+							if (res.code == 1) {
+								this.info = res.obj;
+							} else {
+								mui.toast('操作失败！')
+							}
+						})
+					},
+					// 获取头部月份数据
+					getYearCount(date) {
+						fetch(yearCount+"/"+USER_ID+"/"+date+"/"+this.type, {
+							}, 'POST').then(res => {
+							if (res.code == 1) {
+								this.info = res.obj;
+							} else {
+								mui.toast('操作失败！')
+							}
+						})
 					},
 					// 切换日期
 					changeDate() {
@@ -634,6 +735,8 @@
 								year: item.y.text,
 								month: item.m.text
 							}
+							this.weekIndex = -1;
+							this.getYearCount(item.text);
 						});
 					},
 					// 选择列表类型
@@ -641,11 +744,25 @@
 						this.tabIndex = index
 					},
 					onChangeState(index) {
-						this.stateIndex = index
-						this.showMenu = false
+						this.stateIndex = index;
+						this.showMenu = false;
+						if (this.stateIndex == 0) {
+							this.status = 2;
+						}
+						if (this.stateIndex == 1) {
+							this.status = 3;
+						}
+						if (this.stateIndex == 2) {
+							this.status = 0;
+						}
+						if (this.stateIndex == 3) {
+							this.status = -1;
+						}
+						pulldownRefresh();
 					},
 					// 拒绝
-					onReject() {
+					onReject(id) {
+						this.orderId = id;
 						mui('.mui-popover').popover('show');
 						this.popoverOption = {
 							title: '拒绝订单',
@@ -656,7 +773,8 @@
 						}
 					},
 					// 同意
-					onAgree() {
+					onAgree(id) {
+						this.orderId = id;
 						mui('.mui-popover').popover('show');
 						this.popoverOption = {
 							title: '同意订单',
@@ -672,9 +790,30 @@
 						switch (this.popoverOption.type){
 							case 1: // 操作成功按钮
 								this.isSuccess = true
+								fetch(confirmAgree+"/"+this.orderId, {
+								}, 'POST').then(res => {
+									if (res.code == 1) {
+										mui.toast('操作成功！')
+										pulldownRefresh();
+										this.hidePopover();
+									} else {
+										mui.toast('操作失败！')
+									}
+								})
 								break;
 							case 2: // 操作取消按钮
 								this.isCancel = true
+								fetch(confirmRefuse+"/"+USER_ID, {
+									id: this.orderId
+								}, 'POST').then(res => {
+									if (res.code == 1) {
+										mui.toast('操作成功！')
+										pulldownRefresh();
+										this.hidePopover();
+									} else {
+										mui.toast('操作失败！')
+									}
+								})
 								break;
 							default:
 								break;
@@ -686,7 +825,15 @@
 					},
 					// 修改银行卡信息
 					changeBank() {
-						window.location.href = "../otc/addCard.html"
+						this.changeRoute("addCard", {payWay: 1})
+					},
+					// 页面跳转
+					changeRoute(name, params) {
+						let arr = [];
+						for (let i in params) {
+							arr.push(`${i}=${params[i]}`)
+						}
+						window.location.href = name + ".html?" + arr.join("&");
 					}
 				}
 			});
@@ -707,13 +854,14 @@
 			});
 			// 上拉加载
 			function pullupRefresh() {
-				setTimeout(function() {
-					mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh();
-				}, 2000);
+				vue.pageNum++;
+				vue.getData();
 			}
 			// 下拉刷新
 			function pulldownRefresh() {
-				vue.initData();
+				vue.pageNum = 1;
+				mui('#mui-scroll-wrapper').pullRefresh().refresh(true);
+				vue.getData();
 			}
 			mui('.mui-scroll-wrapper').scroll({
 				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006

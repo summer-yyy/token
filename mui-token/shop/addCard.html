@@ -209,7 +209,6 @@
 						"Content-Type": "application/x-www-form-urlencoded"
 					}).then(res => {
 						if (res.code == 1) {
-							mui.toast('添加成功！')							
 							history.go(-1);
 						} else {
 							mui.toast('操作失败！')
