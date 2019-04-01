@@ -330,6 +330,7 @@
 			},
 			methods: {
 				copy() {
+					let message = this.appealQQ;
 					const clipboard = new ClipboardJS('.copy');
 					clipboard.on("success", function (e) {
 						mui.toast("复制成功");

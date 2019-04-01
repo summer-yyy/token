@@ -201,7 +201,7 @@
 				</div>
 				<div class="popover-content">
 					<p>兑换成功</p>
-					<p>您可在“我的账单”中查看兑换记录</p>
+					<p>您可在“我的钱包”中查看兑换记录</p>
 				</div>
 				<div class="popover-footer">
 					<button type="button" class="mui-btn mui-btn-buy" @click="onClose">知道了</button>
@@ -297,6 +297,7 @@
 				onClose() {
 					mui('.mui-popover').popover('hide');
 					userAttestation(102);
+					history.go(-1);
 				},
 			}
 		})

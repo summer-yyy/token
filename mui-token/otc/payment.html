@@ -430,7 +430,7 @@
 				</div>
 				<div class="popup-cancel" v-if="popoverOption.type==3">
 					<p>请添加客服QQ：{{appealQQ}}
-						<span class="copy" style="color: #12CEB3; font-size: 13px;" :data-clipboard-text="appealQQ">复制</span>，提起申诉后资产将会冻结，申诉专员将介入本次交易，直至申诉结束。恶意申诉者一经核实将被冻结账户，请勿恶意操作。</p>
+						<span class="copy" style="color: #12CEB3; font-size: 13px;" :data-clipboard-text="appealQQ" onclick="" style="cursor:pointer;">复制</span>，提起申诉后资产将会冻结，申诉专员将介入本次交易，直至申诉结束。恶意申诉者一经核实将被冻结账户，请勿恶意操作。</p>
 				</div>
 			</div>
 			<div class="popover-footer">
@@ -506,6 +506,7 @@
 			},
 			methods: {
 				copy() {
+					let message = this.appealQQ;
 					const clipboard = new ClipboardJS('.copy');
 					clipboard.on("success", function (e) {
 						mui.toast("复制成功");
