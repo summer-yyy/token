@@ -346,7 +346,7 @@
 											<span>{{orderDetails.nickName}}</span>
 										</div>
 									</div>
-									<div class="icon-contact" @click="changeRoute('../IM/room',{toUserName:orderDetails.nickName,toUser:orderDetails.userNumber})">
+									<div class="icon-contact" @click="changeRoute('../IM/room',{toUserName:orderDetails.nickName,toUser:orderDetails.userId})">
 										<img src="../images/icon-contact.png">
 										<span>联系商家</span>
 									</div>
@@ -397,7 +397,7 @@
 								<!-- 未收到币 -->
 								<div class="notReceived" v-else>
 									<span>未收到币？</span>
-									<span class="remind" @click="changeRoute('../IM/room')">提醒商家</span>
+									<span class="remind" @click="changeRoute('../IM/room',{toUserName:orderDetails.nickName,toUser:orderDetails.userId})">提醒商家</span>
 									<span>发币</span>
 									<p class="appeal">
 										<img src="../images/icon-appeal.png">
