@@ -651,9 +651,11 @@
 													<span>用户昵称/ID：{{item.userName+"/"+item.userId}}</span>
 												</div>
 												<div class="uni-text ">
-													<span v-if="item.payWay==1 ">支付方式：支付宝</span>
-													<span v-if="item.payWay==2 ">支付方式：微信</span>
-													<span v-if="item.payWay==3 ">支付方式：银行卡</span>
+													<span v-if="item.payWay==1 && type == 1 ">支付方式：支付宝</span>
+													<span v-else-if="item.payWay==1 && type == 2">收款银行卡账号：{{item.userNumber}}</span>
+													<span v-else-if="item.payWay==2 ">支付方式：微信</span>
+													<span v-else-if="item.payWay==3 ">支付方式：银行卡</span>
+													<span v-else>收款银行卡号：{{item.userNumber}}</span>
 												</div>
 												<div class="uni-text ">
 													<span>时间：{{item.createTime}}</span>
