@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/app.css" rel="stylesheet" />
+	<style type="text/css">
+		#app {
+			padding: 44px 0 56px;
+		}
+
+		.mui-bar {
+			background-color: #fff;
+		}
+
+		.mui-title {
+			color: #32303D;
+		}
+
+		.mui-bar a {
+			color: #32303D;
+		}
+
+		.mui-content {
+			background: #fff;
+			/* padding: 0 !important; */
+			position: fixed;
+			top: 44px;
+			bottom: 0;
+			width: 100%;
+			color: #999;
+			font-size: 14px;
+			line-height: 24px;
+			padding: 15px 20px !important;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" @click="back"></a>
+			<h1 class="mui-title">分成比例说明</h1>
+		</header>
+		<div class="mui-content">
+			分成扣除比例，由量化团队收取，平台代扣。
+			<br /> 扣除比例说明：
+			<br /> 7天＜持有时间≤30天  50%
+			<br /> 30天＜持有时间≤90天    45%
+			<br /> 90天＜持有时间≤180天   40%
+			<br /> 持有时间＞180天  35%
+		</div>
+	</div>
+	<script src="../js/vue.min.js"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js"></script>
+	<script type="text/javascript">
+		let vue = new Vue({
+			el: '#app',
+			data: {
+
+			},
+			methods: {
+				back() {
+					userAttestation(100)
+				},
+			}
+		});
+	</script>
+</body>
+
+</html>

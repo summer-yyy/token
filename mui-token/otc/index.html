@@ -273,9 +273,10 @@
 			background: #BFC2C7;
 			box-shadow: 0px 5px 6px 0px rgba(191, 194, 199, 0.2)
 		}
-		.mui-toast-container {  
-				top: 50%; 
-		}  
+
+		.mui-toast-container {
+			top: 50%;
+		}
 	</style>
 </head>
 
@@ -505,8 +506,8 @@
 					this.isDisabled = true
 					if (this.buyNum !== '') {
 						console.log(this.buyNum)
-						if(!Number.isInteger(this.buyNum)){
-							this.buyNum = Number(Math.floor(this.buyNum * 100) / 100);
+						if (!Number.isInteger(this.buyNum)) {
+							this.buyNum = Number(Math.floor(floatObj.multiply(this.buyNum, 100)) / 100);
 						}
 						this.dealInfo = {
 							amount: this.tabIndex == 0 ? numFormat(this.buyNum / this.businessInfo.price) : this.buyNum,
@@ -537,13 +538,13 @@
 					let errorStr = "";
 					if (this.dealInfo.money < 100 && this.tabIndex == 0) {
 						errorStr = "最小买币额度为100元，请重新输入"
-					} else if(this.dealInfo.amount < 20 && this.tabIndex == 1){
+					} else if (this.dealInfo.amount < 20 && this.tabIndex == 1) {
 						errorStr = "最小买币额度为20USDT，请重新输入";
-					} else if(this.dealInfo.amount > this.businessInfo.amount){
+					} else if (this.dealInfo.amount > this.businessInfo.amount) {
 						errorStr = "购买额度超过商家可出售额度，请重新输入";
 					}
 					if (errorStr) {
-						mui.toast(errorStr,{ type:'div' });
+						mui.toast(errorStr, { type: 'div' });
 						return;
 					}
 					fetch(oneKeyBuy, {

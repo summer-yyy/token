@@ -271,3 +271,9 @@ function initBridge() {
     return userAttestation;
 }
 let userAttestation = initBridge();
+
+// 数字正则 包含小数
+function checkNumber(n) {
+    var filter = /^([1-9]\d*|0)(\.\d{1,2})?$/;
+    return filter.test(n)
+}

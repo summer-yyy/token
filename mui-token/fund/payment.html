@@ -145,6 +145,65 @@
 			font-size: 12px;
 			color: #BFC2C7;
 		}
+
+		#pwd {
+			background: #fff;
+		}
+
+		#pwd .bankSheet-content {
+			padding: 20px;
+		}
+
+		#pwd .bankSheet-content .title {
+			font-size: 15px;
+		}
+
+		#pwd .bankSheet-content .pwdBox {
+			display: flex;
+			justify-content: space-between;
+			margin: 20px 0 43px;
+			position: relative;
+		}
+
+		#pwd .bankSheet-content .pwd {
+			opacity: 0;
+			height: 0;
+			width: 0;
+		}
+
+		#pwd .bankSheet-content .pwdBox .number {
+			width: 45px;
+			text-align: center;
+			height: 45px;
+			line-height: 45px;
+			border-bottom: 1px solid #BFC2C7;
+			font-size: 24px;
+			font-weight: 700;
+		}
+
+		#pwd .bankSheet-content-footer {
+			font-size: 15px;
+			border-radius: 40px;
+			background: #BFC2C7;
+			text-align: center;
+			color: #fff;
+			height: 40px;
+			line-height: 40px;
+			padding: 0;
+		}
+
+		#pwd .bankSheet-content-footer.active {
+			background: #12CEB3;
+		}
+
+		.bankSheet-header {
+			background: #F8F8F8;
+			font-size: 17px;
+			text-align: center;
+			font-weight: normal;
+			height: 50px;
+			line-height: 50px;
+		}
 	</style>
 </head>
 
@@ -212,7 +271,7 @@
 							</div>
 						</div>
 						<div class="payBtn">
-							<button type="button" class="mui-btn mui-btn-buy" @click="onSubmit">确定</button>
+							<button type="button" class="mui-btn mui-btn-buy" @click="showPwd">确定</button>
 							<div class="tips">
 								<div class="uni-text">永续基金所属公司提供</div>
 								<div class="uni-text">基金销售资格：证监许可【2016】001号</div>
@@ -229,10 +288,26 @@
 					<img src="../images/success-img.png">
 				</div>
 				<div class="popover-content">
-					<p>基金购买成功，现在已开始获得收益了，可在“我的理财”查看详情</p>
+					<p>基金购买成功，可在“我的理财”查看详情</p>
 				</div>
 				<div class="popover-footer">
-					<button type="button" class="mui-btn mui-btn-buy" @click="onClose">确定</button>
+					<button type="button" class="mui-btn mui-btn-buy" @click="onClose">立即查看</button>
+				</div>
+			</div>
+		</div>
+		<!-- 输入密码 -->
+		<div id="pwd" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<div class="bankSheet-header">支付密码</div>
+			<div class="bankSheet-content">
+				<div>
+					<p class="title">资金密码</p>
+					<div class="pwdBox" @click="inputPwd">
+						<input class="pwd" v-model="pwd" type="tel" maxlength="6">
+						<div class="number" v-for="index in 6">{{index > (pwd+"").length ? "": "*"}}</div>
+					</div>
+				</div>
+				<div :class="['bankSheet-content-footer',(pwd+'').length == 6 ? 'active' : '']" @click="checkPwd">
+					确定
 				</div>
 			</div>
 		</div>
@@ -241,12 +316,14 @@
 	<script src="../js/vue.min.js"></script>
 	<script src="../js/api.js"></script>
 	<script src="../js/fetch.js"></script>
+	<script src="../js/md5.min.js"></script>
 	<script src="../js/common.js"></script>
 	<script src="../js/moment.min.js"></script>
 	<script type="text/javascript">
 		new Vue({
 			el: '#app',
 			data: {
+				pwd: '',
 				amount: '',
 				isCheck: true,
 				fundName: "",
@@ -280,26 +357,25 @@
 			},
 			methods: {
 				changeBuyNum() {
-					console.log(111)
+					if (this.buyNum !== '') {
+						if (!Number.isInteger(this.amount)) {
+							this.amount = Number(Math.floor(floatObj.multiply(this.amount, 100)) / 100);
+						}
+					}
 				},
 				onSubmit() {
-					if (!this.isValidate()) return
-					if (this.isCheck) {
-						fetch(buyFund, {
-							amount: this.amount,
-							fundId: this.fundId,
-							userId: USER_ID
-						}, 'POST').then(res => {
-							console.log(res);
-							if (res.code == 1) {
-								mui('.mui-popover').popover('show');
-							} else {
-								mui.toast('操作失败！')
-							}
-						})
-					} else {
-						mui.toast('请先同意相关协议及风险提示！')
-					}
+					fetch(buyFund, {
+						amount: this.amount,
+						fundId: this.fundId,
+						userId: USER_ID
+					}, 'POST').then(res => {
+						console.log(res);
+						if (res.code == 1) {
+							mui('#popover').popover('show');
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
 				},
 				// 验证
 				isValidate() {
@@ -315,14 +391,49 @@
 					} else if (this.type == 'USDT' && this.amount < 100) {
 						mui.toast('最低买入100.00 USDT')
 						return false
+					} else if (!this.isCheck) {
+						mui.toast('请先同意相关协议及风险提示！')
+						return false
 					}
 					return true
 				},
 				// 关闭模态框
 				onClose() {
 					userAttestation(104);
-					mui('.mui-popover').popover('hide');
-				}
+					history.go(-1);
+					mui('#popover').popover('hide');
+				},
+				// 输入密码
+				inputPwd() {
+					mui(".pwd")[0].focus();
+				},
+				showPwd() {
+					if (!this.isValidate()) return
+					this.pwd = "";
+					mui('#pwd').popover('show');
+				},
+				// 提交密码
+				checkPwd() {
+					if ((this.pwd + '').length < 6) {
+						return;
+					}
+					fetch(validatePayPassword, {
+						userId: USER_ID,
+						payPassword: md5(this.pwd + '').toUpperCase()
+					}, 'POST', {}, false).then(res => {
+						if (res.code == 1) {
+							if (res.obj.result == 1) {
+								mui('#pwd').popover('hide');
+								this.onSubmit();
+							} else {
+								mui.toast('密码错误！')
+							}
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+
+				},
 			}
 		});
 		mui.init({

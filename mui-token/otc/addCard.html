@@ -60,9 +60,9 @@
 			margin: 15px 0 30px;
 		}
 
-		.mui-toast-container {  
-				top: 50%; 
-		}  
+		.mui-toast-container {
+			top: 50%;
+		}
 	</style>
 </head>
 
@@ -157,18 +157,23 @@
 			},
 			created() {
 				this.payWay = getUrlParam("payWay");
-				if (this.payWay == 3)
+				if (this.payWay == 3) {
+					this.bankList = (localStorage && JSON.parse(localStorage.bankList || "[]")) || [];
 					this.getBank();
+				}
 			},
 			methods: {
 				getBank() {
-					fetch(bankList, {}, 'POST').then(res => {
+					fetch(bankList, {}, 'POST', {}, false).then(res => {
 						if (res.code == 1) {
 							this.bankList = res.obj;
 							this.bankList.forEach(item => {
 								item.text = item.bankName;
 								item.value = item.id;
 							});
+							if (localStorage) {
+								localStorage.bankList = JSON.stringify(this.bankList);
+							}
 							picker.setData(this.bankList);
 						} else {
 							mui.toast('操作失败！')
@@ -184,33 +189,35 @@
 					});
 				},
 				onSubmit() {
-					if(this.payWay == 1) { //支付宝
+					if (this.payWay == 1) { //支付宝
 						if (this.bankInfo.userName == "") {
 							mui.toast("请输入实名认证姓名");
 							return;
-						}else if (this.bankInfo.userNumber == "") {
+						} else if (this.bankInfo.userNumber == "") {
 							mui.toast("请输入支付宝账号");
 							return;
-						} 
-						
+						}
+
 					} else if (this.payWay == 3) { // 银行
 						if (this.bankInfo.userName == "") {
 							mui.toast("请输入持卡人姓名");
 							return;
-						}else if (this.bankInfo.userNumber == "") {
+						} else if (this.bankInfo.userNumber == "") {
 							mui.toast("请输入银行卡号");
 							return;
 						} else if (this.bankInfo.bank == "") {
 							mui.toast("请选择所属银行");
 							return;
-						} 
+						}
 					}
 					fetch(addPayWay, Object.assign({ userId: USER_ID, payWay: this.payWay }, this.bankInfo), 'POST', {
 						"Content-Type": "application/x-www-form-urlencoded"
 					}).then(res => {
 						if (res.code == 1) {
-							mui.toast('添加成功！')							
-							history.go(-1);
+							mui.toast('添加成功！')
+							setTimeout(() => {
+								location.href = 'sellCoin.html';
+							}, 2000)
 						} else {
 							mui.toast('操作失败！')
 						}

@@ -1,873 +1,1341 @@
 <!doctype html>
 <html>
 
-	<head>
-		<meta charset="utf-8">
-		<title></title>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<link href="../css/mui.min.css" rel="stylesheet" />
-		<link href="../css/app.css" rel="stylesheet" />
-		<link href="../css/mui.picker.min.css" rel="stylesheet" />
-		<style type="text/css">
-			.mui-bar{
-				background-color: #fff;
-				box-shadow: none;
-			}
-			.mui-title{
-				color: #32303D;
-			}
-			.mui-bar a{
-				color: #32303D;
-			}
-			
-			.main-header{
-				position: fixed;
-				top: 44px;
-				width: 100%;
-				z-index: 100;
-				background: #F5F5F5;
-			}
-			.main-header-H{
-				background: #12CEB3;
-				padding: 10px 15px 30px;
-				margin-bottom: 10px;
-			}
-			.main-header .date .date-week span{
-				font-size: 12px;
-				color: rgba(255,255,255,0.8);
-			}
-			.main-header .date .date-week .border{
-				margin: 0 4px;
-				padding: 0 8px 0 6px;
-				position: relative;
-			}
-			.date-week .border:before,.date-week .border:after{
-				position: absolute;
-				display: block;
-				content: '';
-				width: 1px;
-				height: 10px;
-				background: rgba(255,255,255,0.8);
-				top: 2px;
-			}
-			.main-header .date .date-week .border::before{
-				left: 0;
-			}
-			.main-header .date .date-week .border:after{
-				right: 0;
-			}
-			.main-header .date .date-week .active{
-				font-size: 14px;
-				font-weight: bold;
-			}
-			.main-header .date .date-time span{
-				font-size: 12px;
-				color: rgba(255,255,255,0.8);
-			}
-			.main-header .date .date-time .mui-icon{
-				position: relative;
-				top: -2px;
-			}
-			.main-header .dataInfo{
-				text-align: center;
-				margin-top: 35px;
-			}
-			.main-header .dataInfo h5{
-				font-size: 14px;
-				color: rgba(255,255,255,0.8);
-				font-weight: bold;
-			}
-			.main-header .dataInfo span{
-				font-size: 12px;
-				color: rgba(255,255,255,0.8);
-			}
-			
-			.main-header .uni-tab{
-				background: #fff;
-				padding: 0 15px;
-				border-bottom: 1px solid #E4E4E4;
-			}
-			.main-header .uni-tab span{
-				display: block;
-				text-align: center;
-				font-size: 14px;
-				color: #666;
-				padding: 15px 0;
-				margin-right: 30px;
-				font-size: 14px;
-			}
-			.main-header .uni-tab span.active{
-				color: #12CEB3;
-				font-weight: bold;
-			}
-			.mui-content{
-				position: fixed;
-				top: 238px;
-				bottom: 0;
-				width: 100%;
-				padding: 0!important;
-			}
-			.content-con{
-				position: relative;
-				height: 100%;
-			}
-			.mui-content .uni-tab{
-				background: #fff;
-				border-bottom: 1px solid #E4E4E4;
-				position: absolute;
-				left: 0;
-				top: 0;
-				width: 100%;
-				z-index: 1000;
-			}
-			.mui-content .uni-tab .uni-flex-item{
-				padding: 10px;
-				text-align: center;
-			}
-			.mui-content .uni-tab .active{
-				background: #EEEEEE;
-			}
-			.mui-content .uni-tab .active span{
-				color: #999;
-			}
-			.mui-content .uni-tab span{
-				font-size: 14px;
-				color: #666;
-			}
-			.mui-content .uni-tab .mui-icon{
-				position: absolute;
-				padding: 0;
-				left: 50%;
-				margin-left: 25px;
-				top:13px;
-				color: #BFC2C7;
-			}
-			.mui-content .uni-tab .menu{
-				position: absolute;
-				left: 0;
-				top: 43px;
-				width: 100%;
-				z-index: 1000;
-				list-style: none;
-				background: #fff;
-				box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.1);
-				border-radius: 0 0 4px 4px;
-				padding: 0 15px;
-				text-align: center;
-				overflow: hidden;
-				transition: all 0.3s;
-			}
-			.mui-content .uni-tab .menu li span{
-				display: block;
-				border-bottom: 1px solid #eee;
-				padding: 15px 0;
-				font-size: 14px;
-				color: #666;
-			}
-			.mui-content .uni-tab .menu li:last-child span{
-				border: none;
-			}
-			.uni-tab-con {
-				position: relative;
-				height: 100%;
-			}
-			.uni-tab-con .mui-scroll-wrapper{
-				padding-top: 40px;
-			}
-			.uni-tab-con .order-con{
-				background: #fff;
-				padding: 0 15px 10px;
-				margin-bottom: 10px;
-			}
-			.uni-tab-con .order-con span{
-				font-size: 12px;
-				color: #666;
-			}
-			.uni-tab-con .order-con .num{
-				color: #333;
-				font-size: 14px;
-				font-weight: bold;
-			}
-			.uni-tab-con .order-con .details{
-				padding: 2px 10px;
-				background: #12CEB3;
-				font-size: 12px;
-				color: #fff;
-				border-radius: 15px;
-				margin-top: 25px;
-			}
-			.uni-tab-con .order-con .details-1{
-				background: #eee;
-				color: #999;
-				margin-right: 10px;
-			}
-			.uni-tab-con .order-con-h{
-				padding: 10px 0;
-				border-bottom: 1px solid #eee;
-			}
-			.uni-tab-con .order-con-h .contact img{
-				width: 15px;
-				position: relative;
-				top: 3px;
-			}
-			.uni-tab-con .order-con-h .contact span{
-				color: #12CEB3;
-			}
-			.uni-tab-con .order-con-m{
-				padding: 10px 0;
-			}
-			/* 弹窗 */
-			.mui-popover{
-				padding: 20px 15px;
-			}
-			.popover-header h4{
-				font-size: 17px;
-				font-weight: bold;
-				text-align: center;
-				margin-bottom: 10px;
-			}
-			.popover-content p{
-				font-size: 13px;
-				text-align: center;
-			}
-			.popover-footer{
-				margin-top: 25px;
-			}
-			.popover-footer .uni-flex{
-				margin: 0 -10px;
-			}
-			.popover-footer .uni-flex .uni-flex-item{
-				padding: 0 10px;
-			}
-			.popover-footer button{
-				height: 35px;
-				line-height: 24px;
-				border-radius:22px;
-				font-size: 15px;
-				color: #fff;
-				width: 100%;
-				border: none;
-			}
-			.popover-footer .cancel-btn{
-				background:rgba(191,194,199,1);
-				box-shadow:0px 5px 6px 0px rgba(0,0,0,0.11);
-			}
-			.popover-footer .confirm-btn{
-				background:rgba(18,206,179,1);
-				box-shadow:0px 5px 6px 0px rgba(18,206,179,0.2);
-			}
-			.receive-con .item {
-				background: #fff;
-				padding: 0 15px;
-				margin-bottom: 10px;
-			}
-			.receive-con .item h2{
-				font-size: 14px;
-				padding: 10px 0;
-				border-bottom: 1px solid #E4E4E4;
-				font-weight: bold;
-			}
-			.receive-con .uni-flex{
-				padding: 10px 0;
-				align-items: center;
-			}
-			.receive-con .uni-flex .img-box{
-				width: 130px;
-				height: 130px;
-				background: #EEEEEE;
-				text-align: center;
-				line-height: 130px;
-			}
-			.receive-con .uni-flex .img-box p{
-				color: #CCCCCC;
-			}
-			.receive-con .uni-flex img{
-				width: 130px;
-				height: 130px;
-				display: block;
-			}
-			.receive-con .uni-flex p{
-				font-size: 14px;
-			}
-			.receive-con .uni-flex-item{
-				text-align: right;
-			}
-			.receive-con .uni-flex-item span{
-				background: #12CEB3;
-				color: #fff;
-				padding: 5px 10px;
-				border-radius: 15px;
-				font-size: 12px;
-			}
-			.currency-con{
-				background: #fff;
-				height: 100%;
-				padding: 0 15px;
-			}
-			.currency-con .title{
-				padding: 15px 0;
-				border-bottom: 1px solid #E4E4E4;
-			}
-			.currency-con .title h2{
-				font-size: 14px;
-			}
-			.currency-con .title span{
-				font-size: 12px;
-			}
-			.currency-con .uni-form-item{
-				align-items: center;
-				width: 150px;
-				margin: 38px auto 0;
-				border-bottom: 1px solid #E4E4E4;
-				position: relative;
-			}
-			.currency-con .uni-form-item span{
-				font-size: 20px;
-				font-weight: bold;
-			}
-			.currency-con .uni-form-item .uni-input{
-				font-size: 30px;
-				font-weight: bold;
-				height: 50px;
-				text-align: center;
-				background: none;
-				position: relative;
-				z-index: 100;
-			}
-			.currency-con .uni-form-item img{
-				width: 15px;
-				height: 15px;
-				position: absolute;
-				right: 0;
-				top: 18px;
-				z-index: 1;
-			}
-			.mui-pull-top-pocket{
-				top: 60px!important;
-			}
-		</style>
-	</head>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link href="../css/mui.min.css" rel="stylesheet" />
+	<link href="../css/app.css" rel="stylesheet" />
+	<link href="../css/mui.picker.min.css" rel="stylesheet" />
+	<style type="text/css">
+		.mui-bar {
+			background-color: #fff;
+			box-shadow: none;
+		}
 
-	<body>
-		<div id="app">
-			<header id="header" class="mui-bar mui-bar-nav">
-				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-				<h1 class="mui-title uni-flex">
-					<span class="active uni-flex-item">用户买入</span>
-					<span class="uni-flex-item border-r">用户卖出</span>
-				</h1>
-				<span class="header-r">信息</span>
-			</header>
-			<div class="main-header">
-				<div class="main-header-H">
-					<div class="date">
-						<div class="uni-flex">
-							<div class="uni-flex-item">
-								<div class="date-week">
-									<span :class="[index==weekIndex?'active':'', index==1?'border':'']" v-for="(item, index) in dateWeeks" :key="index" @tap="changeTab(index)">{{item}}</span>
-								</div>
-							</div>
-							<div class="date-time" @tap="changeDate">
-								<span class="mui-icon mui-icon-arrowup"></span>
-								<span>{{date.year}}年</span>
-								<span class="mui-icon mui-icon-arrowup"></span>
-								<span>{{date.month}}月</span>
+		.mui-title {
+			color: #32303D;
+		}
+
+		.mui-bar a {
+			color: #32303D;
+		}
+
+		.main-header {
+			position: fixed;
+			top: 44px;
+			width: 100%;
+			z-index: 100;
+			background: #F5F5F5;
+		}
+
+		.main-header-H {
+			background: #12CEB3;
+			padding: 10px 15px 30px;
+			margin-bottom: 10px;
+		}
+
+		.main-header .date .date-week span {
+			font-size: 12px;
+			color: rgba(255, 255, 255, 0.8);
+		}
+
+		.main-header .date .date-week .border {
+			margin: 0 4px;
+			padding: 0 8px 0 6px;
+			position: relative;
+		}
+
+		.date-week .border:before,
+		.date-week .border:after {
+			position: absolute;
+			display: block;
+			content: '';
+			width: 1px;
+			height: 10px;
+			background: rgba(255, 255, 255, 0.8);
+			top: 2px;
+		}
+
+		.main-header .date .date-week .border::before {
+			left: 0;
+		}
+
+		.main-header .date .date-week .border:after {
+			right: 0;
+		}
+
+		.main-header .date .date-week .active {
+			font-size: 14px;
+			font-weight: bold;
+		}
+
+		.main-header .date .date-time span {
+			font-size: 12px;
+			color: rgba(255, 255, 255, 0.8);
+		}
+
+		.main-header .date .date-time .mui-icon {
+			position: relative;
+			top: -2px;
+		}
+
+		.main-header .dataInfo {
+			text-align: center;
+			margin-top: 35px;
+		}
+
+		.main-header .dataInfo h5 {
+			font-size: 14px;
+			color: rgba(255, 255, 255, 0.8);
+			font-weight: bold;
+		}
+
+		.main-header .dataInfo span {
+			font-size: 12px;
+			color: rgba(255, 255, 255, 0.8);
+		}
+
+		.main-header .uni-tab {
+			background: #fff;
+			padding: 0 15px;
+			border-bottom: 1px solid #E4E4E4;
+		}
+
+		.main-header .uni-tab span {
+			display: block;
+			text-align: center;
+			font-size: 14px;
+			color: #666;
+			padding: 15px 0;
+			margin-right: 30px;
+			font-size: 14px;
+		}
+
+		.main-header .uni-tab span.active {
+			color: #12CEB3;
+			font-weight: bold;
+		}
+
+		.mui-content {
+			position: fixed;
+			top: 238px;
+			bottom: 0;
+			width: 100%;
+			padding: 0 !important;
+		}
+
+		.content-con {
+			position: relative;
+			height: 100%;
+		}
+
+		.mui-content .uni-tab {
+			background: #fff;
+			border-bottom: 1px solid #E4E4E4;
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+			z-index: 1000;
+		}
+
+		.mui-content .uni-tab .uni-flex-item {
+			padding: 10px;
+			text-align: center;
+		}
+
+		.mui-content .uni-tab .active {
+			background: #EEEEEE;
+		}
+
+		.mui-content .uni-tab .active span {
+			color: #999;
+		}
+
+		.mui-content .uni-tab span {
+			font-size: 14px;
+			color: #666;
+		}
+
+		.mui-content .uni-tab .mui-icon {
+			position: absolute;
+			padding: 0;
+			left: 50%;
+			margin-left: 25px;
+			top: 13px;
+			color: #BFC2C7;
+		}
+
+		.mui-content .uni-tab .menu {
+			position: absolute;
+			left: 0;
+			top: 43px;
+			width: 100%;
+			z-index: 1000;
+			list-style: none;
+			background: #fff;
+			box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.1);
+			border-radius: 0 0 4px 4px;
+			padding: 0 15px;
+			text-align: center;
+			overflow: hidden;
+			transition: all 0.3s;
+		}
+
+		.mui-content .uni-tab .menu li span {
+			display: block;
+			border-bottom: 1px solid #eee;
+			padding: 15px 0;
+			font-size: 14px;
+			color: #666;
+		}
+
+		.mui-content .uni-tab .menu li:last-child span {
+			border: none;
+		}
+
+		.uni-tab-con {
+			position: relative;
+			height: 100%;
+		}
+
+		.uni-tab-con .mui-scroll-wrapper {
+			padding-top: 40px;
+		}
+
+		.uni-tab-con .order-con {
+			background: #fff;
+			padding: 0 15px 10px;
+			margin-bottom: 10px;
+		}
+
+		.uni-tab-con .order-con span {
+			font-size: 12px;
+			color: #666;
+		}
+
+		.uni-tab-con .order-con .num {
+			color: #333;
+			font-size: 14px;
+			font-weight: bold;
+		}
+
+		.uni-tab-con .order-con .details {
+			padding: 2px 10px;
+			background: #12CEB3;
+			font-size: 12px;
+			color: #fff;
+			border-radius: 15px;
+			margin-top: 25px;
+		}
+
+		.uni-tab-con .order-con .details-1 {
+			background: #eee;
+			color: #999;
+			margin-right: 10px;
+		}
+
+		.uni-tab-con .order-con-h {
+			padding: 10px 0;
+			border-bottom: 1px solid #eee;
+		}
+
+		.uni-tab-con .order-con-h .contact img {
+			width: 15px;
+			position: relative;
+			top: 3px;
+		}
+
+		.uni-tab-con .order-con-h .contact span {
+			color: #12CEB3;
+		}
+
+		.uni-tab-con .order-con-m {
+			padding: 10px 0;
+		}
+
+		/* 弹窗 */
+
+		.mui-popover {
+			padding: 20px 15px;
+		}
+
+		.popover-header h4 {
+			font-size: 17px;
+			font-weight: bold;
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		.popover-content p {
+			font-size: 13px;
+			text-align: center;
+		}
+
+		.popover-footer {
+			margin-top: 25px;
+		}
+
+		.popover-footer .uni-flex {
+			margin: 0 -10px;
+		}
+
+		.popover-footer .uni-flex .uni-flex-item {
+			padding: 0 10px;
+		}
+
+		.popover-footer button {
+			height: 35px;
+			line-height: 24px;
+			border-radius: 22px;
+			font-size: 15px;
+			color: #fff;
+			width: 100%;
+			border: none;
+		}
+
+		.popover-footer .cancel-btn {
+			background: rgba(191, 194, 199, 1);
+			box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.11);
+		}
+
+		.popover-footer .confirm-btn {
+			background: rgba(18, 206, 179, 1);
+			box-shadow: 0px 5px 6px 0px rgba(18, 206, 179, 0.2);
+		}
+
+		.receive-con .item {
+			background: #fff;
+			padding: 0 15px;
+			margin-bottom: 10px;
+		}
+
+		.receive-con .item h2 {
+			font-size: 14px;
+			padding: 10px 0;
+			border-bottom: 1px solid #E4E4E4;
+			font-weight: bold;
+		}
+
+		.receive-con .uni-flex {
+			padding: 10px 0;
+			align-items: center;
+		}
+
+		.receive-con .uni-flex .img-box {
+			width: 130px;
+			height: 130px;
+			background: #EEEEEE;
+			text-align: center;
+			line-height: 130px;
+		}
+
+		.receive-con .uni-flex .img-box p {
+			color: #CCCCCC;
+		}
+
+		.receive-con .uni-flex img {
+			width: 130px;
+			height: 130px;
+			display: block;
+		}
+
+		.receive-con .uni-flex p {
+			font-size: 14px;
+		}
+
+		.receive-con .uni-flex-item {
+			text-align: right;
+		}
+
+		.receive-con .uni-flex-item span {
+			background: #12CEB3;
+			color: #fff;
+			padding: 5px 10px;
+			border-radius: 15px;
+			font-size: 12px;
+		}
+
+		.currency-con {
+			background: #fff;
+			height: 100%;
+		}
+
+		.currency-con .item {
+			padding: 0 15px;
+			border-bottom: 1px solid #E4E4E4;
+		}
+
+		.currency-con .item:last-child {
+			border-bottom: 0;
+		}
+
+		.currency-con .title {
+			padding: 15px 0;
+		}
+
+		.currency-con .title h2 {
+			font-size: 14px;
+		}
+
+		.currency-con .title span {
+			font-size: 12px;
+		}
+
+		.currency-con .uni-form-item {
+			margin: 30px auto;
+			width: 170px;
+			border-bottom: 1px solid #E4E4E4;
+			position: relative;
+			display: flex;
+			align-items: center;
+		}
+
+		.currency-con .uni-form-item .placeholder {
+			color: #CCCCCC;
+			font-size: 14px;
+			height: 50px;
+			text-align: center;
+		}
+
+		.currency-con .uni-form-item .placeholder span {
+			color: #12CEB3;
+			font-size: 14px;
+			margin-left: 17px;
+		}
+
+		.currency-con .uni-form-item span {
+			font-size: 20px;
+			font-weight: bold;
+		}
+
+		.currency-con .uni-form-item .uni-input {
+			font-size: 30px;
+			font-weight: bold;
+			height: 50px;
+			text-align: center;
+			background: none;
+			border: 0;
+			flex: 1;
+		}
+
+		.currency-con .uni-form-item img {
+			width: 15px;
+			height: 15px;
+		}
+
+		.mui-pull-top-pocket {
+			top: 60px !important;
+		}
+
+		#payInfo .content-con {
+			padding: 0 15px;
+			height: 100%;
+		}
+
+		#payInfo .section {
+			border-bottom: 1px solid #E4E4E4;
+			padding: 15px 0 5px;
+		}
+
+		#payInfo .section h2 {
+			font-size: 14px;
+			border-left: 2px solid #12CEB3;
+			padding-left: 10px;
+			margin-bottom: 10px;
+			font-weight: normal;
+		}
+
+		#payInfo .section p {
+			line-height: 24px;
+			font-size: 14px;
+		}
+
+		#payInfo .tips {
+			font-size: 12px;
+			color: #E8541E;
+			text-align: center;
+			margin: 15px 0 30px;
+		}
+
+		#payInfo.mui-popover {
+			padding: 0;
+		}
+
+		#payInfo .bankSheet-header {
+			background: #F8F8F8;
+			font-size: 17px;
+			text-align: center;
+			font-weight: normal;
+			height: 50px;
+			line-height: 50px;
+		}
+
+		#payInfo .bankSheet-content {
+			background: #fff;
+			padding: 20px;
+		}
+
+		#payInfo .bankSheet-content-footer {
+			font-size: 17px;
+			padding: 24px 15px;
+		}
+
+		#payInfo .bankSheet-content-footer span {
+			font-size: 24px;
+			color: #12CEB3;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<header id="header" class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left" @click="back"></a>
+			<h1 class="mui-title uni-flex">
+				<span :class="[type == 1?'active':'', 'uni-flex-item']" @click="changeType(1)">用户买入</span>
+				<span :class="[type == 2?'active':'', 'uni-flex-item','border-r']" @click="changeType(2)">用户卖出</span>
+			</h1>
+			<span class="header-r " @click="changeRoute('../IM/list')">消息列表</span>
+		</header>
+		<div class="main-header ">
+			<div class="main-header-H ">
+				<div class="date ">
+					<div class="uni-flex ">
+						<div class="uni-flex-item ">
+							<div class="date-week ">
+								<span :class="[index==weekIndex? 'active': '', index==1? 'border': '']" v-for="(item, index) in dateWeeks" :key="index" @tap="changeTab(index)">{{item}}</span>
 							</div>
 						</div>
-					</div>
-					<div class="dataInfo">
-						<div class="uni-flex">
-							<div class="uni-flex-item">
-								<h5>{{info.count}}</h5>
-								<span>交易笔数</span>
-							</div>
-							<div class="uni-flex-item">
-								<h5>{{info.amount}}</h5>
-								<span>交易USDT数</span>
-							</div>
-							<div class="uni-flex-item">
-								<h5>{{info.money}}</h5>
-								<span>交易金额</span>
-							</div>
+						<div class="date-time" @tap="changeDate">
+							<span class="mui-icon mui-icon-arrowup "></span>
+							<span>{{date.year}}年</span>
+							<span class="mui-icon mui-icon-arrowup "></span>
+							<span>{{date.month}}月</span>
 						</div>
 					</div>
 				</div>
-				<div class="uni-tab uni-flex">
-					<span v-for="(tab,index) in tabBars" :key="index"  :class="[tabIndex==index ? 'active' : '']" @tap="onChangeType(index)">{{tab}}</span>
+				<div class="dataInfo ">
+					<div class="uni-flex ">
+						<div class="uni-flex-item ">
+							<h5>{{info.count}}</h5>
+							<span>交易笔数</span>
+						</div>
+						<div class="uni-flex-item ">
+							<h5>{{info.amount}}</h5>
+							<span>交易USDT数</span>
+						</div>
+						<div class="uni-flex-item ">
+							<h5>{{info.money}}</h5>
+							<span>交易金额</span>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="mui-content">
-				<!-- 订单管理 -->
-				<div class="content-con" v-show="tabIndex==0">
-					<div class="uni-tab uni-flex">
-						<div :class="['uni-flex-item', status == 1 ? '' : 'active']" @click="changeOrder(0)">
-							<span>新订单</span>
-						</div>
-						<div :class="['uni-flex-item', status != 1 ? '' : 'active']" style="position: relative;" @click="changeOrder(1)">
-							<span>{{stateIndex==0?'已处理':stateIndex==1?'已同意':stateIndex==2?'已拒绝':stateIndex==3?'已取消':''}}</span>
-							<span class="mui-icon mui-icon-arrowdown"></span>
-							<ul class="menu" :style="{height:showMenu? '160px' : '0px'}">
-								<li v-for="(item, index) in stateMenu" :key="index" @click.stop="onChangeState(index)">
-									<span v-if="stateIndex!=index">{{item}}</span>
-								</li>
-							</ul>
-						</div>
+			<div class="uni-tab uni-flex ">
+				<span v-for="(tab,index) in tabBars " :key="index " :class="[tabIndex==index ? 'active' : '']" v-if="type==1||index!=1" @tap="onChangeType(index) ">{{tab}}</span>
+			</div>
+		</div>
+		<div class="mui-content ">
+			<!-- 订单管理 -->
+			<div class="content-con " v-show="tabIndex==0 ">
+				<div class="uni-tab uni-flex ">
+					<div :class="[ 'uni-flex-item', status==1 ? '' : 'active'] " @click="changeOrder(0) ">
+						<span>新订单</span>
 					</div>
-					<div class="uni-tab-con">
-						<div class="mui-scroll-wrapper" id="mui-scroll-wrapper">
-							<div class="mui-scroll">
-								<div>
-								<div class="order-con" v-for="(item, index) in orderList" :key="index">
-									<div class="order-con-h">
-										<div class="uni-flex" style="align-items: center;">
-											<div class="uni-flex-item">
-												<span>订单号：买币{{item.id}}</span>
+					<div :class="[ 'uni-flex-item', status !=1 ? '' : 'active'] " style="position: relative; " @click="changeOrder(1) ">
+						<span>{{stateIndex==0?'已处理':stateIndex==1?'已同意':stateIndex==2?'已拒绝':stateIndex==3?'已取消':''}}</span>
+						<span class="mui-icon mui-icon-arrowdown "></span>
+						<ul class="menu " :style="{height:showMenu? '160px' : '0px'} ">
+							<li v-for="(item, index) in stateMenu " :key="index " @click.stop="onChangeState(index) ">
+								<span v-if="stateIndex!=index ">{{item}}</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="uni-tab-con ">
+					<div class="mui-scroll-wrapper" id="mui-scroll-wrapper">
+						<div class="mui-scroll ">
+							<div>
+								<div class="order-con " v-for="(item, index) in orderList " :key="index ">
+									<div class="order-con-h ">
+										<div class="uni-flex " style="align-items: center; ">
+											<div class="uni-flex-item ">
+												<span>订单号：{{type == 1? '买': "卖"}}币{{item.id}}</span>
 											</div>
-											<div class="contact" @click="changeRoute('../IM/room')">
-												<img src="../images/icon-contact.png" >
+											<div class="contact " @click="changeRoute( '../IM/room',{toUserName:item.userName,toUser:item.userNumber}) ">
+												<img src="../images/icon-contact.png ">
 												<span>联系买家</span>
 											</div>
 										</div>
 									</div>
-									<div class="order-con-m">
-										<div class="uni-flex">
-											<div class="uni-flex-item">
+									<div class="order-con-m ">
+										<div class="uni-flex ">
+											<div class="uni-flex-item ">
 												<span>金额：</span>
-												<span class="num">{{item.money}}CNY</span>
+												<span class="num ">{{item.money}}CNY</span>
 											</div>
-											<div class="uni-flex-item">
+											<div class="uni-flex-item ">
 												<span>数量：</span>
-												<span class="num">{{item.amount}}USDT</span>
+												<span class="num ">{{item.amount}}USDT</span>
 											</div>
 										</div>
 									</div>
-									<div class="order-con-b">
-										<div class="uni-flex" style="align-items: center;">
-											<div class="uni-flex-item">
-												<div class="uni-text">
+									<div class="order-con-b ">
+										<div class="uni-flex " style="align-items: center; ">
+											<div class="uni-flex-item ">
+												<div class="uni-text ">
 													<span>用户昵称/ID：{{item.userName}}</span>
 												</div>
-												<div class="uni-text">
-													<span v-if="item.payWay==1">支付方式：支付宝</span>
-													<span v-if="item.payWay==2">支付方式：微信</span>
-													<span v-if="item.payWay==3">支付方式：银行卡</span>
+												<div class="uni-text ">
+													<span v-if="item.payWay==1 ">支付方式：支付宝</span>
+													<span v-if="item.payWay==2 ">支付方式：微信</span>
+													<span v-if="item.payWay==3 ">支付方式：银行卡</span>
 												</div>
-												<div class="uni-text">
+												<div class="uni-text ">
 													<span>时间：{{item.createTime}}</span>
 												</div>
 											</div>
-											<span class="details details-1" v-if="status==1&&type=='1'" @tap="onReject(item.id)">拒绝</span>
-											<span class="details" v-if="status==1&&type=='1'" @tap="onAgree(item.id)">同意</span>
-											<span class="details details-1" v-if="status!=1">{{item.status==0?'已取消':item.status==-1?'已拒绝':item.status==2?'已付款':item.status==3?'已同意':''}}</span>
+											<span class="details details-1 " v-if="status==1&&type=='1' " @tap="onReject(item.id) ">拒绝</span>
+											<span class="details " v-if="status==1&&type=='1' " @tap="onAgree(item.id) ">同意</span>
+											<span class="details details-1 " v-if="status!=1 ">{{item.status==0?'已取消':item.status==-1?'已拒绝':item.status==2?'已付款':item.status==3?'已同意':''}}</span>
 										</div>
-									</div>
-								</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- 收款方式管理 -->
-				<div class="receive-con" v-show="tabIndex==1">
-					<div class="mui-scroll-wrapper">
-						<div class="mui-scroll">
-							<div class="item">
-								<h2>支付宝收款二维码</h2>
-								<div class="uni-flex">
-									<div class="img-box">
-										<!-- <img src="../images/ewm-img.png" > -->
-										<p>暂无收款二维码</p>
-									</div>
-									<div class="uni-flex-item">
-										<span>上传</span>
-									</div>
-								</div>
-								<div class="uni-flex" style="border-top:1px solid #E4E4E4">
-									<div class="input-group">
-										<div class="uni-form-item">
-											<label>姓名：</label>
-											<input class="uni-input" type="text"/>
-										</div>
-										<div class="uni-form-item">
-											<label>账号：</label>
-											<input class="uni-input" type="text"/>
-										</div>
-									</div>
-									<div class="uni-flex-item">
-										<span>提交</span>
-									</div>
-								</div>
-							</div>
-							<div class="item">
-								<h2>微信收款二维码</h2>
-								<div class="uni-flex">
-									<div class="img-box">
-										<img src="../images/ewm-img.png" >
-									</div>
-									<div class="uni-flex-item">
-										<span>重新上传</span>
-									</div>
-								</div>
-								<div class="uni-flex" style="border-top:1px solid #E4E4E4">
-									<div class="input-group">
-										<div class="uni-form-item">
-											<label>姓名：</label>
-											<input class="uni-input" type="text"/>
-										</div>
-										<div class="uni-form-item">
-											<label>账号：</label>
-											<input class="uni-input" type="text"/>
-										</div>
-									</div>
-									<div class="uni-flex-item">
-										<span>修改</span>
-									</div>
-								</div>
-							</div>
-							<div class="item">
-								<h2>银行卡</h2>
-								<div class="uni-flex">
-									<div class="info">
-										<p>姓名：张三</p>
-										<p>卡号：45668441648416814688</p>
-									</div>
-									<div class="uni-flex-item">
-										<span @tap="changeBank">修改</span>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<!-- 货币管理 -->
-				<div class="currency-con" v-show="tabIndex==2">
-					<div class="title">
-						<div class="uni-flex" style="align-items: center;">
-							<div class="uni-flex-item">
+			</div>
+			<!-- 收款方式管理 -->
+			<div class="receive-con " v-show="tabIndex==1 ">
+				<div class="mui-scroll-wrapper">
+					<div class="mui-scroll ">
+						<div class="item ">
+							<h2>支付宝收款二维码</h2>
+							<div class="uni-flex ">
+								<div class="img-box ">
+									<img :src="zfbInfo.qrCode" v-if="zfbInfo.qrCode">
+									<p v-else>暂无收款二维码</p>
+								</div>
+								<div class="uni-flex-item ">
+									<span @click="choosePic">{{zfbInfo.qrCode?"重新上传" : "上传"}}</span>
+								</div>
+							</div>
+							<div class="uni-flex " style="border-top:1px solid #E4E4E4 ">
+								<div class="input-group ">
+									<div class="uni-form-item ">
+										<label>姓名：</label>{{zfbInfo.userName}}
+									</div>
+									<div class="uni-form-item ">
+										<label>账号：</label>{{zfbInfo.userNumber}}
+									</div>
+								</div>
+								<div class="uni-flex-item ">
+									<span @click="updateInfo(1)">{{zfbInfo.userNumber?'修改':"提交"}}</span>
+								</div>
+							</div>
+						</div>
+						<!-- <div class="item ">
+							<h2>微信收款二维码</h2>
+							<div class="uni-flex ">
+								<div class="img-box ">
+									<img src="../images/ewm-img.png ">
+								</div>
+								<div class="uni-flex-item ">
+									<span>重新上传</span>
+								</div>
+							</div>
+							<div class="uni-flex " style="border-top:1px solid #E4E4E4 ">
+								<div class="input-group ">
+									<div class="uni-form-item ">
+										<label>姓名：</label>
+										<input class="uni-input " type="text " />
+									</div>
+									<div class="uni-form-item ">
+										<label>账号：</label>
+										<input class="uni-input " type="text " />
+									</div>
+								</div>
+								<div class="uni-flex-item ">
+									<span>修改</span>
+								</div>
+							</div>
+						</div> -->
+						<div class="item ">
+							<h2>银行卡</h2>
+							<div class="uni-flex ">
+								<div class="info ">
+									<p>姓名：{{bankInfo.userName}}</p>
+									<p>卡号：{{bankInfo.userNumber}}</p>
+									<p>所属银行：{{bankInfo.bankName || bankInfo.bank}}</p>
+								</div>
+								<div class="uni-flex-item ">
+									<span @click="updateInfo(3)">{{zfbInfo.userNumber?'修改':"提交"}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 货币管理 -->
+			<div class="currency-con " v-show="tabIndex==2 ">
+				<div class="item">
+					<div class="title ">
+						<div class="uni-flex " style="align-items: center; ">
+							<div class="uni-flex-item ">
 								<h2>USDT价格/个</h2>
 							</div>
 							<span>人民币</span>
 						</div>
 					</div>
 					<div class="uni-form-item">
-						<span>¥</span>
-						<input type="number" v-model="moneyNum" class="uni-input" placeholder=""/>
-						<img src="../images/icon-edit.png" >
+						<template v-if="shopInfo.price || hasPrice">
+							<span>¥</span>
+							<input type="number" :autofocus="hasPrice" v-model="shopInfo.price" class="uni-input" @input="isPriceEdit=true" />
+							<img v-show="isPriceEdit" src="../images/icon-edit.png " @click="updatePrice">
+						</template>
+						<p v-else class="placeholder" @click="hasPrice=true;">输入您要设置的USDT单价</p>
 					</div>
+				</div>
+				<div class="item">
+					<div class="title ">
+						<div class="uni-flex " style="align-items: center; ">
+							<div class="uni-flex-item ">
+								<h2>USDT出售数量</h2>
+							</div>
+							<!-- <span>人民币</span> -->
+						</div>
+					</div>
+					<div class="uni-form-item">
+						<template v-if="shopInfo.amount || hasAmount">
+							<!-- <span>¥</span> -->
+							<input type="number" :autofocus="hasAmount" v-model="shopInfo.amount" class="uni-input" @input="isAmountEdit=true" />
+							<img v-show="isAmountEdit" src="../images/icon-edit.png " @click="updateAmount">
+						</template>
+						<p v-else class="placeholder" @click="hasAmount=true;">输入您要出售的数量
+							<!-- <span>去充值</span> -->
+						</p>
+					</div>
+				</div>
+				<div style="padding: 15px;font-size:11px;
+				font-weight:400;
+				color:rgba(155,155,155,1);">
+					说明
+					<br/>1.USDT单价由商家确定，原则上不能与市场价格相差太大；
+					<br/>2.USDT出售数量由商家填写，实时刷新，若出售数量不足，需要商家手动修改。
+				</div>
+
+			</div>
+		</div>
+		<!-- 同意订单，取消订单 -->
+		<div id="popover " class="mui-popover ">
+			<div class="popover-header ">
+				<h4>{{popoverOption.title}}</h4>
+			</div>
+			<div class="popover-content ">
+				<div class="popup-cancel " v-if="popoverOption.type==1 ">
+					<p>订单确认后将会从您的TokenPanda钱包扣除相应货币，请您确认是否成功收到汇款，避免损失！ </p>
+					<p>您是否确认这笔订单？</p>
+				</div>
+				<div class="popup-cancel " v-else>
+					<p>恶意拒绝用户订单会严重影响商家信誉，若存在交易问题您可以通过“联系买家”发起对话。 </p>
+					<p>您是否确认拒绝这笔订单？</p>
 				</div>
 			</div>
-			<!-- 同意订单，取消订单 -->
-			<div id="popover" class="mui-popover">
-				<div class="popover-header">
-					<h4>{{popoverOption.title}}</h4>
-				</div>
-				<div class="popover-content">
-					<div class="popup-cancel" v-if="popoverOption.type==1">
-						<p>订单确认后将会从您的TokenPanda钱包扣除相应货币，请您确认是否成功收到汇款，避免损失！ </p>
-						<p>您是否确认这笔订单？</p>
+			<div class="popover-footer ">
+				<div class="uni-flex ">
+					<div class="uni-flex-item ">
+						<button type="button " class="mui-btn cancel-btn " @tap="hidePopover ">{{popoverOption.cancelText}}</button>
 					</div>
-					<div class="popup-cancel" v-else>
-						<p>恶意拒绝用户订单会严重影响商家信誉，若存在交易问题您可以通过“联系买家”发起对话。 </p>
-						<p>您是否确认拒绝这笔订单？</p>
-					</div>
-				</div>
-				<div class="popover-footer">
-					<div class="uni-flex">
-						<div class="uni-flex-item">
-							<button type="button" class="mui-btn cancel-btn" @tap="hidePopover">{{popoverOption.cancelText}}</button>
-						</div>
-						<div class="uni-flex-item">
-							<button type="button" class="mui-btn confirm-btn" @tap="onConfirm">{{popoverOption.confirmText}}</button>
-						</div>
+					<div class="uni-flex-item ">
+						<button type="button " class="mui-btn confirm-btn " @tap="onConfirm ">{{popoverOption.confirmText}}</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<script src="../js/vue.min.js"></script>
-		<script src="../js/mui.min.js"></script>
-		<script src="../js/mui.picker.min.js"></script>
-		<script src="../js/common.js"></script>
-		<script src="../js/fetch.js"></script>
-		<script src="../js/api.js"></script>
-		<script type="text/javascript">
-			var dtPicker = new mui.DtPicker({
-				type: "month"
-			})
-			var year = new Date().getFullYear()
-			var month = new Date().getMonth()
-			if(Number(month) + 1 < 10) {
-				month = '0' + String(Number(month) + 1);
-			}
-			var vue = new Vue({
-				el: '#app',
-				data: {
-					weekIndex: 0,
-					dateWeeks: ['今日', '本周', '本月'],
-					date: {
-						year:  year,
-						month: month,
+		<!--修改信息-->
+		<div id="payInfo" class="mui-popover mui-popover-bottom mui-popover-action ">
+			<div class="bankSheet-header">填写支付宝收款信息</div>
+			<div class="bankSheet-content">
+				<div class="section" v-if="payWay == 3">
+					<h2>持卡人</h2>
+					<input type="text" v-model="payInfo.userName" class="uni-input" placeholder="(已实名认证的用户姓名)" />
+				</div>
+				<div class="section" v-else-if="payWay == 1">
+					<h2>实名认证姓名</h2>
+					<input type="text" v-model="payInfo.userName" class="uni-input" placeholder="(已实名认证的用户姓名)" />
+				</div>
+				<div class="section">
+					<h2>{{payType.payName + (payWay ==3 ? "号": "")}}</h2>
+					<input :type='payWay ==3 ? "number": "text"' v-model="payInfo.userNumber" class="uni-input" :placeholder="'请输入准确的'+payType.payName + (payWay ==3 ? '号': '')"
+					/>
+				</div>
+				<div class="section" v-if="payWay == 3">
+					<div class="section-tit"></div>
+					<h2>所属银行</h2>
+					<p @click="bankChange" :style="{color: payInfo.bank==''?'#ccc': ''}">{{payInfo.bank==''?'点击选择所属银行': (payInfo.bankName || payInfo.bank)}}</p>
+				</div>
+				<div class="tips">{{payType.payName}}信息非常重要，请务必确保填写准确</div>
+				<div class="payBtn">
+					<button type="button" class="mui-btn mui-btn-buy" @click="onSubmit">确认</button>
+				</div>
+				<input type="file" style="display: none;" id="picFile" @change="readFile" accept="image/jpg,image/jpeg,image/png,image/PNG"
+				/>
+			</div>
+		</div>
+	</div>
+	<script src="../js/vue.min.js "></script>
+	<script src="../js/mui.min.js "></script>
+	<script src="../js/mui.picker.min.js "></script>
+	<script src="../js/common.js "></script>
+	<script src="../js/fetch.js "></script>
+	<script src="../js/api.js "></script>
+	<script type="text/javascript ">
+		var dtPicker = new mui.DtPicker({
+			type: "month"
+		})
+		var picker = new mui.PopPicker();
+		var year = new Date().getFullYear()
+		var month = new Date().getMonth()
+		if (Number(month) + 1 < 10) {
+			month = '0' + String(Number(month) + 1);
+		}
+		var vue = new Vue({
+			el: '#app',
+			data: {
+				hasPrice: false,
+				isPriceEdit:false,
+				hasAmount: false,
+				isAmountEdit:false,
+				weekIndex: 0,
+				dateWeeks: ['今日', '本周', '本月'],
+				date: {
+					year: year,
+					month: month,
+				},
+				type: 1, // 1用户买入, 2用户卖出
+				tabIndex: 0,
+				tabBars: ['订单管理', '收款方式管理', '货币管理'],
+				showMenu: false,
+				stateIndex: 0,
+				stateMenu: ['已处理', '已同意', '已拒绝', '已取消'],
+				popoverOption: {
+					title: '同意订单',
+					content: '',
+					cancelText: '取消',
+					confirmText: '确认',
+					type: 1
+				},
+				// 货币管理
+				moneyNum: '',
+				orderList: [],
+				orderId: '',
+				info: {
+					"count": 0, //交易笔数
+					"amount": 0, //交易USDT数
+					"money": 0//交易金额
+				},
+				pageNum: 1,
+				pageSize: 10,
+				status: 1,
+				shopInfo: {
+					"amount": 0,//出售数量
+					"price": 0 //出售单价
+				},
+				zfbInfo: {
+					"userName": "",//姓名
+					"userNumber": "",//账号
+					"qrCode": "",//二维码
+					"payWay": 1, //1支付宝2微信3银行
+				},
+				bankInfo: {
+					"userName": "",//姓名
+					"userNumber": "",//账号
+					"qrCode": "",//二维码
+					"bank": "", //银行名称
+					"payWay": 3, //1支付宝2微信3银行
+				},
+				payInfo: {
+					userName: '',
+					bank: '',
+					bankName: '',
+					userNumber: ''
+				},
+				payWay: 1,
+				payTypes: [
+					{
+						icon: '../images/icon-zfb.png',
+						type: 1,
+						name: "支付宝",
+						payName: '支付宝账号',
+						checked: true
 					},
-					type: 1, // 1用户买入, 2用户卖出
-					tabIndex: 0,
-					tabBars: ['订单管理', '收款方式管理', '货币管理'],
-					showMenu: false,
-					stateIndex: 0,
-					stateMenu: ['已处理', '已同意', '已拒绝', '已取消'],
-					popoverOption: {
+					{
+						icon: '../images/icon-yh.png',
+						payName: '银行卡',
+						name: "银行卡",
+						type: 3,
+						checked: false
+					},
+					{
+						icon: '../images/icon-wx.png',
+						payName: '微信号',
+						name: "微信",
+						type: 2,
+						checked: false
+					}
+				],
+				bankList:[]
+			},
+			created() {
+				this.initData();
+			},
+			mounted() {
+				this.initMUI();
+			},
+			computed: {
+				payType() {
+					return this.payTypes.find(item => this.payWay == item.type);
+				}
+			},
+			methods: {
+				back() {
+					userAttestation(100)
+				},
+				initMUI () {
+					mui.init({
+						pullRefresh: {
+							container: '#mui-scroll-wrapper',
+							down: {
+								auto: true,//可选,默认false.首次加载自动上拉刷新一次
+								contentrefresh: '正在加载中...',
+								callback: pulldownRefresh
+							},
+							up: {
+								auto: true,
+								contentrefresh: '正在加载...',
+								callback: pullupRefresh
+							}
+						}
+					});
+				},
+				changeType(type) {
+					this.type = type;
+					this.tabIndex = 0;
+					this.weekIndex = 0;
+					this.changeOrder(0);
+					this.getTradeCount(1);					
+				},
+				// 初始化数据
+				initData() {
+					this.getTradeCount(1);
+					this.bankList = (localStorage && JSON.parse(localStorage.bankList || "[]")) || [];					
+					this.getBank();					
+				},
+				getBank() {
+					fetch(bankList, {}, 'POST', {},false).then(res => {
+						if (res.code == 1) {
+							this.bankList = res.obj;
+							this.bankList.forEach(item => {
+								item.text = item.bankName;
+								item.value = item.id;
+							});
+							if (localStorage) {
+								localStorage.bankList = JSON.stringify(this.bankList);
+							}
+							picker.setData(this.bankList);
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 选择银行
+				bankChange() {
+					picker.show((item) => {
+						this.payInfo.bankName = item[0].text;
+						this.payInfo.bank = item[0].value;
+						console.log(item)
+					});
+				},
+				changeTab(index) {
+					this.weekIndex = index;
+					let day = 1;
+					if (index == 0) {
+						day = 1;
+					} else if (index == 1) {
+						day = 7;
+					} else if (index == 2) {
+						day = 30;
+						this.date = {
+							year: year,
+							month: month,
+						};
+					}
+					this.getTradeCount(day);
+				},
+				changeOrder(index) {
+					if (index == 0) {
+						this.status = 1;
+						pulldownRefresh();
+					} else {
+						if (this.status == 1) {
+							if (this.stateIndex == 0) {
+								this.status = 2;
+							}
+							if (this.stateIndex == 1) {
+								this.status = 3;
+							}
+							if (this.stateIndex == 2) {
+								this.status = 0;
+							}
+							if (this.stateIndex == 3) {
+								this.status = -1;
+							}
+							pulldownRefresh();
+						} else {
+							this.showMenu = !this.showMenu;
+						}
+					}
+				},
+				// 获取数据
+				getData() {
+					fetch(userBuyRecord, {
+						"pageNum": this.pageNum,
+						"pageSize": this.pageSize,
+						"status": this.status,	//1新订单2已处理3已同意0已取消-1已拒绝
+						"type": this.type,	//1一键买币2一键卖币
+						"userId": USER_ID
+					}, 'POST', {}, false).then(res => {
+						if (res.code == 1) {
+							let list = res.obj.list;
+							this.orderList.splice((this.pageNum - 1) * this.pageSize, this.pageSize, ...list);
+							if (list.length < this.pageSize) {
+								this.pageNum--;
+								mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+								mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+							} else {
+								mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+								mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+							}
+						} else {
+							mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+							mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				onSubmit() {
+					if(this.payWay == 1) { //支付宝
+						if (this.payInfo.userName == "") {
+							mui.toast("请输入实名认证姓名");
+							return;
+						}else if (this.payInfo.userNumber == "") {
+							mui.toast("请输入支付宝账号");
+							return;						
+						} 
+						
+					} else if (this.payWay == 3) { // 银行
+						if (this.payInfo.userName == "") {
+							mui.toast("请输入持卡人姓名");
+							return;
+						}else if (this.payInfo.userNumber == "") {
+							mui.toast("请输入银行卡号");
+							return;
+						} else if (this.payInfo.bank == "") {
+							mui.toast("请选择所属银行");
+							return;
+						} 
+					}	
+					this.updatePayWay();										
+				},
+				// 查询货币管理
+				getShopInfo() {
+					fetch(shopInfo + "/" + USER_ID + "/" + this.type, {
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							this.shopInfo = res.obj || {
+								"amount": 0,//出售数量
+								"price": 0 //出售单价
+							};
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				updateInfo (payWay) {
+					this.payWay = payWay;
+					if(this.payWay != 3) {
+						if (!this.zfbInfo.qrCode) {
+							mui.toast("请先上传图片");
+							return;
+						}
+						this.payInfo = this.zfbInfo;
+					}else {
+					 	this.payInfo	= this.bankInfo;
+					}
+					mui("#payInfo").popover('show');
+				},
+				// 修改货币数量
+				updateAmount() {
+					if (!checkNumber(this.shopInfo.amount)) {
+						mui.toast('请输入正确的数字！');						
+					}
+					fetch(updateAmount + "/" + USER_ID + "/" + this.shopInfo.amount + "/" + this.type, {
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							mui.toast('操作成功！')
+							this.isAmountEdit = false;							
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 修改货币单价
+				updatePrice() {
+					if (!checkNumber(this.shopInfo.price)) {
+						mui.toast('请输入正确的数字！');						
+					}
+					fetch(updatePrice + "/" + USER_ID + "/" + this.shopInfo.price + "/" + this.type, {
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							mui.toast('操作成功！');
+							this.isPriceEdit = false;
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 添加修改收款方式
+				getPayWayList() {
+					fetch(payWayList+"/"+USER_ID, {
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							let list = res.obj;
+							list.forEach(item => {
+								if(item.payWay == 1) {
+									item.bankName = item.bank;
+									this.zfbInfo = item;
+								} else if(item.payWay == 3) {
+									this.bankInfo = item;
+								}
+							});
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 添加修改收款方式
+				updatePayWay() {
+					let data = new FormData();
+					data.append("userId", USER_ID);
+					data.append("userNumber", this.payInfo.userNumber);
+					data.append("userName", this.payInfo.userName);
+					data.append("payWay", this.payWay);
+					if(this.payWay != 3) {
+						if (typeof this.payInfo.qrCode != "string") {
+							data.append("file", this.payInfo.qrCode);				
+						} else {
+							data.append("file", "");											
+						}
+					} else {
+						data.append("bank", this.payInfo.bank);
+					}
+					uploadFile(updatePayWay, data).then(res => {
+						if (res.code == 1) {
+							if(this.payWay != 3) {
+								this.zfbInfo.userName = this.payInfo.userName;
+								this.zfbInfo.userNumber = this.payInfo.userNumber;
+							}else {
+								this.bankInfo = this.payInfo;
+							}
+							mui("#payInfo").popover("hide");							
+							mui.toast('操作成功！');
+
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				choosePic () {
+					mui("#picFile")[0].click();
+				},
+				readFile(e){ 
+					 		let _this = this;
+							var file = e.target.files[0]; 	
+							if(!file) return;
+							//判断类型是不是图片
+							if(!/image\/\w+/.test(file.type)){   
+											mui.toast("请确保文件为图像类型"); 
+											return false; 
+							} 
+							var reader = new FileReader(); 
+							reader.readAsDataURL(file); 
+							reader.onload = function(e){ 
+								_this.zfbInfo.qrCode = this.result;
+							}
+							this.payInfo.qrCode = file;
+							if(this.payInfo.userName && this.payInfo.userNumber) {
+								this.updatePayWay();
+							}
+					},
+				// 获取头部数据
+				getTradeCount(day) {
+					fetch(tradeCount + "/" + USER_ID + "/" + day + "/" + this.type, {
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							this.info = res.obj;
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 获取头部月份数据
+				getYearCount(date) {
+					fetch(yearCount + "/" + USER_ID + "/" + date + "/" + this.type, {
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							this.info = res.obj;
+						} else {
+							mui.toast('操作失败！')
+						}
+					})
+				},
+				// 切换日期
+				changeDate() {
+					dtPicker.show((item) => {
+						this.date = {
+							year: item.y.text,
+							month: item.m.text
+						}
+						this.weekIndex = -1;
+						this.getYearCount(item.text);
+					});
+				},
+				// 选择列表类型
+				onChangeType(index) {
+					this.tabIndex = index
+					if (index==1){
+						this.getPayWayList();
+					}
+					if (index==2){
+						this.isPriceEdit = false;
+						this.isAmountEdit = false;	
+						this.hasAmount = false;	
+						this.hasPrice = false;				
+						this.getShopInfo();
+					}
+				},
+				onChangeState(index) {
+					this.stateIndex = index;
+					this.showMenu = false;
+					if (this.stateIndex == 0) {
+						this.status = 2;
+					}
+					if (this.stateIndex == 1) {
+						this.status = 3;
+					}
+					if (this.stateIndex == 2) {
+						this.status = 0;
+					}
+					if (this.stateIndex == 3) {
+						this.status = -1;
+					}
+					pulldownRefresh();
+				},
+				// 拒绝
+				onReject(id) {
+					this.orderId = id;
+					mui('.mui-popover').popover('show');
+					this.popoverOption = {
+						title: '拒绝订单',
+						content: '',
+						cancelText: '我再想想',
+						confirmText: '确认拒绝',
+						type: 2
+					}
+				},
+				// 同意
+				onAgree(id) {
+					this.orderId = id;
+					mui('.mui-popover').popover('show');
+					this.popoverOption = {
 						title: '同意订单',
 						content: '',
 						cancelText: '取消',
 						confirmText: '确认',
 						type: 1
-					},
-					// 货币管理
-					moneyNum: '',
-					orderList: [],
-					orderId: '',
-					info: {
-						"count": 0, //交易笔数
-						"amount": 0, //交易USDT数
-						"money": 0//交易金额
-					},
-					pageNum: 1,
-					pageSize: 10,
-					status: 1,
+					}
 				},
-				created() {
-					this.initData();
-				},
-				methods: {
-					// 初始化数据
-					initData() {
-						this.getTradeCount(1);
-					},
-					changeTab (index) {
-						this.weekIndex = index;
-						let day = 1;
-						if (index == 0) {
-							day = 1;
-						} else if (index == 1) {
-							day = 7;
-						} else if (index == 2) {
-							day = 30;
-							this.date = {
-								year:  year,
-								month: month,
-							};
-						}
-						this.getTradeCount(day);
-					},
-					changeOrder (index) {
-						if(index==0) {
-							this.status = 1;
-							pulldownRefresh();
-						} else {
-							if(this.status == 1) {
-								if (this.stateIndex == 0) {
-									this.status = 2;
-								}
-								if (this.stateIndex == 1) {
-									this.status = 3;
-								}
-								if (this.stateIndex == 2) {
-									this.status = 0;
-								}
-								if (this.stateIndex == 3) {
-									this.status = -1;
-								}
-								pulldownRefresh();
-							} else {
-								this.showMenu = !this.showMenu;
-							}
-						}
-					},
-					// 获取数据
-					getData() {
-						fetch(userBuyRecord, {
-								"pageNum": this.pageNum,
-								"pageSize": this.pageSize,
-								"status": this.status,	//1新订单2已处理3已同意0已取消-1已拒绝
-								"type": this.type,	//1一键买币2一键卖币
-								"userId": USER_ID
-							}, 'POST', {}, false).then(res => {
-							if (res.code == 1) {
-								let list = res.obj.list;
-								this.orderList.splice((this.pageNum - 1)*this.pageSize, this.pageSize,...list);
-								if (list.length < this.pageSize) {
-									this.pageNum--;
-									mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
-									mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+				// 确定
+				onConfirm() {
+					mui('.mui-popover').popover('hide');
+					switch (this.popoverOption.type) {
+						case 1: // 操作成功按钮
+							this.isSuccess = true
+							fetch(confirmAgree + "/" + this.orderId, {
+							}, 'POST').then(res => {
+								if (res.code == 1) {
+									mui.toast('操作成功！')
+									pulldownRefresh();
+									this.hidePopover();
 								} else {
-									mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
-									mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
-								}	
-							} else {
-								mui.toast('操作失败！')
-							}
-						})
-					},
-					// 获取头部数据
-					getTradeCount(day) {
-						fetch(tradeCount+"/"+USER_ID+"/"+day+"/"+this.type, {
+									mui.toast('操作失败！')
+								}
+							})
+							break;
+						case 2: // 操作取消按钮
+							this.isCancel = true
+							fetch(confirmRefuse + "/" + USER_ID, {
+								id: this.orderId
 							}, 'POST').then(res => {
-							if (res.code == 1) {
-								this.info = res.obj;
-							} else {
-								mui.toast('操作失败！')
-							}
-						})
-					},
-					// 获取头部月份数据
-					getYearCount(date) {
-						fetch(yearCount+"/"+USER_ID+"/"+date+"/"+this.type, {
-							}, 'POST').then(res => {
-							if (res.code == 1) {
-								this.info = res.obj;
-							} else {
-								mui.toast('操作失败！')
-							}
-						})
-					},
-					// 切换日期
-					changeDate() {
-						dtPicker.show((item) => {
-							this.date = {
-								year: item.y.text,
-								month: item.m.text
-							}
-							this.weekIndex = -1;
-							this.getYearCount(item.text);
-						});
-					},
-					// 选择列表类型
-					onChangeType(index) {
-						this.tabIndex = index
-					},
-					onChangeState(index) {
-						this.stateIndex = index;
-						this.showMenu = false;
-						if (this.stateIndex == 0) {
-							this.status = 2;
-						}
-						if (this.stateIndex == 1) {
-							this.status = 3;
-						}
-						if (this.stateIndex == 2) {
-							this.status = 0;
-						}
-						if (this.stateIndex == 3) {
-							this.status = -1;
-						}
-						pulldownRefresh();
-					},
-					// 拒绝
-					onReject(id) {
-						this.orderId = id;
-						mui('.mui-popover').popover('show');
-						this.popoverOption = {
-							title: '拒绝订单',
-							content: '',
-							cancelText: '我再想想',
-							confirmText: '确认拒绝',
-							type: 2
-						}
-					},
-					// 同意
-					onAgree(id) {
-						this.orderId = id;
-						mui('.mui-popover').popover('show');
-						this.popoverOption = {
-							title: '同意订单',
-							content: '',
-							cancelText: '取消',
-							confirmText: '确认',
-							type: 1
-						}
-					},
-					// 确定
-					onConfirm() {
-						mui('.mui-popover').popover('hide');
-						switch (this.popoverOption.type){
-							case 1: // 操作成功按钮
-								this.isSuccess = true
-								fetch(confirmAgree+"/"+this.orderId, {
-								}, 'POST').then(res => {
-									if (res.code == 1) {
-										mui.toast('操作成功！')
-										pulldownRefresh();
-										this.hidePopover();
-									} else {
-										mui.toast('操作失败！')
-									}
-								})
-								break;
-							case 2: // 操作取消按钮
-								this.isCancel = true
-								fetch(confirmRefuse+"/"+USER_ID, {
-									id: this.orderId
-								}, 'POST').then(res => {
-									if (res.code == 1) {
-										mui.toast('操作成功！')
-										pulldownRefresh();
-										this.hidePopover();
-									} else {
-										mui.toast('操作失败！')
-									}
-								})
-								break;
-							default:
-								break;
-						}
-					},
-					// 关闭模态框
-					hidePopover() {
-						mui('.mui-popover').popover('hide');
-					},
-					// 修改银行卡信息
-					changeBank() {
-						this.changeRoute("addCard", {payWay: 1})
-					},
-					// 页面跳转
-					changeRoute(name, params) {
-						let arr = [];
-						for (let i in params) {
-							arr.push(`${i}=${params[i]}`)
-						}
-						window.location.href = name + ".html?" + arr.join("&");
+								if (res.code == 1) {
+									mui.toast('操作成功！')
+									pulldownRefresh();
+									this.hidePopover();
+								} else {
+									mui.toast('操作失败！')
+								}
+							})
+							break;
+						default:
+							break;
 					}
-				}
-			});
-			mui.init({
-				pullRefresh: {
-					container: '#mui-scroll-wrapper',
-					down: {
-						auto: true,//可选,默认false.首次加载自动上拉刷新一次
-						contentrefresh: '正在加载中...',
-						callback: pulldownRefresh
-					},
-					up: {
-						auto:true,
-						contentrefresh: '正在加载...',
-						callback: pullupRefresh
+				},
+				// 关闭模态框
+				hidePopover() {
+					mui('.mui-popover').popover('hide');
+				},
+				// 页面跳转
+				changeRoute(name, params) {
+					let arr = [];
+					for (let i in params) {
+						arr.push(`${i}=${params[i]}`)
 					}
+					window.location.href = name + ".html? " + arr.join("& ");
 				}
-			});
-			// 上拉加载
-			function pullupRefresh() {
-				vue.pageNum++;
-				vue.getData();
 			}
-			// 下拉刷新
-			function pulldownRefresh() {
-				vue.pageNum = 1;
-				mui('#mui-scroll-wrapper').pullRefresh().refresh(true);
-				vue.getData();
-			}
-			mui('.mui-scroll-wrapper').scroll({
-				deceleration: 0.0005 ,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
-				bounce: true,
-				indicators: false, //是否显示滚动条
-			});
-		</script>
-	</body>
+		});
+		// 上拉加载
+		function pullupRefresh() {
+			vue.pageNum++;
+			vue.getData();
+		}
+		// 下拉刷新
+		function pulldownRefresh() {
+			vue.pageNum = 1;
+			mui('#mui-scroll-wrapper').pullRefresh().refresh(true);
+			vue.getData();
+		}
+		mui('.mui-scroll-wrapper').scroll({
+			deceleration: 0.0005,//flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+			bounce: true,
+			indicators: false, //是否显示滚动条
+		});
+	</script>
+</body>
+
 </html>

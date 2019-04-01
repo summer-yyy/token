@@ -286,7 +286,7 @@
 				</ul>
 			</div>
 			<div class="paybtn">
-				<button type="button" class="mui-btn mui-btn-buy" @tap="onSubmit">一键兑换</button>
+				<button type="button" class="mui-btn mui-btn-buy" @click="onSubmit">一键兑换</button>
 			</div>
 		</div>
 		<div id="popover" class="mui-popover" style="height: 300px; ">
@@ -452,7 +452,7 @@
 					fetch(getBaseInfo, {
 						depositCoinCode: this.currentCoin.enName,
 						receiveCoinCode: this.targetCoin.enName
-					}, 'POST',{},false).then(res => {
+					}, 'POST', {}, false).then(res => {
 						if (res.code == 1) {
 							const data = res.obj.data;
 							this.instantRate = data.instantRate;

@@ -346,13 +346,13 @@
 											<span>{{orderDetails.nickName}}</span>
 										</div>
 									</div>
-									<div class="icon-contact" @click="changeRoute('../IM/room')">
+									<div class="icon-contact" @click="changeRoute('../IM/room',{toUserName:orderDetails.nickName,toUser:orderDetails.userNumber})">
 										<img src="../images/icon-contact.png">
-										<span>联系卖家</span>
+										<span>联系商家</span>
 									</div>
 								</div>
 							</div>
-							<div class="main-con-mid">本平台暂不支持自动扣款，请使用本人(实名认证)的支付宝账号向以下账号自行转账。</div>
+							<div class="main-con-mid">本平台暂不支持自动扣款，请使用本人(实名认证)的{{payType.userName}}向以下账号自行转账。</div>
 							<div class="main-con-bot">
 								<div class="pay-img">
 									<img :src="payType.icon">
@@ -472,15 +472,18 @@
 				payTypes: [
 					{
 						icon: '../images/icon-zfb.png',
+						userName: '支付宝账号',
 						name: '支付宝',
 						type: 1,
 					},
 					{
 						icon: '../images/icon-yh.png',
+						userName: '银行卡',
 						type: 3,
 					},
 					{
 						icon: '../images/icon-wx.png',
+						userName: '微信账号',
 						name: '微信',
 						type: 2,
 					}
@@ -511,11 +514,11 @@
 					clipboard.on("error", function (e) {
 						console.log("copy hack")
 						var input = document.createElement("input");
-            input.value = message;
-            document.body.appendChild(input);
-            input.select();
-            input.setSelectionRange(0, input.value.length), document.execCommand('Copy');
-            document.body.removeChild(input);
+						input.value = message;
+						document.body.appendChild(input);
+						input.select();
+						input.setSelectionRange(0, input.value.length), document.execCommand('Copy');
+						document.body.removeChild(input);
 						mui.toast("复制成功");
 					});
 				},
@@ -539,7 +542,7 @@
 				// 获取详情
 				getDetail(id) {
 					fetch(orderDetails + "/" + id, {
-					}, 'POST',{},true).then(res => {
+					}, 'POST', {}, true).then(res => {
 						this.orderDetails = res.obj;
 						if (this.orderDetails.status == 2) { // 已付款
 							this.isSuccess = true;
@@ -548,6 +551,8 @@
 							this.getData(this.orderDetails.countDown / 1000);
 						} else if (this.orderDetails.status == 3) { // 已完成
 							this.isFinish = true;
+						} else {
+							this.isCancel = true;
 						}
 					})
 
@@ -566,7 +571,7 @@
 				},
 				// 取消订单
 				onCancel() {
-					if (this.isCancel) {history.go(-1);return;}
+					if (this.isCancel) { history.go(-1); return; }
 					mui('.mui-popover').popover('show');
 					this.popoverOption = {
 						title: '取消订单',
@@ -582,7 +587,7 @@
 					switch (this.popoverOption.type) {
 						case 1: // 操作成功按钮
 							fetch(confirmPayment + "/" + this.id, {
-							}, 'POST',{},true).then(res => {
+							}, 'POST', {}, true).then(res => {
 								if (res.code == 1) {
 									this.isSuccess = true;
 									clearInterval(this.timer);
@@ -594,7 +599,7 @@
 							break;
 						case 2: // 操作取消按钮
 							fetch(cancelTrade + "/" + this.id, {
-							}, 'POST',{},true).then(res => {
+							}, 'POST', {}, true).then(res => {
 								if (res.code == 1) {
 									this.isCancel = true;
 									history.go(-1);

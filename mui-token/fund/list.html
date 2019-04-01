@@ -264,22 +264,26 @@
 					pageNum: this.pageNum,
 					pageSize: this.pageSize
 				}) {
-					fetch(fundIndex, data, 'POST', {},false).then(res => {
-						let list = res.obj.list;
-						this.dataList.splice((this.pageNum - 1)*this.pageSize, this.pageSize,...list);
-						if (this.pageNum == 1) {
-							if (localStorage)
-								localStorage.fundList = JSON.stringify(this.dataList || []);
-						}
-						if (list.length < this.pageSize) {
-							this.pageNum--;
-							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
-							mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+					fetch(fundIndex, data, 'POST', {}, false).then(res => {
+						if (res.code == 1) {
+							let list = res.obj.list || [];
+							this.dataList.splice((this.pageNum - 1) * this.pageSize, this.pageSize, ...list);
+							if (this.pageNum == 1) {
+								if (localStorage)
+									localStorage.fundList = JSON.stringify(this.dataList || []);
+							}
+							if (list.length < this.pageSize) {
+								this.pageNum--;
+								mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+								mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(true);
+							} else {
+								mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+								mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
+							}
 						} else {
-							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
-							mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
-						}	
-						
+							mui.toast('操作失败！')
+						}
+
 					})
 				},
 				// 切换类别

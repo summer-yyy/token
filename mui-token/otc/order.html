@@ -143,6 +143,7 @@
 		.uni-tab-con .order-con-m {
 			padding: 10px 0;
 		}
+
 		/* 弹窗 */
 
 		.mui-popover {
@@ -215,7 +216,8 @@
 			</div>
 			<!-- 订单列表 -->
 			<div class="uni-flex uni-tab" style="align-items: center;">
-				<div class="uni-flex-item" v-for="(tab,index) in tabBars" v-if="type!=2 || index!=2" :key="index" :class="[tabIndex==index ? 'active' : '']" @tap="onChangeType(index)">
+				<div class="uni-flex-item" v-for="(tab,index) in tabBars" v-if="type!=2 || index!=2" :key="index" :class="[tabIndex==index ? 'active' : '']"
+				 @tap="onChangeType(index)">
 					<span>{{tab}}</span>
 				</div>
 			</div>
@@ -232,7 +234,7 @@
 											<span>订单号：{{type=='1'?'买': '卖'}}币 {{item.id}}</span>
 										</div>
 										<span v-if="item.status==-1">状态：商家取消</span>
-										<span v-else-if="item.status==1">状态：商家处理中</span>
+										<span v-else-if="item.status==1 || item.status==2">状态：商家处理中</span>
 										<span v-else-if="item.status==3">状态：已完成</span>
 										<span v-else-if="item.status==0">状态：您已取消</span>
 									</div>
@@ -261,11 +263,13 @@
 											</div>
 											<div class="uni-text" style="display: flex;">
 												<span style="flex: 1;">时间：{{item.createTime}}</span>
-												<span class="details" v-if="type=='1' && item.status ==1" @tap="onDetails(item.id)">查看</span>			
-												<span class="appeal" v-if="type=='2' && item.status!=3" @tap="changeRoute('../IM/room')"><img src="../images/icon-contact.png">联系卖家</span>
-												<span class="appeal" v-if="type=='2' && item.status!=3" @tap="appeal"><img src="../images/icon-appeal.png">提交申诉</span>
+												<span class="details" v-if="type=='1' && (item.status ==1 ||item.status ==2)" @tap="onDetails(item.id)">查看</span>
+												<span class="appeal" v-if="type=='2' && item.status!=3" @tap="changeRoute('../IM/room',{toUserName: item.nickName, toUser: item.businessId})">
+													<img src="../images/icon-contact.png">联系商家</span>
+												<span class="appeal" v-if="type=='2' && item.status!=3" @tap="appeal">
+													<img src="../images/icon-appeal.png">提交申诉</span>
 											</div>
-										</div>									
+										</div>
 									</div>
 								</div>
 							</div>
@@ -275,23 +279,23 @@
 			</div>
 		</div>
 		<div id="popover" class="mui-popover">
-				<div class="popover-header">
-					<h4>订单申诉</h4>
+			<div class="popover-header">
+				<h4>订单申诉</h4>
+			</div>
+			<div class="popover-content">
+				<div class="popup-cancel">
+					<p>请添加客服QQ：{{appealQQ}}
+						<span class="copy" style="color: #12CEB3; font-size: 13px;" :data-clipboard-text="appealQQ" onclick="" style="cursor:pointer;">复制</span>，提起申诉后资产将会冻结，申诉专员将介入本次交易，直至申诉结束。恶意申诉者一经核实将被冻结账户，请勿恶意操作。</p>
 				</div>
-				<div class="popover-content">
-					<div class="popup-cancel">
-						<p>请添加客服QQ：{{appealQQ}}
-							<span class="copy" style="color: #12CEB3; font-size: 13px;" :data-clipboard-text="appealQQ" onclick="" style="cursor:pointer;">复制</span>，提起申诉后资产将会冻结，申诉专员将介入本次交易，直至申诉结束。恶意申诉者一经核实将被冻结账户，请勿恶意操作。</p>
-					</div>
-				</div>
-				<div class="popover-footer">
-					<div class="uni-flex" style="justify-content:center;">
-						<div class="uni-flex-item" style="max-width: 50%;">
-							<button type="button" class="mui-btn confirm-btn" @click="onConfirm">确认</button>
-						</div>
+			</div>
+			<div class="popover-footer">
+				<div class="uni-flex" style="justify-content:center;">
+					<div class="uni-flex-item" style="max-width: 50%;">
+						<button type="button" class="mui-btn confirm-btn" @click="onConfirm">确认</button>
 					</div>
 				</div>
 			</div>
+		</div>
 	</div>
 	<script src="../js/vue.min.js"></script>
 	<script src="../js/mui.min.js"></script>
@@ -320,7 +324,7 @@
 			created() {
 				this.type = getUrlParam('type') || 1;
 			},
-			mounted () {
+			mounted() {
 				this.copy();
 				this.initMui();
 			},
@@ -334,11 +338,11 @@
 					clipboard.on("error", function (e) {
 						console.log("copy hack")
 						var input = document.createElement("input");
-            input.value = message;
-            document.body.appendChild(input);
-            input.select();
-            input.setSelectionRange(0, input.value.length), document.execCommand('Copy');
-            document.body.removeChild(input);
+						input.value = message;
+						document.body.appendChild(input);
+						input.select();
+						input.setSelectionRange(0, input.value.length), document.execCommand('Copy');
+						document.body.removeChild(input);
 						mui.toast("复制成功");
 					});
 				},
@@ -353,10 +357,10 @@
 							},
 							up: {
 								auto: false,
-								contentdown : "下拉可以刷新",//可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
-      					contentover : "释放立即刷新",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
+								contentdown: "下拉可以刷新",//可选，在下拉可刷新状态时，下拉刷新控件上显示的标题内容
+								contentover: "释放立即刷新",//可选，在释放可刷新状态时，下拉刷新控件上显示的标题内容
 								contentrefresh: '正在加载...',
-								height:50,
+								height: 50,
 								callback: this.onPullupRefresh
 							}
 						}
@@ -372,9 +376,9 @@
 						"type": this.type,		// 1买币记录	2卖币记录
 						"userId": USER_ID		// 用户id
 					}, 'POST', {}, false).then(res => {
-						if (res.code == 1) {				
+						if (res.code == 1) {
 							let list = res.obj.list;
-							this.orderList.splice((pageNum - 1)*pageSize, pageSize,...list);
+							this.orderList.splice((pageNum - 1) * pageSize, pageSize, ...list);
 							if (list.length < pageSize) {
 								this.pageNum--;
 								mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
@@ -382,7 +386,7 @@
 							} else {
 								mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
 								mui('.mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
-							}								
+							}
 						} else {
 							mui.toast('操作失败！')
 						}
@@ -446,7 +450,7 @@
 				},
 				// 查看订单
 				onDetails(id) {
-					this.changeRoute("payment", {id: id})
+					this.changeRoute("payment", { id: id })
 				},
 				onSubmit() {
 					console.log(this.bankInfo)
@@ -462,7 +466,7 @@
 				appeal() {
 					mui('.mui-popover').popover('show');
 				},
-				onConfirm () {
+				onConfirm() {
 					mui('.mui-popover').popover('hide');
 				},
 			}
