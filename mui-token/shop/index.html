@@ -1082,10 +1082,10 @@
 								this.status = 3;
 							}
 							if (this.stateIndex == 2) {
-								this.status = 0;
+								this.status = -1;
 							}
 							if (this.stateIndex == 3) {
-								this.status = -1;
+								this.status = 0;
 							}
 							pulldownRefresh();
 						} else {
@@ -1332,10 +1332,10 @@
 						this.status = 3;
 					}
 					if (this.stateIndex == 2) {
-						this.status = 0;
+						this.status = -1;
 					}
 					if (this.stateIndex == 3) {
-						this.status = -1;
+						this.status = 0;
 					}
 					pulldownRefresh();
 				},
@@ -1413,7 +1413,7 @@
 							break;
 						case 2: // 操作取消按钮
 							this.isCancel = true
-							fetch(confirmRefuse + "/" + USER_ID, {
+							fetch(confirmRefuse + "/" + this.orderId, {
 								id: this.orderId
 							}, 'POST').then(res => {
 								if (res.code == 1) {
