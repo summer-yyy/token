@@ -559,7 +559,7 @@
 							const id = res.obj.id;
 							window.location.href = "payment.html?id=" + id
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},

@@ -423,7 +423,7 @@
 					// 		this.coinList = data;
 					// 		this.filterList();
 					// 	} else {
-					// 		mui.toast('操作失败！')
+					// 		mui.toast(res.msg)
 					// 	}
 					// })
 				},
@@ -443,7 +443,7 @@
 								});
 							})
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -460,7 +460,7 @@
 							this.depositMin = data.depositMin;
 							// this.receiveCoinFee = data.receiveCoinFee
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},

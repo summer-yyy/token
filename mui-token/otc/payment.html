@@ -594,7 +594,7 @@
 									clearInterval(this.timer);
 									this.getData(10 * 60);
 								} else {
-									mui.toast('操作失败！')
+									mui.toast(res.msg)
 								}
 							})
 							break;
@@ -605,7 +605,7 @@
 									this.isCancel = true;
 									history.go(-1);
 								} else {
-									mui.toast('操作失败！')
+									mui.toast(res.msg)
 								}
 							})
 							break;

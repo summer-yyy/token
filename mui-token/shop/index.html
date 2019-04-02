@@ -799,8 +799,12 @@
 				<h4>{{popoverOption.title}}</h4>
 			</div>
 			<div class="popover-content ">
-				<div class="popup-cancel " v-if="popoverOption.type==1 ">
+				<div class="popup-cancel " v-if="popoverOption.type==1 && type == 1">
 					<p>订单确认后将会从您的TokenPanda钱包扣除相应货币，请您确认是否成功收到汇款，避免损失！ </p>
+					<p>您是否确认这笔订单？</p>
+				</div>
+				<div class="popup-cancel " v-else-if="popoverOption.type==1 && type == 2">
+					<p>请确认已向用户成功汇款，若存在交易问题您可以通过“联系买家”发起对话。</p>
 					<p>您是否确认这笔订单？</p>
 				</div>
 				<div class="popup-cancel " v-else>
@@ -1041,7 +1045,7 @@
 							}
 							picker.setData(this.bankList);
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1116,7 +1120,7 @@
 						} else {
 							mui('#mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
 							mui('#mui-scroll-wrapper').pullRefresh().endPullupToRefresh(false);
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1154,7 +1158,7 @@
 								"price": 0 //出售单价
 							};
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1182,7 +1186,7 @@
 							mui.toast('操作成功！')
 							this.isAmountEdit = false;							
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1197,7 +1201,7 @@
 							mui.toast('操作成功！');
 							this.isPriceEdit = false;
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1216,7 +1220,7 @@
 								}
 							});
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1248,7 +1252,7 @@
 							mui.toast('操作成功！');
 
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1281,7 +1285,7 @@
 						if (res.code == 1) {
 							this.info = res.obj;
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1292,7 +1296,7 @@
 						if (res.code == 1) {
 							this.info = res.obj;
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -1367,7 +1371,7 @@
 					fetch(validatePayPassword, {
 						userId: USER_ID,
 						payPassword: md5(this.pwd + '').toUpperCase()
-					}, 'POST', {}, false).then(res => {
+					}, 'POST').then(res => {
 						if (res.code == 1) {
 							if (res.obj.result == 1) {
 								mui('#pwd').popover('hide');
@@ -1375,17 +1379,18 @@
 								}, 'POST').then(res => {
 									if (res.code == 1) {
 										mui.toast('操作成功！')
+										this.changeTab(0);
 										pulldownRefresh();
 										this.hidePopover();
 									} else {
-										mui.toast('操作失败！')
+										mui.toast(res.msg)
 									}
 								})
 							} else {
 								mui.toast('密码错误！')
 							}
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 
@@ -1418,10 +1423,11 @@
 							}, 'POST').then(res => {
 								if (res.code == 1) {
 									mui.toast('操作成功！')
+									this.changeTab(0);
 									pulldownRefresh();
 									this.hidePopover();
 								} else {
-									mui.toast('操作失败！')
+									mui.toast(res.msg)
 								}
 							})
 							break;

@@ -176,7 +176,7 @@
 							}
 							picker.setData(this.bankList);
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -216,10 +216,10 @@
 						if (res.code == 1) {
 							mui.toast('添加成功！')
 							setTimeout(() => {
-								location.href = 'sellCoin.html';
+								location.href = 'sellCoin.html?payWay=' + this.payWay;
 							}, 2000)
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				}

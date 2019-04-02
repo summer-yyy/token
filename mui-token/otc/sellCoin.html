@@ -700,7 +700,7 @@
 						type: 1,
 						name: "支付宝",
 						payName: '支付宝账号',
-						checked: true,
+						checked: false,
 						cardList: []
 					},
 					{
@@ -733,6 +733,8 @@
 				this.Screen_width = window.innerWidth
 			},
 			created() {
+				this.payWay = getUrlParam("payWay") || 1;
+				this.payTypes.find(item => item.type == this.payWay).checked = true;
 				this.getData()
 				this.getSalability()
 				this.getPayWayList();
@@ -861,7 +863,7 @@
 					fetch(validatePayPassword, {
 						userId: USER_ID,
 						payPassword: md5(this.pwd + '').toUpperCase()
-					}, 'POST', {}, false).then(res => {
+					}, 'POST').then(res => {
 						if (res.code == 1) {
 							if (res.obj.result == 1) {
 								mui('#pwd').popover('hide');
@@ -870,7 +872,7 @@
 								mui.toast('密码错误！')
 							}
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 
@@ -897,7 +899,7 @@
 								})
 							})
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -977,7 +979,7 @@
 						if (res.code == 1) {
 							mui('#popover').popover('show');
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},

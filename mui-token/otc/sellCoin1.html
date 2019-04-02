@@ -583,7 +583,7 @@
 								})
 							})
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
@@ -657,7 +657,7 @@
 						if (res.code == 1) {
 							mui('#popover').popover('show');
 						} else {
-							mui.toast('操作失败！')
+							mui.toast(res.msg)
 						}
 					})
 				},
