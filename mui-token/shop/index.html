@@ -628,7 +628,7 @@
 											</div>
 											<div class="contact " @tap="changeRoute( '../IM/room',{toUserName:item.userName,toUser:item.userId}) ">
 												<img src="../images/icon-contact.png ">
-												<span>联系买家</span>
+												<span>联系用户</span>
 											</div>
 										</div>
 									</div>
@@ -804,11 +804,11 @@
 					<p>您是否确认这笔订单？</p>
 				</div>
 				<div class="popup-cancel " v-else-if="popoverOption.type==1 && type == 2">
-					<p>请确认已向用户成功汇款，若存在交易问题您可以通过“联系买家”发起对话。</p>
+					<p>请确认已向用户成功汇款，若存在交易问题您可以通过“联系用户”发起对话。</p>
 					<p>您是否确认这笔订单？</p>
 				</div>
 				<div class="popup-cancel " v-else>
-					<p>恶意拒绝用户订单会严重影响商家信誉，若存在交易问题您可以通过“联系买家”发起对话。 </p>
+					<p>恶意拒绝用户订单会严重影响商家信誉，若存在交易问题您可以通过“联系用户”发起对话。 </p>
 					<p>您是否确认拒绝这笔订单？</p>
 				</div>
 			</div>

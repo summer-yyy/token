@@ -233,7 +233,7 @@
 										<div class="uni-flex-item">
 											<span>订单号：{{type=='1'?'买': '卖'}}币 {{item.id}}</span>
 										</div>
-										<span v-if="item.status==-1">状态：商家取消</span>
+										<span v-if="item.status==-1">状态：商家已拒绝</span>
 										<span v-else-if="item.status==1 || item.status==2">状态：商家处理中</span>
 										<span v-else-if="item.status==3">状态：已完成</span>
 										<span v-else-if="item.status==0">状态：您已取消</span>
