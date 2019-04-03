@@ -48,6 +48,7 @@ let queryCoinList = apiUrl2 + '/queryCoinList', // 查询币种列
 let IMList = apiUrl + '/message/list'; // 消息列表
 let IMhistory = apiUrl + '/message/history'; // 历史消息列表
 let uploadPic = apiUrl + '/common/uploadPic'; // 上传图片
+let preMessage = apiUrl + '/message/preMessage'; // 上传图片
 
 // 校验密码
 let validatePayPassword = apiUrl + '/user/validatePayPassword'; // 校验密码
