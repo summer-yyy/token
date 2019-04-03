@@ -209,6 +209,7 @@
 			data: {
 				userId: USER_ID,
 				toUserName: "",
+				fromUserIcon: "",
 				showSend: false,
 				inputText: '',
 				messageList: [],
@@ -222,6 +223,7 @@
 			created() {
 				this.toUserName = getUrlParam('toUserName');
 				this.toUser = getUrlParam('toUser');
+				this.getPreMessage();
 			},
 			watch: {
 				messageList() {
@@ -242,11 +244,26 @@
 					}, 'POST', {}, false).then(res => {
 						if (res.code == 1) {
 							let list = res.obj.list || [];
+							list.reverse();
 							this.messageList.splice((this.pageNum - 1) * this.pageSize, this.pageSize, ...list);
 							if (list.length < this.pageSize) {
 								this.pageNum--;
 							}
 							mui('.mui-scroll-wrapper').pullRefresh().endPulldownToRefresh();
+						} else {
+							mui.toast(res.msg)
+						}
+					})
+				},
+				// 获取头像信息
+				getPreMessage() {
+					fetch(preMessage, {
+						fromUser: USER_ID,
+						toUser: this.toUser
+					}, 'POST', {}, false).then(res => {
+						if (res.code == 1) {
+							this.toUserName = res.obj.toUserNickName;
+							this.fromUserIcon = res.obj.fromUserIcon;
 						} else {
 							mui.toast(res.msg)
 						}
@@ -289,8 +306,10 @@
 					let obj = {
 						"toUser": this.toUser,       //接收方用户ID
 						"fromUser": USER_ID,   //发送方用户ID
+						"type": 0,
 						"message": this.inputText, //消息内容
-						"createTime": moment(new Date()).format("YYYY-MM-DD HH:mm")
+						"createTime": moment(new Date()).format("YYYY-MM-DD HH:mm"),
+						fromUserIcon: this.fromUserIcon
 					}
 					// var obj = {
 					// 	name: '吴振',
@@ -327,6 +346,7 @@
 						let obj = {
 							"toUser": _this.toUser,       //接收方用户ID
 							"fromUser": USER_ID,   //发送方用户ID
+							"type": 1,
 							"createTime": moment(new Date()).format("YYYY-MM-DD HH:mm"),
 							"message": res.obj.pic  //消息内容
 						}
@@ -350,9 +370,10 @@
 						let obj = ({
 							"toUser": _this.toUser,       //接收方用户ID
 							"fromUser": USER_ID,   //发送方用户ID
-							"message": this.result,  //消息内容
 							"type": 1,
-							"createTime": moment(new Date()).format("YYYY-MM-DD HH:mm")
+							"message": this.result,  //消息内容
+							"createTime": moment(new Date()).format("YYYY-MM-DD HH:mm"),
+							fromUserIcon: _this.fromUserIcon
 						});
 						_this.messageList.push(obj);
 						console.log(_this.messageList); //就是base64
