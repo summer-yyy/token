@@ -24,6 +24,7 @@ let addBank = apiUrl + '/otc/addBank', // 添加到账银行卡
 	bankList = apiUrl + '/otc/bankList', // 所属银行卡列表 
 	addPayWay = apiUrl + '/otc/addPayWay', // 用户收款方式 
 	otcPayWayList = apiUrl + '/otc/payWayList', // 收款方式列表 
+	supportPayWay = apiUrl + '/otc/supportPayWay', // 收款方式列表 
 	salability = apiUrl + '/otc/salability' // 可用余额 
 // 我的店铺
 let confirmAgree = apiUrl + '/shop/confirmAgree', // 店铺确认同意{id}
@@ -36,7 +37,7 @@ let confirmAgree = apiUrl + '/shop/confirmAgree', // 店铺确认同意{id}
 	userBuyRecord = apiUrl + '/shop/userBuyRecord', // 店铺-用户交易记录
 	yearCount = apiUrl + '/shop/yearCount', // 某年某月
 	tradeCount = apiUrl + '/shop/tradeCount' // 头部信息
-	 
+
 // 一键兑换
 let queryCoinList = apiUrl2 + '/queryCoinList', // 查询币种列
 	getBaseInfo = apiUrl2 + '/getBaseInfo', // 获取兑换汇率基本信息接口

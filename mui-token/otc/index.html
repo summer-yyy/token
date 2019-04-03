@@ -370,7 +370,7 @@
 						<div class="payType">
 							<div class="uni-title">选择付款方式</div>
 							<div class="uni-flex" style="align-items: center;">
-								<div class="uni-flex-item" v-for="(item, index) in payTypes" :key="index" @tap="onCheckPay(item)">
+								<div class="uni-flex-item" v-for="(item, index) in payTypes" :key="index" @tap="onCheckPay(item)" v-if="item.show">
 									<div class="check-box uni-flex" :style="{alignItems: 'center', borderColor: item.checked?'#12CEB3':'#DDDDDD'}">
 										<div class="check-box-con uni-flex-item">
 											<img :src="item.icon">
@@ -436,17 +436,20 @@
 					{
 						icon: '../images/icon-zfb.png',
 						type: 1,
-						checked: true
+						checked: true,
+						show: true
 					},
 					{
 						icon: '../images/icon-yh.png',
 						type: 3,
-						checked: false
+						checked: false,
+						show: true
 					},
 					{
 						icon: '../images/icon-wx.png',
 						type: 2,
-						checked: false
+						checked: false,
+						show: true
 					}
 				],
 				payWay: 1,
@@ -474,9 +477,37 @@
 						this.shopList = res.obj.list
 						// 默认商家信息
 						this.businessInfo = this.shopList[0]
+						this.getSupportPayWay(this.businessInfo.userId)
 						this.$nextTick(() => {
 							this.height = this.$refs.businessMore.offsetHeight
 						})
+					})
+				},
+				// 获取支持的付款方式
+				getSupportPayWay(sellerId) {
+					fetch(supportPayWay + "/" + sellerId, {}, 'POST').then(res => {
+						this.supportPayWay = res.obj;
+						// this.supportPayWay = { wx: 1, bank: 0, zfb: 0 }
+						if (this.supportPayWay.zfb == 1) {
+							this.payTypes[0].show = true;
+						} else {
+							this.payTypes[0].show = false;
+						}
+						if (this.supportPayWay.bank == 1) {
+							this.payTypes[1].show = true;
+						} else {
+							this.payTypes[1].show = false;
+						}
+						if (this.supportPayWay.wx == 1) {
+							this.payTypes[2].show = true;
+						} else {
+							this.payTypes[2].show = false;
+						}
+						this.payTypes.forEach(v => {
+							v.checked = false
+						})
+						let payWay = this.payTypes.find(v => v.show == true);
+						payWay.checked = true;
 					})
 				},
 				// 选择商家
@@ -484,6 +515,7 @@
 					this.showMore = false;
 					this.shopIndex = index
 					this.businessInfo = item;
+					this.getSupportPayWay(item.userId);
 					this.dealInfo = {
 						amount: '',
 						money: ''

@@ -609,9 +609,9 @@
 					<div :class="[ 'uni-flex-item', status !=1 ? '' : 'active'] " style="position: relative; " @click="changeOrder(1) ">
 						<span>{{stateIndex==0?'已处理':stateIndex==1?'已同意':stateIndex==2?'已拒绝':stateIndex==3?'已取消':''}}</span>
 						<span class="mui-icon mui-icon-arrowdown "></span>
-						<ul class="menu " :style="{height:showMenu? '160px' : '0px'} ">
-							<li v-for="(item, index) in stateMenu " :key="index " @click.stop="onChangeState(index) ">
-								<span v-if="stateIndex!=index ">{{item}}</span>
+						<ul class="menu " :style="{height:showMenu?	( type == 1 ? '160px': '104px') : '0px'} ">
+							<li v-for="(item, index) in stateMenu " v-if="type == 1 || index != 3" :key="index " @click.stop="onChangeState(index) ">
+								<span v-if="stateIndex!=index">{{item}}</span>
 							</li>
 						</ul>
 					</div>
@@ -871,7 +871,7 @@
 				<div>
 					<p class="title">资金密码</p>
 					<div class="pwdBox" @click="inputPwd">
-						<input class="pwd" v-model="pwd" type="tel" maxlength="6">
+						<input class="pwd" v-model="pwd" type="number" maxlength="6" @input="input">
 						<div class="number" v-for="index in 6">{{index > (pwd+"").length ? "": "*"}}</div>
 					</div>
 				</div>
@@ -998,6 +998,10 @@
 				}
 			},
 			methods: {
+				input() {
+					this.pwd = limitStr(this.pwd, 6);
+					console.log(this.pwd)
+				},
 				back() {
 					userAttestation(100)
 				},

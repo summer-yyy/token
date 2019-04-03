@@ -277,3 +277,13 @@ function checkNumber(n) {
     var filter = /^([1-9]\d*|0)(\.\d{1,2})?$/;
     return filter.test(n)
 }
+
+// 限制位数
+function limitStr(str, n) {
+    str = String(str);
+    if (str.length > n) {
+        return str.substr(0, n);
+    } else {
+        return str;
+    }
+}
