@@ -845,11 +845,11 @@
 					mui(".pwd")[0].focus();
 				},
 				// 是否认证
-				getUserSecurityStatus () {
+				getUserSecurityStatus() {
 					if (this.isDisabled) return;
-					if (this.identityAuth != 0) {
+					if (this.identityAuth) {
 						this.showPwd();
-						return;						
+						return;
 					}
 					fetch(userSecurityStatus + "/" + USER_ID, undefined, 'GET').then(res => {
 						if (res.code == 1) {
