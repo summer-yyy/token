@@ -318,8 +318,8 @@
 
 		#pwd .bankSheet-content .pwd {
 			opacity: 0;
-			height: 0;
-			width: 0;
+			position: fixed;
+			bottom: -1000px;
 		}
 
 		#pwd .bankSheet-content .pwdBox .number {
@@ -581,7 +581,7 @@
 							</div>
 						</div>
 						<div class="payBtn">
-							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @click="showPwd">一键卖币</button>
+							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @click="getUserSecurityStatus">一键卖币</button>
 						</div>
 					</div>
 				</div>
@@ -757,7 +757,7 @@
 					fetch(sellShop + '/1/30', {}, 'POST').then(res => {
 						this.shopList = res.obj.list
 						// 默认商家信息
-						this.businessInfo = this.shopList[0]
+						this.businessInfo = this.shopList[0] || {}
 						this.$nextTick(() => {
 							this.height = this.$refs.businessMore.offsetHeight
 						})
@@ -843,6 +843,27 @@
 				// 输入密码
 				inputPwd() {
 					mui(".pwd")[0].focus();
+				},
+				// 是否认证
+				getUserSecurityStatus () {
+					if (this.isDisabled) return;
+					if (this.identityAuth != 0 && this.identityAuth != undefined) {
+						this.showPwd();
+						return;						
+					}
+					fetch(userSecurityStatus + "/" + USER_ID, undefined, 'GET').then(res => {
+						if (res.code == 1) {
+							let status = res.obj.identityAuth;
+							if (status == 0) {
+								userAttestation(105)
+							} else {
+								this.identityAuth = status;
+								this.showPwd();
+							}
+						} else {
+							mui.toast(res.msg)
+						}
+					})
 				},
 				showPwd() {
 					if (this.isDisabled) return;

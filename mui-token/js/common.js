@@ -280,7 +280,7 @@ function checkNumber(n) {
 
 // 限制位数
 function limitStr(str, n) {
-    str = String(str);
+    str = str + "";
     if (str.length > n) {
         return str.substr(0, n);
     } else {

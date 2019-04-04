@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,viewport-fit=cover">
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-touch-fullscreen" />
+    <meta content="telephone=no,email=no" name="format-detection" />
+    <meta content="maximum-dpr=2" name="flexible" />
+    <meta content="modeName=750-12" name="grid" />
+    <link rel="stylesheet" href="http://www.17sucai.com/preview/1/2016-12-28/201612241616/css/countdown.demo.css" type="text/css">
+    <link href="css/style.css?v=3" rel="stylesheet"/>
+    <title>闹元宵</title>
+    <style>
+        .countdown-alt-1 .hh-1, .countdown-alt-1 .hh-2, .countdown-alt-1 .mm-1, .countdown-alt-1 .mm-2, .countdown-alt-1 .ss-1, .countdown-alt-1 .ss-2{
+            width: 25px !important;
+            height: 25px !important;
+            display: inline-block;
+            box-sizing: border-box;
+            max-width: 25px !important;
+            min-width: 25px !important;
+            border-radius: 2px;
+            padding: 0;
+            font-size: 20px;
+            font-family: 'DIN';
+            color: #b50001;
+            font-weight: 700;
+        }
+        .item .label{
+            display: none;
+        }
+        .countdown-alt-1 .separator-dd, .countdown-alt-1 .separator{
+            font-size: 19px;
+        }
+        .countdown-alt-1{
+            margin:0;
+        }
+        .progress-bg{
+            height: 9px;
+            background-color: #fae5aa;
+        }
+        .progress-line{
+            height: 9px;
+            margin-top: 0;
+        }
+        .progress-cover{
+            height: 9px;
+            background: -webkit-linear-gradient(left,rgb(249,111,52) 50%, rgb(252,156,27) 100%); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(left,rgb(249,111,52) 50%, rgb(252,156,27) 100%); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(left,rgb(249,111,52) 50%, rgb(252,156,27) 100%); /* Firefox 3.6 - 15 */
+            background: linear-gradient(left,rgb(249,111,52) 50%, rgb(252,156,27) 100%); /* 标准的语法（必须放在最后） */
+        }
+        .container{
+            width: 100%;
+            overflow-x: hidden;
+        }
+        .bg-cover{
+            position: fixed;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .bg-cover-2{
+            position: fixed;
+            height: 100vh;
+            overflow: hidden;
+            width: 100vw;
+            top: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 21;
+            display: none;
+        }
+        .bg-cover-3{
+            position: fixed;
+            height: 100vh;
+            overflow: hidden;
+            width: 100vw;
+            top: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 21;
+            display: none;
+        }
+        .bg-cover-4{
+            position: fixed;
+            height: 100vh;
+            overflow: hidden;
+            width: 100vw;
+            top: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 21;
+            display: none;
+        }
+        .sp-modal{
+            max-width: 375px;
+            height: 480px;
+            width: 100%;
+            background-image: url('img/modal-bg.png');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            margin: auto;
+            margin-top: 25%;
+            padding-top: 69px;
+        }
+        .sp-modal-3{
+            max-width: 375px;
+            height: 480px;
+            width: 100%;
+            background-image: url('img/modal-bg-3.png');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            margin: auto;
+            margin-top: 35%;
+            padding-top: 49px;
+        }
+        .sp-modal-4{
+            max-width: 375px;
+            height: 480px;
+            width: 100%;
+            background-image: url('img/modal-bg-4.png');
+            background-size: 100%;
+            background-repeat: no-repeat;
+            margin: auto;
+            margin-top: 35%;
+            padding-top: 1vw;
+        }
+        .sp-modal-3 .empty-title{
+            width: 80%;
+            margin: auto;
+            align-items: center;
+            justify-content: space-around;
+            color: rgb(24,24,24);
+            font-size: 16px;
+            line-height: 20px;
+        }
+        .sp-modal-3 .modal-cutdown{
+            width: 70%;
+            margin: 8px auto;
+        }
+        .sp-modal-title{
+            color: rgb(24,24,24);
+            font-size: 16px;
+            line-height: 20px;
+        }
+        .shouyiquan{
+            margin-top: 25px;
+        }
+        .shouyiquan img{
+            width: 82%;
+            margin: auto;
+        }
+        .modal-cutdown{
+            color: rgb(254,88,80);
+            font-size: 13px;
+            line-height: 20px;
+            width: 75%;
+            margin: 10px auto;
+        }
+        .ac-time-content{
+            font-size: 12px;
+            line-height: 20px;
+            color: rgb(92,92,92);
+            width: 75%;
+            margin: 10px auto;
+        }
+        .use-t{
+            width: 75%;
+            margin: 10px auto;
+            color: rgb(24,24,24);
+            font-size: 14px;
+        }
+        .slogen{
+            position: absolute;
+            left: 10px;
+            top: 20px;
+        }
+        .pull-down{
+            position: fixed;
+            bottom: 46px;
+            width: 100%;
+            animation:pull 1.5s infinite;
+            -webkit-animation:pull 1.5s infinite; /*Safari and Chrome*/
+        }
+        .use-t-sign-a{
+            width: 75%;
+            margin: 10px auto;
+            color: #fe5850;
+        }
+        #qrcode{
+            margin-top: 20px;
+        }
+        #qrcode img{
+            margin: auto;
+            padding: 5px;
+            background-color: #FFFFFF;
+        }
+        .ic{
+            position: absolute;
+            width: 100%;
+            top:0;
+        }
+    </style>
+</head>
+<body>
+<div class="container fa-container" id="index" style="display: none">
+
+    <div class="pull-down text-center">
+        <img src="img/pull-down.png" width="40">
+    </div>
+    <div class="hua1 ab-box">
+        <img src="img/hua1.png" width="64">
+    </div>
+    <div class="hua2 ab-box">
+        <img src="img/hua2.png" width="84">
+    </div>
+    <div class="hua3 ab-box">
+        <img src="img/hua3.png" width="69">
+    </div>
+    <div class="bg-cover">
+        <div class="model-box">
+            <div>未登录</div>
+            <div>请先注册或登录再进行分享</div>
+            <div class="button-box">
+                <!--<div class="btn login left" data-name="1">-->
+                <!--{{ login }}-->
+                <!--</div>-->
+                <div class="btn login" data-name="1" style="margin: auto">
+                    注册/登录
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="bg-cover-2">
+        <div class="sp-modal">
+            <div class="sp-modal-title text-center">
+                恭喜您获得体验金券一张
+            </div>
+            <div class="shouyiquan text-center">
+                <img src="img/shouyiquan.png">
+            </div>
+            <div class="modal-cutdown">
+                距离下次活动开始时间<span style="margin-left: 10px" class="alt-1" v-html="left_time">00:00:00</span>
+            </div>
+            <div class="ac-time-content">
+                活动时间：2019年2月19日10点—2019年2月21日24点（2月19-21日） 10:00:00&18:00:00整点抢券
+            </div>
+            <div class="use-t">
+                请到APP内我的-收益券查看并使用
+            </div>
+        </div>
+    </div>
+    <div class="bg-cover-3">
+        <div class="sp-modal-3">
+            <div class="flex-box empty-title">
+                <img class="flex-1" src="img/cry-panda.png" width="100">
+                <div class="flex-1" style="line-height: 90px;">
+                    很遗憾，礼券被抢完了！
+                </div>
+            </div>
+            <div class="modal-cutdown">
+                距离下次活动开始时间<span style="margin-left: 10px" class="alt-1" v-html="left_time">00:00:00</span>
+            </div>
+            <div class="ac-time-content" style="width: 70%;margin: auto">
+                活动时间：2019年2月19日10点—2019年2月21日24点（2月19-21日） 10:00:00&18:00:00整点抢券
+            </div>
+            <div class="use-t" style="width: 70%;margin: auto;margin-top: 8px">
+                请到APP内我的-收益券查看并使用
+            </div>
+        </div>
+    </div>
+    <div class="bg-cover-4">
+        <div class="sp-modal-4">
+            <div class="shouyiquan text-center">
+                <img src="img/20song1.png" v-if="gift_type == 1">
+                <img src="img/10song1.png" v-if="gift_type == 2">
+                <img src="img/man5song1.png" v-if="gift_type == 3">
+            </div>
+            <div class="ac-time-content">
+                <p v-if="gift_type == 1">1）收益计算方式：“ETH20送1”即投标20ETH（实际本金）额外获得1ETH（虚拟本金），计算收益时按照用户投标21ETH进行计算。</p>
+                <p v-if="gift_type == 2">1）收益计算方式：“ETH10送1”即投标10ETH（实际本金）额外获得1ETH（虚拟本金），计算收益时按照用户投标11ETH进行计算。</p>
+                <p v-if="gift_type == 3">1）收益计算方式：“ETH5送1”即投标5ETH（实际本金）额外获得1ETH（虚拟本金），计算收益时按照用户投标6ETH进行计算。</p>
+                <p>2）体验券可以叠加使用。</p>
+            </div>
+            <div class="use-t-sign-a">
+                *注意：使用说明细则见右上角活动规则。
+            </div>
+        </div>
+    </div>
+    <div class="ic">
+        <div class="left-jie">
+            <img src="img/leftjie.png" width="44">
+        </div>
+        <div class="right-jie">
+            <img src="img/rightjie.png" width="44">
+        </div>
+        <div class="left-text">
+            <img src="img/text-left.png" width="31">
+        </div>
+        <div class="right-text">
+            <img src="img/text-right.png" width="31">
+        </div>
+        <div class="lamp text-center">
+            <img src="img/lamp.png" width="85">
+        </div>
+    </div>
+    <div class="top-img">
+        <img src="img/toptop.png">
+        <div class="huodongguize">
+            <img src="img/huodongguize.png" width="38">
+        </div>
+    </div>
+    <div class="slogen">
+        <img src="img/slogen.png" width="122">
+    </div>
+    <div class="center-img text-center">
+        <img src="img/naoyuanxiao.png" width="230">
+    </div>
+    <div class="tiananmen-img text-center">
+        <img src="img/tiananmen.png">
+    </div>
+    <div class="ac-get-bd">
+        <div class="text-center ac-text">
+            2.19~2.21每天10、18点整准时抢1ETH！
+        </div>
+        <div class="ac-inner-border re-box">
+            <div class="jinbi1">
+                <img src="img/ic1.png" width="65">
+            </div>
+            <div class="jinbi2">
+                <img src="img/ic2.png" width="100">
+            </div>
+
+            <div class="left">
+                <div class="lefttimetext">
+                    距离活动开始时间
+                </div>
+                <div class="alt-1" v-html="left_time">
+                </div>
+            </div>
+            <div class="right">
+                <img src="img/qiang.png" width="70" v-if="ac_status == 1" @click="rush">
+                <img src="img/qianghui.png" width="70" v-if="ac_status == 0">
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="ac-inner-hd text-center">
+            app内点击<b>首页-右上角</b>进入活动入口，可重复参与抢券
+        </div>
+    </div>
+    <div class="ac-main-body">
+        <div class="ac-main-bg">
+            <div class="ac-mail-bg-ab"></div>
+            <div class="shareget text-center">
+                <img src="img/shareget.png" width="296">
+            </div>
+            <div class="sharesigntext text-center">
+                邀请好友成功注册，双方均获得1ETH <span style="color: #d6ad86">体验金</span>
+            </div>
+            <div class="licheng text-center">
+                <img src="img/licheng.png" width="284">
+            </div>
+            <div class="lichengtext">
+                新用户注册累积能量，成功邀请好友注册可贡献相应能量
+            </div>
+            <div class="licheng-progress">
+                <div class="licheng-progress-con">
+                    <div class="progress-num re-box">
+                        <div class="progress-node" style="left: 25%;margin-left: -20px;">
+                            <div class="text-center">
+                                500
+                                <div class="jian"></div>
+                            </div>
+                        </div>
+                        <div class="progress-node" style="left: 50%;margin-left: -20px;">
+                            1000
+                            <div class="jian" style="left: 38%"></div>
+                        </div>
+                        <div class="progress-node" style="left: 100%;margin-left: -23px;">
+                            2000
+                            <div class="jian" style="left: 38%"></div>
+                        </div>
+                    </div>
+                    <div class="progress-line">
+                        <div class="progress-bg"></div>
+                        <div class="progress-cover" v-bind:style="{ width: percent + '%' }"></div>
+                        <!--<img src="img/progressPointer.png" width="14" class="progress-pointer">-->
+                    </div>
+                    <div class="progress-img re-box text-center">
+                        <div class="progress-img-node" style="left: 25%;" >
+                            <img src="img/gift.png" width="45" @click="showGift(1)"><br>
+                            <img src="img/click_get.png" width="60" v-if="step_1 == 1 && own_step_1 == 0" @click="receiveGift(500,1)">
+                            <img src="img/geted.png" width="60" v-else-if="step_1 == 1 && own_step_1 == 1">
+                            <img src="img/clickhui.png" v-else width="60">
+                        </div>
+                        <div class="progress-img-node" style="left: 50%;">
+                            <img src="img/gift.png" width="45" @click="showGift(2)"><br>
+                            <img src="img/click_get.png" width="60" v-if="step_2 == 1 && own_step_2 == 0"  @click="receiveGift(1000,2)">
+                            <img src="img/geted.png" width="60" v-else-if="step_2 == 1 && own_step_2 == 1">
+                            <img src="img/clickhui.png" v-else width="60">
+                        </div>
+                        <div class="progress-img-node" style="left: 100%;">
+                            <img src="img/gift.png" width="45" @click="showGift(3)"><br>
+                            <img src="img/click_get.png" width="60" v-if="step_3 == 1 && own_step_3 == 0"  @click="receiveGift(2000,3)">
+                            <img src="img/geted.png" width="60" v-else-if="step_3 == 1 && own_step_3 == 1">
+                            <img src="img/clickhui.png" v-else width="60">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-text">
+                活动期间均可在TokenPanda APP首页-点击右上角按钮-选择活动海报进入活动界面随时领取上述奖励。
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="layer/layer.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/common.js"></script>
+<!--<script src="http://www.17sucai.com/preview/1/2016-12-28/201612241616/js/jquery-1.11.0.min.js" type="text/javascript"></script>-->
+<script src="js/jquery.countdown.js" type="text/javascript"></script>
+<script src="js/qrcode.min.js"></script>
+
+<script>
+    var vue = new Vue({
+        el: '#index',
+        data: {
+            left_time:'00h00m00s',
+            ac_status: 0,
+            userId:0,
+            max_energy:2000,
+            percent:0,
+            step_1:0,
+            step_2:0,
+            step_3:0,
+            own_step_1:0,
+            own_step_2:0,
+            own_step_3:0,
+            left_time_count: -1,
+            gift_type: 1
+        },
+        mounted: function () {
+            url = 'http://test.tokenpanda.pro:8080/';
+            let query = getQueryString();
+            if(query['userid']) this.userId = query['userid'];
+            $('.progress-img-node').each(function(){
+                $(this).css('marginLeft',-35)
+            })
+            this.getActivityTime();
+            this.getNewYearRegistNumber();
+            // 设置 qrcode 参数
+            var qrcode = new QRCode('qrcode', {
+                text: 'http://tokenpanda.com/appH5/share.html?userId+'+this.userId,
+                width: 128,
+                height: 128,
+                colorDark: '#000000',
+                colorLight: '#ffffff',
+                fill: '#000',
+                quiet: 2,
+                correctLevel: QRCode.CorrectLevel.H
+            });
+            qrcode()
+        },
+        methods: {
+            getActivityTime(){
+                $.post(url+'api/v1/activity/getActivityTime',(data)=>{
+                    console.log(data);
+                    if(data.obj.status != -2){
+                        new Promise((resolve, reject)=>{
+                            let lefttime = data.obj.nextPeriodTime - data.obj.now;
+                            if(!data.obj.nextPeriodTime) lefttime = 0;
+                            this.left_time_count = lefttime;
+                            let hours = parseInt((lefttime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            if(hours.toString().length == 1) hours = '0'+hours;
+                            let minutes = parseInt((lefttime % (1000 * 60 * 60)) / (1000 * 60));
+                            if(minutes.toString().length == 1) minutes = '0'+minutes;
+                            let seconds = parseInt((lefttime % (1000 * 60)) / 1000);
+                            if(seconds.toString().length == 1) seconds = '0'+seconds;
+                            this.left_time = hours+'h'+minutes+'m'+seconds+'s';
+                            if(data.obj.status == 1) this.ac_status = 1;
+                            else this.ac_status = 0;
+                            console.log(this.ac_status);
+                            resolve();
+                        }).then(()=>{
+                            this.timeCount();
+                            $('.alt-1').countDown({
+                                css_class: 'countdown-alt-1',
+                                with_separators: true
+                            });
+                            $('.modal-cutdown time.countdown-alt-1').removeClass('countdown-alt-1')
+                            $('#index').show();
+                        })
+                    }else{
+                        layer.msg('活动已结束！');
+                        $('.alt-1').countDown({
+                            css_class: 'countdown-alt-1',
+                            with_separators: true
+                        });
+                        $('#index').show();
+                    }
+                })
+            },
+            receiveGift(energyValue,step){
+                if(!this.userId){
+                    this.toLogin();
+                    return false;
+                }
+                let sendData = {userId:this.userId,energyValue:energyValue};
+                $.ajax({
+                    url : url+'api/v1/activity/getNewYearEnergyReward',
+                    type : "POST",
+                    data : JSON.stringify(sendData), //转JSON字符串
+                    dataType : 'json',
+                    contentType : 'application/json;charset=UTF-8', //contentType很重要
+                    success : (result) => {
+                        console.log(result);
+                        if(result.code == 1 && result.obj.result == 1){
+                            layer.msg('领取成功！');
+                            if(step == 1) this.own_step_1 = 1;
+                            else if(step == 2) this.own_step_2 = 1;
+                            else if(step == 3) this.own_step_3 = 1;
+                        }
+                        else if(result.code == 1 && result.obj.result == -1) layer.msg('您已经领取过，不可重复领取！');
+                        else layer.msg('网络异常');
+                    }
+                });
+            },
+            timeCount(){
+                var timer  = setInterval(()=>{
+                    this.left_time_count = this.left_time_count - 1000;
+                    console.log(this.left_time_count);
+                    if(this.left_time_count == 0){
+                        this.ac_status = 1;
+                        clearInterval(timer);
+                        return;
+                    }
+                },1000)
+            },
+            rush(){
+                if(!this.userId){
+                    this.toLogin();
+                    return false;
+                }
+                let sendData = {userId:this.userId};
+                $.ajax({
+                    url : url+'api/v1/activity/getReward',
+                    type : "POST",
+                    data : JSON.stringify(sendData), //转JSON字符串
+                    dataType : 'json',
+                    contentType : 'application/json;charset=UTF-8', //contentType很重要
+                    success : (data) => {
+                        if(data.code == 1 && data.msg == 1) $('.bg-cover-2').show();
+                        else if(data.code == 1 && data.msg == -1) layer.msg('您已经抢过了');
+                        else if(data.code == 1 && data.msg == -2) $('.bg-cover-3').show();
+                        else layer.msg('网络请求错误！');
+                    }
+                });
+            },
+            getNewYearRegistNumber(){
+                let sendData = {userId:this.userId};
+                $.ajax({
+                    url : url+'api/v1/activity/getNewYearRegistNumber',
+                    type : "POST",
+                    data : JSON.stringify(sendData), //转JSON字符串
+                    dataType : 'json',
+                    contentType : 'application/json;charset=UTF-8', //contentType很重要
+                    success : (data) => {
+                        this.percent = data.obj.count/this.max_energy * 100;
+                        if(data.obj.count >= 500) this.step_1 = 1;
+                        if(data.obj.count >= 1000) this.step_2 = 1;
+                        if(data.obj.count >= 2000) this.step_3 = 1;
+                        this.own_step_1 = data.obj.one;
+                        this.own_step_2 = data.obj.two;
+                        this.own_step_3 = data.obj.three;
+                    }
+                });
+            },
+            toLogin(){
+                $('.bg-cover').show();
+            },
+            showGift(type){
+                console.log(type);
+                this.gift_type = type;
+                $('.bg-cover-4').show();
+            },
+        }
+    })
+
+    var query = getQueryString();
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if(isiOS){
+        function setupWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+            if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+        }
+
+        //native调用js
+        setupWebViewJavascriptBridge(function(bridge) {
+            bridge.registerHandler('testJSFunction', function(data, responseCallback) {
+                alert('JS方法被调用:'+data);
+                responseCallback('js执行过了');
+            })
+        })
+
+
+
+        //js调用native
+        function userAttestation(id){
+            WebViewJavascriptBridge.callHandler('userAttestation', "{\"id\" : "+id+"}", function(response) {
+                // alert('native被调用:' + response);
+                // document.getElementById("returnValue").value = response;
+            });
+        }
+    }
+    else if(isAndroid){
+        function connectWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) {
+                callback(WebViewJavascriptBridge)
+            } else {
+                document.addEventListener(
+                    'WebViewJavascriptBridgeReady'
+                    , function() {
+                        callback(WebViewJavascriptBridge)
+                    },
+                    false
+                );
+            }
+        }
+
+        connectWebViewJavascriptBridge(function(bridge) {
+            bridge.init(function(message, responseCallback) {
+                console.log('JS got a message', message);
+                var data = {
+                    'Javascript Responds': '测试中文!'
+                };
+
+                if (responseCallback) {
+                    console.log('JS responding with', data);
+                    responseCallback(data);
+                }
+            });
+
+            bridge.registerHandler("userAttestation", function(data, responseCallback) {
+//                  alert("data from Java: = " + data);
+                if (responseCallback) {
+                    var responseData = "Javascript Says Right back aka!";
+                    responseCallback(responseData);
+                }
+            });
+        })
+        function userAttestation(id){
+            window.WebViewJavascriptBridge.callHandler('userAttestation', "{\"id\" : "+id+"}", function(response) {
+                // alert('native被调用:' + response);
+                // document.getElementById("returnValue").value = response;
+            });
+        }
+    }
+    $('.shareget').on('click',function(){
+        if(!query['userid']){
+            $('.bg-cover').show()
+        }else
+            userAttestation(11)
+    })
+    $('.huodongguize').on('click',function(){
+        userAttestation(12)
+    })
+    $('.login').on('click',function(){
+        userAttestation(1)
+    })
+    $('.bg-cover-2').on('click',function(){
+        $(this).hide();
+    })
+    $('.bg-cover-3').on('click',function(){
+        $(this).hide();
+    })
+    $('.bg-cover-4').on('click',function(){
+        $(this).hide();
+    })
+    $(window).scroll(function(){
+        $('.pull-down').hide();
+    })
+</script>
+</body>
+</html>

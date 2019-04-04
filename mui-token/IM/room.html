@@ -139,7 +139,7 @@
 									<img :src="item.fromUserIcon || '../images/business-img.png'">
 								</div>
 								<div class="uni-flex-item">
-									<img width="100px" height="50px" :src="item.message || item.content" v-if="item.type == 1" @click="showPic(item.message || item.content)">
+									<img width="120px" :src="item.message || item.content" v-if="item.type == 1" @tap="showPic(item.message || item.content)">
 									<p class="message-text" v-else>
 										<!-- 您好。我是TokenPanda客服，有什么能帮助您的？ -->
 										{{item.message || item.content}}
@@ -153,7 +153,7 @@
 							<div class="uni-flex">
 								<div class="empty"></div>
 								<div class="uni-flex-item">
-									<img width="120px" :src="item.message || item.content" v-if="item.type == 1" @click="showPic(item.message || item.content)">
+									<img width="120px" :src="item.message || item.content" v-if="item.type == 1" @tap="showPic(item.message || item.content)">
 									<p class="message-text" v-else>
 										{{item.message || item.content}}
 									</p>
@@ -244,8 +244,9 @@
 					}, 'POST', {}, false).then(res => {
 						if (res.code == 1) {
 							let list = res.obj.list || [];
-							list.reverse();
+							this.messageList.reverse();
 							this.messageList.splice((this.pageNum - 1) * this.pageSize, this.pageSize, ...list);
+							this.messageList.reverse();
 							if (list.length < this.pageSize) {
 								this.pageNum--;
 							}

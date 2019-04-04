@@ -401,7 +401,7 @@
 							</div>
 						</div>
 						<div class="payBtn">
-							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @click="goBuy">一键购买</button>
+							<button type="button" :disabled="isDisabled" class="mui-btn mui-btn-buy" @click="getUserSecurityStatus">一键购买</button>
 						</div>
 					</div>
 				</div>
@@ -476,7 +476,7 @@
 					fetch(buyShop + '/1/30', {}, 'POST').then(res => {
 						this.shopList = res.obj.list
 						// 默认商家信息
-						this.businessInfo = this.shopList[0]
+						this.businessInfo = this.shopList[0] || {}
 						this.getSupportPayWay(this.businessInfo.userId)
 						this.$nextTick(() => {
 							this.height = this.$refs.businessMore.offsetHeight
@@ -564,6 +564,27 @@
 					this.payWay = item.type;
 					console.log(this.payWay)
 				},
+				// 是否认证
+				getUserSecurityStatus () {
+					if (this.isDisabled) return;
+					if (this.identityAuth != 0 && this.identityAuth != undefined) {
+						this.goBuy();
+						return;						
+					}
+					fetch(userSecurityStatus + "/" + USER_ID, undefined, 'GET').then(res => {
+						if (res.code == 1) {
+							let status = res.obj.identityAuth;
+							if (status == 0) {
+								userAttestation(105)
+							} else {
+								this.identityAuth = status;
+								this.goBuy();
+							}
+						} else {
+							mui.toast(res.msg)
+						}
+					})
+				},
 				// 一键购买
 				goBuy() {
 					if (this.isDisabled) return;
@@ -579,6 +600,7 @@
 						mui.toast(errorStr, { type: 'div' });
 						return;
 					}
+					this.getUserSecurityStatus()
 					fetch(oneKeyBuy, {
 						amount: this.dealInfo.amount,
 						money: this.dealInfo.money,
