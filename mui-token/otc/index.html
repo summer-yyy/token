@@ -567,7 +567,7 @@
 				// 是否认证
 				getUserSecurityStatus () {
 					if (this.isDisabled) return;
-					if (this.identityAuth != 0 && this.identityAuth != undefined) {
+					if (this.identityAuth) {
 						this.goBuy();
 						return;						
 					}
