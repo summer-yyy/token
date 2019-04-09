@@ -379,6 +379,8 @@
 				changeNum(item) {
 					// 判断字符串是否存在点
 					if (item == '.' && (this.ethNum.indexOf('.') > -1 || this.ethNum == "")) return
+					let index = this.ethNum.indexOf('.')
+					if (index > -1 && this.ethNum.length - index > 3) return;
 					this.ethNum = this.ethNum + item
 					if (this.ethNum > Math.min(this.currentCoin.balance, this.depositMax)) {
 						this.ethNum = Math.min(this.currentCoin.balance, this.depositMax) + "";
@@ -457,7 +459,7 @@
 							const data = res.obj.data;
 							this.instantRate = data.instantRate;
 							this.depositMax = data.depositMax;
-							this.depositMin = data.depositMin;
+							this.depositMin = floatObj.multiply(data.depositMin, 2);
 							// this.receiveCoinFee = data.receiveCoinFee
 						} else {
 							mui.toast(res.msg)

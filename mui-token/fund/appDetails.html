@@ -6,7 +6,7 @@
 	<title></title>
 	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 	<meta content="yes" name="apple-mobile-web-app-capable" />
-  <meta content="yes" name="apple-touch-fullscreen" />
+	<meta content="yes" name="apple-touch-fullscreen" />
 	<link href="../css/mui.min.css" rel="stylesheet" />
 	<link href="../css/app.css" rel="stylesheet" />
 	<style type="text/css">
@@ -582,7 +582,7 @@
 
 		<div class="uni-page-content-b">
 			<div class="payBtn">
-				<button type="button" class="mui-btn mui-btn-buy" @click="changeRoute('payment')">立即购买</button>
+				<button type="button" class="mui-btn mui-btn-buy" @click="changeRoute('payment')">{{btnText}}</button>
 			</div>
 		</div>
 		<!-- 分享图片弹出层 -->
@@ -632,7 +632,8 @@
 				showMore: true,
 				currentDate: moment(new Date()).format("YYYY-MM-DD"),
 				currentDate1: moment().add(1, 'days').format("MM-DD"),
-				currentWeek: moment().add(1, 'days').format("dddd")
+				currentWeek: moment().add(1, 'days').format("dddd"),
+				btnText: (!USER_ID || USER_ID == "undefined") ? "登陆/注册" : "立即购买"
 			},
 			computed: {
 				option() {
@@ -783,7 +784,7 @@
 				},
 				// 页面跳转
 				changeRoute(name) {
-					if (!USER_ID) {
+					if (!USER_ID || USER_ID == "undefined") {
 						userAttestation(101);
 						return;
 					}
