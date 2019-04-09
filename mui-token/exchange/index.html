@@ -333,7 +333,7 @@
 					return Number(num.toFixed(6))
 				},
 				isDisabled() {
-					return this.ethNum < this.depositMin || this.ethNum <= 0;
+					return Number(this.ethNum) < Number(this.depositMin) || Number(this.ethNum) <= 0;
 				},
 			},
 			methods: {
