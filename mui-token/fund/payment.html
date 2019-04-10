@@ -271,7 +271,7 @@
 							</div>
 						</div>
 						<div class="payBtn">
-							<button type="button" class="mui-btn mui-btn-buy" @click="showPwd">确定</button>
+							<button type="button" class="mui-btn mui-btn-buy" @click="checkUserInfo">确定</button>
 							<div class="tips">
 								<div class="uni-text">永续基金所属公司提供</div>
 								<div class="uni-text">基金销售资格：证监许可【2016】001号</div>
@@ -415,6 +415,24 @@
 					if (!this.isValidate()) return
 					this.pwd = "";
 					mui('#pwd').popover('show');
+				},
+				// 检测用户信息
+				checkUserInfo() {
+					fetch(userInfo, {
+						userId: USER_ID
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							if (!res.obj.mobile) {
+								userAttestation(107)
+							} else if (!res.obj.payPassword) {
+								userAttestation(106)
+							} else {
+								this.showPwd()
+							}
+						} else {
+							mui.toast(res.msg)
+						}
+					})
 				},
 				// 提交密码
 				checkPwd() {

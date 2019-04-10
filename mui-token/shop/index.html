@@ -1368,6 +1368,24 @@
 					this.pwd = "";
 					mui('#pwd').popover('show');
 				},
+				// 检测用户信息
+				checkUserInfo() {
+					fetch(userInfo, {
+						userId: USER_ID
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							if (!res.obj.mobile) {
+								userAttestation(107)
+							} else if (!res.obj.payPassword) {
+								userAttestation(106)
+							} else {
+								this.showPwd()
+							}
+						} else {
+							mui.toast(res.msg)
+						}
+					})
+				},
 				// 提交密码
 				checkPwd() {
 					if ((this.pwd + '').length < 6) {
@@ -1419,7 +1437,7 @@
 					switch (this.popoverOption.type) {
 						case 1: // 操作成功按钮
 							this.isSuccess = true
-							this.showPwd();
+							this.checkUserInfo();
 							break;
 						case 2: // 操作取消按钮
 							this.isCancel = true

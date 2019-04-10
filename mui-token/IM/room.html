@@ -126,7 +126,7 @@
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll" ref="scrollWrap" style="padding: 0 15px;">
 					<div class="message-info" v-for="(item, index) in messageList" :key="index">
-						<p class="time" v-if="index == 0 || ((item.createTime - messageList[index - 1]) > 60 * 1000)">{{item.createTime}}</p>
+						<p class="time">{{item.createTime}}</p>
 						<!-- 系统提示 -->
 						<div class="tips" v-if="item.type == 2">
 							<p class="time">{{item.createTime}}</p>

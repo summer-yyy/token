@@ -246,7 +246,7 @@
 							<p>2.若兑换失败，则原路退回代币。</p>
 						</div>
 						<div class="paybtn">
-							<button type="button" class="mui-btn mui-btn-buy" @tap="showPwd">一键兑换</button>
+							<button type="button" class="mui-btn mui-btn-buy" @tap="checkUserInfo">一键兑换</button>
 						</div>
 					</div>
 				</div>
@@ -259,8 +259,7 @@
 					<img src="../images/success-img.png">
 				</div>
 				<div class="popover-content">
-					<p>兑换成功</p>
-					<p>您可在“我的钱包”中查看兑换记录</p>
+					<p>已提交到链上进行资产兑换，链上确认时间较长，请您耐心等待，链上确认完毕后会自动转入钱包。</p>
 				</div>
 				<div class="popover-footer">
 					<button type="button" class="mui-btn mui-btn-buy" @click="onClose">知道了</button>
@@ -346,6 +345,24 @@
 				showPwd() {
 					this.pwd = "";
 					mui('#pwd').popover('show');
+				},
+				// 检测用户信息
+				checkUserInfo() {
+					fetch(userInfo, {
+						userId: USER_ID
+					}, 'POST').then(res => {
+						if (res.code == 1) {
+							if (!res.obj.mobile) {
+								userAttestation(107)
+							} else if (!res.obj.payPassword) {
+								userAttestation(106)
+							} else {
+								this.showPwd()
+							}
+						} else {
+							mui.toast(res.msg)
+						}
+					})
 				},
 				// 提交密码
 				checkPwd() {
