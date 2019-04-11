@@ -302,7 +302,7 @@
 				<div>
 					<p class="title">资金密码</p>
 					<div class="pwdBox" @click="inputPwd">
-						<input class="pwd" v-model="pwd" type="number" maxlength="6" @input="input">
+						<input class="pwd" v-model="pwd" type="tel" maxlength="6" @input="input">
 						<div class="number" v-for="index in 6">{{index > (pwd+"").length ? "": "*"}}</div>
 					</div>
 				</div>
