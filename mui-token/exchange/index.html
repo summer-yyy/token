@@ -264,12 +264,19 @@
 					</div>
 				</div>
 				<div class="tips">
-					<p>可用数量：
-						<span>{{currentCoin.balance+" "+currentCoin.enName}}</span>
+					<p>
+						<span style="width: 50%; display: inline-block;">
+							可用数量：
+							<span>{{currentCoin.balance+" "+currentCoin.enName}}</span>
+						</span>
+						<span>
+							手续费
+							<img :src="currentCoin.coinImageUrl">：
+							<span>{{receiveCoinFee * 100}}%</span>
+						</span>
 					</p>
-					<p>手续费
-						<img :src="currentCoin.coinImageUrl">：
-						<span>{{receiveCoinFee * 100}}%</span>
+					<p style="">
+						<span>Powered  by <img src="../images/icon_swft.png"> SWFT Pay</span>
 					</p>
 				</div>
 			</div>
