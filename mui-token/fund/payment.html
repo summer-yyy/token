@@ -234,6 +234,7 @@
 								</div>
 								<div class="uni-form-item">
 									<input class="uni-input" v-model="amount" type="number" @input="changeBuyNum" :placeholder="placeholder" />
+									<span>余额：{{userBalance+" "+type}}</span>
 								</div>
 								<div class="uni-tips">买入0费率，预计{{dateStr}}确认份额，开始计算收益</div>
 							</div>
@@ -323,12 +324,14 @@
 		new Vue({
 			el: '#app',
 			data: {
+				type: '',
 				pwd: '',
 				amount: '',
 				isCheck: true,
 				fundName: "",
 				placeholder: '',
 				dateStr: '',
+				userBalance: '',
 				weekdays: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六",]
 			},
 			created() {
@@ -336,6 +339,8 @@
 				this.fundId = getUrlParam('fundId');
 				this.fundName = getUrlParam('fundName');
 				this.type = getUrlParam('type');
+				this.coinType = getUrlParam('coinType');
+				this.queryUserBalance();
 				const tomorrow = moment().add(1, 'days');
 				this.dateStr = tomorrow.format("MM-DD") + `(${this.weekdays[tomorrow.weekday()]})`;
 				switch (this.type) {
@@ -415,6 +420,16 @@
 					if (!this.isValidate()) return
 					this.pwd = "";
 					mui('#pwd').popover('show');
+				},
+				// 查余额
+				queryUserBalance() {
+					fetch(queryUserBalance + "/" + this.coinType + "/" + USER_ID, {}, 'POST').then(res => {
+						if (res.code == 1) {
+							this.userBalance = res.msg;
+						} else {
+							mui.toast(res.msg)
+						}
+					})
 				},
 				// 检测用户信息
 				checkUserInfo() {
